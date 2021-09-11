@@ -8,29 +8,11 @@ import {
   IonListHeader,
   IonMenu,
   IonMenuToggle,
-  IonNote,
   IonRow,
-  IonText,
 } from "@ionic/react";
 
 import { useLocation } from "react-router-dom";
-import {
-  archiveOutline,
-  archiveSharp,
-  heartOutline,
-  heartSharp,
-  mailOutline,
-  mailSharp,
-  paperPlaneOutline,
-  paperPlaneSharp,
-  trashOutline,
-  trashSharp,
-  warningOutline,
-  warningSharp,
-  person,
-  alarm,
-  statsChart,
-} from "ionicons/icons";
+import { person, alarm, statsChart } from "ionicons/icons";
 import "./Menu.css";
 
 interface AppPage {
