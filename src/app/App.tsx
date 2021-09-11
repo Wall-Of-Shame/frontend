@@ -1,12 +1,20 @@
 import { Redirect, Route } from "react-router-dom";
 import {
   IonApp,
+  IonContent,
+  IonHeader,
   IonIcon,
+  IonItem,
   IonLabel,
+  IonList,
+  IonMenu,
   IonRouterOutlet,
+  IonSplitPane,
   IonTabBar,
   IonTabButton,
   IonTabs,
+  IonTitle,
+  IonToolbar,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { alarm, statsChart, person } from "ionicons/icons";
@@ -32,13 +40,31 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "../theme/variables.css";
+import "./App.css";
+import Onboarding from "../pages/onboarding/Onboarding";
+import Menu from "../components/menu/Menu";
+import Page from "../components/page/Page";
 
 const App: React.FC = () => {
   return (
     <IonApp>
       <IonReactRouter>
+        <IonSplitPane contentId='main'>
+          <Menu />
+          <IonRouterOutlet id='main'>
+            <Route path='/' exact={true}>
+              <Redirect to='/page/Inbox' />
+            </Route>
+            <Route path='/page/:name' exact={true}>
+              <Page />
+            </Route>
+          </IonRouterOutlet>
+        </IonSplitPane>
         <IonTabs>
           <IonRouterOutlet>
+            <Route exact path='/onboarding'>
+              <Onboarding />
+            </Route>
             <Route exact path='/challenges'>
               <Challenges />
             </Route>
@@ -52,7 +78,7 @@ const App: React.FC = () => {
               <Redirect to='/challenges' />
             </Route>
           </IonRouterOutlet>
-          <IonTabBar slot='bottom'>
+          <IonTabBar slot='bottom' className='tabs-nav'>
             <IonTabButton tab='challenges' href='/challenges'>
               <IonIcon icon={alarm} />
               <IonLabel>Challenges</IonLabel>
