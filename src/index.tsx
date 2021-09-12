@@ -7,15 +7,18 @@ import store, { persistor } from "./app/store";
 import App from "./app/App";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
+import AppProviders from "./contexts/AppProviders";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <App />
-      </PersistGate>
-    </Provider>
-  </React.StrictMode>,
+  <AppProviders>
+    <React.StrictMode>
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <App />
+        </PersistGate>
+      </Provider>
+    </React.StrictMode>
+  </AppProviders>,
   document.getElementById("root")
 );
 
