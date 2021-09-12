@@ -1,40 +1,30 @@
-/* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import User from "../interfaces/User";
+
+import { PersonData } from "../interfaces/models/Persons";
 
 export interface MiscDux {
-  user: User;
+  user?: PersonData;
+  lastRetrieved?: number;
 }
 
-const initialState: MiscDux = {
-  user: {
-    id: null,
-    name: null,
-    isEmailVerified: false,
-  },
-};
+const initialState: MiscDux = {};
 
-// Contains user information
+// Contains user information, theme, view selected and fun fact of the day
 const misc = createSlice({
   name: "misc",
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<User>): void => {
+    setUser: (state, action: PayloadAction<PersonData>): void => {
       state.user = { ...action.payload };
-    },
-    updateUser: (state, action: PayloadAction<Partial<User>>): void => {
-      state.user = { ...state.user, ...action.payload };
+      state.lastRetrieved = Date.now();
     },
     clearUser: (state): void => {
-      state.user = {
-        id: null,
-        name: null,
-        isEmailVerified: false,
-      };
+      state.user = undefined;
+      state.lastRetrieved = undefined;
     },
   },
 });
 
-export const { setUser, updateUser, clearUser } = misc.actions;
+export const { setUser, clearUser } = misc.actions;
 
 export default misc.reducer;
