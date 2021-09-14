@@ -2,6 +2,11 @@ ion-slides {
   height: 100%;
 }
 
+.swiper-slide,
+.swiper-pagination {
+  bottom: 20px !important;
+}
+
 .swiper-slide {
   display: block;
 }

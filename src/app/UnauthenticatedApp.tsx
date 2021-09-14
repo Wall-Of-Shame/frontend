@@ -32,7 +32,6 @@ const UnauthenticatedApp: React.FC = () => {
     <IonApp>
       <IonReactRouter>
         <IonSplitPane contentId='main' when='(min-width: 0px)'>
-          <Menu />
           <IonRouterOutlet id='main'>
             <Switch>
               <Route path='/onboarding' component={Onboarding} />

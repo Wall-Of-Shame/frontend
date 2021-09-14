@@ -2,6 +2,8 @@
 import {
   IonButton,
   IonContent,
+  IonFab,
+  IonFabButton,
   IonIcon,
   IonPage,
   IonRow,
@@ -9,11 +11,11 @@ import {
   IonSlides,
   IonText,
 } from "@ionic/react";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import useInterval from "../../hooks/useInterval";
 import GoogleLogin from "react-google-login";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
-import { logoGoogle, logoFacebook } from "ionicons/icons";
+import { logoGoogle, logoFacebook, add } from "ionicons/icons";
 
 import "./Onboarding.css";
 import { Link, useHistory } from "react-router-dom";
@@ -42,6 +44,8 @@ const Onboarding: React.FC = () => {
   const [count, setCount] = useState(1);
   const history = useHistory();
   const { login } = useAuth();
+  const slides = useRef(null);
+  const [swiper, setSwiper] = useState<any>(null);
   const addMessages = () => {
     var newMessages = [...messages];
     if (newMessages.length > 10) {
@@ -55,18 +59,33 @@ const Onboarding: React.FC = () => {
     addMessages();
   }, 500);
 
-  const responseGoogle = (response: any) => {
-    console.log(response);
-  };
-
-  const responseFacebook = (response: any) => {
-    console.log(response);
+  const initSwiper = async function (this: any) {
+    setSwiper(await this.getSwiper());
   };
 
   return (
     <IonPage>
       <IonContent fullscreen scrollY={false}>
-        <OnboardingSlides />
+        <OnboardingSlides initSwiper={initSwiper} />
+        <IonFab
+          vertical='top'
+          horizontal='end'
+          slot='fixed'
+          style={{ margin: "1rem" }}
+          onClick={() => {}}
+        >
+          <IonButton
+            color='medium'
+            fill='clear'
+            onClick={() => {
+              if (swiper) {
+                swiper.slideTo(3);
+              }
+            }}
+          >
+            Skip
+          </IonButton>
+        </IonFab>
       </IonContent>
     </IonPage>
   );

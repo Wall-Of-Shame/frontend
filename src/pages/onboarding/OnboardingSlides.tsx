@@ -9,7 +9,7 @@ import {
   IonSlides,
   IonText,
 } from "@ionic/react";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import useInterval from "../../hooks/useInterval";
 import GoogleLogin from "react-google-login";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
@@ -21,7 +21,11 @@ import { useAuth } from "../../contexts/AuthContext";
 import Container from "../../components/container/Container";
 import "./OnboardingSlides.css";
 
-const OnboardingSlides: React.FC = () => {
+interface OnboardingSlidesProps {
+  initSwiper: (this: any) => Promise<void>;
+}
+
+const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({ initSwiper }) => {
   const history = useHistory();
 
   const onGoogleLoginSuccess = (response: any) => {
@@ -37,7 +41,7 @@ const OnboardingSlides: React.FC = () => {
   };
 
   return (
-    <IonSlides>
+    <IonSlides pager={true} className='slides' onIonSlidesDidLoad={initSwiper}>
       <IonSlide>
         <div className='slide'>
           <Container>
@@ -45,7 +49,7 @@ const OnboardingSlides: React.FC = () => {
             <br />
             <p>
               The <b>Wall Of Shame</b> is an app for you to achieve your goals
-              today <br /> <b>By risking your fame 🤪</b>
+              today... <br /> <b>...by risking your fame 🤪</b>
             </p>
           </Container>
         </div>
@@ -72,6 +76,7 @@ const OnboardingSlides: React.FC = () => {
         <div className='slide'>
           <Container>
             <h2>Who should use?</h2>
+            <br />
             <p>
               Please <b>DO NOT</b> use this if you are thin-skinned or shy 😅
             </p>
@@ -111,10 +116,9 @@ const OnboardingSlides: React.FC = () => {
               render={(renderProps) => (
                 <IonButton
                   expand='block'
-                  fill='outline'
+                  fill='solid'
+                  style={{ margin: "1rem" }}
                   onClick={renderProps.onClick}
-                  style={{ margin: "1rem", color: "#000000" }}
-                  color='white'
                 >
                   <IonIcon src={logoGoogle} />
                   &nbsp;&nbsp;Continue with Google
