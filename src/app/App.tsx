@@ -25,10 +25,7 @@ const App: React.FC = () => {
         />
       }
     >
-      {/* Renders the appropriate app
       {!!user ? <UnauthenticatedAppPage /> : <AuthenticatedApp />}
-       */}
-      <AuthenticatedApp />
     </React.Suspense>
   );
 };
