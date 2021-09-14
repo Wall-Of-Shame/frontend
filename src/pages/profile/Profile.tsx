@@ -5,7 +5,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import ExploreContainer from "../../components/container/Container";
+import Container from "../../components/container/Container";
 import "./Profile.css";
 
 const Profile: React.FC = () => {
@@ -22,7 +22,7 @@ const Profile: React.FC = () => {
             <IonTitle size='large'>Profile</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <ExploreContainer name='Profile' />
+        <Container>Profile</Container>
       </IonContent>
     </IonPage>
   );

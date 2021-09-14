@@ -35,19 +35,20 @@ const Tab1: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Your Challenges</IonTitle>
+          <IonTitle>Challenges</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonHeader collapse='condense'>
+        <IonHeader collapse='condense' className='ion-no-border'>
           <IonToolbar>
-            <IonTitle size='large'>Your Challenges</IonTitle>
+            <IonTitle size='large'>Challenges</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonSegment
           onIonChange={(e) => setTab(e.detail.value ?? "active")}
           value={tab}
           style={{ marginTop: "1rem" }}
+          mode='md'
         >
           <IonSegmentButton value='active'>
             <IonLabel>Active</IonLabel>
@@ -61,10 +62,14 @@ const Tab1: React.FC = () => {
         </IonSegment>
         <IonCard>
           <IonCardHeader>
-            <IonCardTitle>Watch CS3216 Lecture</IonCardTitle>
+            <IonCardTitle style={{ fontSize: "1.4rem" }}>
+              Watch CS3216 Lecture
+            </IonCardTitle>
           </IonCardHeader>
           <IonCardContent>
-            <IonText>Ends in: 1 day 4 hours</IonText>
+            <IonText style={{ fontSize: "0.8rem" }}>
+              Ends in: 1 day 4 hours
+            </IonText>
             <IonRow style={{ paddingTop: "0.5rem" }}>
               <IonAvatar style={{ marginRight: "0.25rem" }}>
                 <img src={luke} alt='user1' />
@@ -82,22 +87,59 @@ const Tab1: React.FC = () => {
           </IonCardContent>
         </IonCard>
         <IonCard>
-          <IonCardHeader>
-            <IonCardTitle>Watch CS3216 Lecture</IonCardTitle>
+          <IonCardHeader
+            className='ion-no-padding ion-padding-top ion-padding-horizontal'
+            style={{ paddingBottom: "0.5rem" }}
+          >
+            <IonCardTitle style={{ fontSize: "1.2rem" }}>
+              Watch CS3216 Lecture
+            </IonCardTitle>
           </IonCardHeader>
           <IonCardContent>
-            <IonText>Ends in: 1 day 4 hours</IonText>
-            <IonRow style={{ paddingTop: "0.5rem" }}>
-              <IonAvatar style={{ marginRight: "0.25rem" }}>
+            <IonText style={{ fontSize: "0.8rem" }}>
+              Ends in: 1 day 4 hours
+            </IonText>
+            <IonRow
+              style={{ paddingTop: "0.5rem" }}
+              className='ion-align-items-center'
+            >
+              <IonText style={{ fontSize: "0.8rem", marginRight: "0.5rem" }}>
+                4 participants
+              </IonText>
+              <IonAvatar className='avatar' style={{ marginRight: "0.25rem" }}>
                 <img src={finn} alt='user1' />
               </IonAvatar>
-              <IonAvatar style={{ marginRight: "0.25rem" }}>
+              <IonAvatar className='avatar' style={{ marginRight: "0.25rem" }}>
                 <img src={rey} alt='user2' />
               </IonAvatar>
-              <IonAvatar style={{ marginRight: "0.25rem" }}>
+              <IonAvatar className='avatar' style={{ marginRight: "0.25rem" }}>
                 <img src={poe} alt='user3' />
               </IonAvatar>
-              <IonAvatar style={{ marginRight: "0.25rem" }}>
+              <IonAvatar className='avatar' style={{ marginRight: "0.25rem" }}>
+                <img src={yoda} alt='user4' />
+              </IonAvatar>
+              <IonAvatar className='avatar' style={{ marginRight: "0.25rem" }}>
+                <img src={finn} alt='user1' />
+              </IonAvatar>
+              <IonAvatar className='avatar' style={{ marginRight: "0.25rem" }}>
+                <img src={rey} alt='user2' />
+              </IonAvatar>
+              <IonAvatar className='avatar' style={{ marginRight: "0.25rem" }}>
+                <img src={poe} alt='user3' />
+              </IonAvatar>
+              <IonAvatar className='avatar' style={{ marginRight: "0.25rem" }}>
+                <img src={yoda} alt='user4' />
+              </IonAvatar>
+              <IonAvatar className='avatar' style={{ marginRight: "0.25rem" }}>
+                <img src={finn} alt='user1' />
+              </IonAvatar>
+              <IonAvatar className='avatar' style={{ marginRight: "0.25rem" }}>
+                <img src={rey} alt='user2' />
+              </IonAvatar>
+              <IonAvatar className='avatar' style={{ marginRight: "0.25rem" }}>
+                <img src={poe} alt='user3' />
+              </IonAvatar>
+              <IonAvatar className='avatar' style={{ marginRight: "0.25rem" }}>
                 <img src={yoda} alt='user4' />
               </IonAvatar>
             </IonRow>
@@ -105,10 +147,14 @@ const Tab1: React.FC = () => {
         </IonCard>
         <IonCard>
           <IonCardHeader>
-            <IonCardTitle>Watch CS3216 Lecture</IonCardTitle>
+            <IonCardTitle style={{ fontSize: "1.5rem" }}>
+              Watch CS3216 Lecture
+            </IonCardTitle>
           </IonCardHeader>
           <IonCardContent>
-            <IonText>Ends in: 1 day 4 hours</IonText>
+            <IonText style={{ fontSize: "0.8rem" }}>
+              Ends in: 1 day 4 hours
+            </IonText>
             <IonRow style={{ paddingTop: "0.5rem" }}>
               <IonAvatar style={{ marginRight: "0.25rem" }}>
                 <img src={poe} alt='user1' />

@@ -1,43 +1,35 @@
-import { IonApp, IonRouterOutlet, IonSplitPane } from "@ionic/react";
-import { IonReactRouter } from "@ionic/react-router";
-import { Route, Switch } from "react-router-dom";
-import Menu from "../components/menu/Menu";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React from "react";
+import LoadingSpinner from "../components/loadingSpinner/LoadingSpinner";
+import { useUser } from "../contexts/UserContext";
+import AuthenticatedApp from "./AuthenticatedApp";
+import UnauthenticatedApp from "./UnauthenticatedApp";
 
-/* Core CSS required for Ionic components to work properly */
-import "@ionic/react/css/core.css";
-
-/* Basic CSS for apps built with Ionic */
-import "@ionic/react/css/normalize.css";
-import "@ionic/react/css/structure.css";
-import "@ionic/react/css/typography.css";
-
-/* Optional CSS utils that can be commented out */
-import "@ionic/react/css/padding.css";
-import "@ionic/react/css/float-elements.css";
-import "@ionic/react/css/text-alignment.css";
-import "@ionic/react/css/text-transformation.css";
-import "@ionic/react/css/flex-utils.css";
-import "@ionic/react/css/display.css";
-
-/* Theme variables */
-import "../theme/variables.css";
-
-import TabRootPage from "../pages/TabRootPage";
+const UnauthenticatedAppPage = React.lazy(() => {
+  return new Promise((resolve) => setTimeout(resolve, 1000)).then(
+    () => import("./UnauthenticatedApp")
+  );
+});
 
 const App: React.FC = () => {
+  const user = useUser();
+
+  console.log(user);
   return (
-    <IonApp>
-      <IonReactRouter>
-        <IonSplitPane contentId='main' when='(min-width: 0px)'>
-          <Menu />
-          <IonRouterOutlet id='main'>
-            <Switch>
-              <Route path='/' component={TabRootPage} />
-            </Switch>
-          </IonRouterOutlet>
-        </IonSplitPane>
-      </IonReactRouter>
-    </IonApp>
+    <React.Suspense
+      fallback={
+        <LoadingSpinner
+          loading={true}
+          closeLoading={(): void => {}}
+          message='Loading'
+        />
+      }
+    >
+      {/* Renders the appropriate app
+      {!!user ? <UnauthenticatedAppPage /> : <AuthenticatedApp />}
+       */}
+      <AuthenticatedApp />
+    </React.Suspense>
   );
 };
 

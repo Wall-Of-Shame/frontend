@@ -1,0 +1,29 @@
+@media (prefers-color-scheme: dark) {
+  .separator {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid rgb(187, 187, 187);
+    line-height: 0.1em;
+    margin: 10px 0 20px;
+  }
+
+  .separator span {
+    background: #000;
+    padding: 0 10px;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .separator {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid rgb(173, 173, 173);
+    line-height: 0.1em;
+    margin: 10px 0 20px;
+  }
+
+  .separator span {
+    background: #fff;
+    padding: 0 10px;
+  }
+}

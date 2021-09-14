@@ -1,15 +1,13 @@
+import React from "react";
+
 import "./Container.css";
 
 interface ContainerProps {
-  name: string;
+  children: React.ReactNode;
 }
 
-const ExploreContainer: React.FC<ContainerProps> = ({ name }) => {
-  return (
-    <div className='container'>
-      <strong>{name}</strong>
-    </div>
-  );
+const Container: React.FC<ContainerProps> = (props: ContainerProps) => {
+  return <div className='container ion-padding'>{props.children}</div>;
 };
 
-export default ExploreContainer;
+export default Container;
