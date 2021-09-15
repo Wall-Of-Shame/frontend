@@ -10,10 +10,10 @@ import React from "react";
 import { Redirect, Route } from "react-router";
 import "./TabRootPage.scss";
 import { person, alarm, statsChart } from "ionicons/icons";
-import Challenges from "./challenges/Challenges";
-import Onboarding from "./onboarding/Onboarding";
-import Profile from "./profile/Profile";
-import WallOfShame from "./wallOfShame/WallOfShame";
+import Challenges from "./challenges";
+import Onboarding from "./onboarding";
+import Profile from "./profile";
+import WallOfShame from "./wallOfShame";
 
 const TabRootPage: React.FC = () => {
   return (

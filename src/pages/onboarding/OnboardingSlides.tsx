@@ -6,13 +6,13 @@ import {
   IonSlides,
   IonText,
 } from "@ionic/react";
-import React, { useContext } from "react";
+import React from "react";
 import GoogleLogin from "react-google-login";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { logoGoogle, logoFacebook } from "ionicons/icons";
 
 import "./Onboarding.scss";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Container from "../../components/container/Container";
 import "./OnboardingSlides.scss";
 
