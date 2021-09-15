@@ -10,7 +10,7 @@ import {
   IonRow,
 } from "@ionic/react";
 import { useState } from "react";
-import "./SignUpModal.css";
+import "./SignUpModal.scss";
 import { arrowBackOutline } from "ionicons/icons";
 
 interface SignUpModalProps {

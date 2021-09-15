@@ -24,7 +24,7 @@ import poe from "../../assets/avatar-poe.png";
 import luke from "../../assets/avatar-luke.png";
 import finn from "../../assets/avatar-finn.png";
 import leia from "../../assets/avatar-leia.png";
-import "./Challenges.css";
+import "./Challenges.scss";
 import { useState } from "react";
 import { add } from "ionicons/icons";
 

@@ -20,7 +20,7 @@ import GoogleLogin from "react-google-login";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { logoGoogle, logoFacebook, add } from "ionicons/icons";
 
-import "./Onboarding.css";
+import "./Onboarding.scss";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import Container from "../../components/container/Container";

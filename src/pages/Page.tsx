@@ -8,7 +8,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { useParams } from "react-router";
-import "./Page.css";
+import "./Page.scss";
 
 const Page: React.FC = () => {
   const { name } = useParams<{ name: string }>();

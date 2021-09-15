@@ -4,6 +4,7 @@ import LoadingSpinner from "../components/loadingSpinner/LoadingSpinner";
 import { useUser } from "../contexts/UserContext";
 import AuthenticatedApp from "./AuthenticatedApp";
 import UnauthenticatedApp from "./UnauthenticatedApp";
+import "./App.scss";
 
 const UnauthenticatedAppPage = React.lazy(() => {
   return new Promise((resolve) => setTimeout(resolve, 1000)).then(

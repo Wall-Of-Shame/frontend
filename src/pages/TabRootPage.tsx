@@ -8,7 +8,7 @@ import {
 } from "@ionic/react";
 import React from "react";
 import { Redirect, Route } from "react-router";
-import "./TabRootPage.css";
+import "./TabRootPage.scss";
 import { person, alarm, statsChart } from "ionicons/icons";
 import Challenges from "./challenges/Challenges";
 import Onboarding from "./onboarding/Onboarding";

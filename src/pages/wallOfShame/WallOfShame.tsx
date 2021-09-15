@@ -10,7 +10,7 @@ import {
   IonSegmentButton,
 } from "@ionic/react";
 import { useState } from "react";
-import "./WallOfShame.css";
+import "./WallOfShame.scss";
 import yoda from "../../assets/avatar-yoda.png";
 import rey from "../../assets/avatar-rey.png";
 import luke from "../../assets/avatar-luke.png";

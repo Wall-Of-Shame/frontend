@@ -6,7 +6,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import Container from "../../components/container/Container";
-import "./Profile.css";
+import "./Profile.scss";
 
 const Profile: React.FC = () => {
   return (
