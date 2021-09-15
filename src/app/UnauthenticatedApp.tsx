@@ -1,7 +1,6 @@
 import { IonApp, IonRouterOutlet, IonSplitPane } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { Redirect, Route, Switch } from "react-router-dom";
-import Menu from "../components/menu/Menu";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -34,7 +33,7 @@ const UnauthenticatedApp: React.FC = () => {
         <IonSplitPane contentId='main' when='(min-width: 0px)'>
           <IonRouterOutlet id='main'>
             <Switch>
-              <Route path='/onboarding' component={Onboarding} />
+              <Route exact path='/onboarding' component={Onboarding} />
               <Route render={redirectToOnboarding} />
             </Switch>
           </IonRouterOutlet>

@@ -1,33 +1,32 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   IonButton,
-  IonContent,
   IonIcon,
-  IonPage,
   IonRow,
   IonSlide,
   IonSlides,
   IonText,
 } from "@ionic/react";
-import React, { useRef, useState } from "react";
-import useInterval from "../../hooks/useInterval";
+import React from "react";
 import GoogleLogin from "react-google-login";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { logoGoogle, logoFacebook } from "ionicons/icons";
 
 import "./Onboarding.css";
-import { Link, useHistory } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
+import { Link } from "react-router-dom";
 import Container from "../../components/container/Container";
 import "./OnboardingSlides.css";
 
 interface OnboardingSlidesProps {
   initSwiper: (this: any) => Promise<void>;
+  setShowModal: (showModal: boolean) => void;
+  swiperCallback: () => void;
 }
 
-const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({ initSwiper }) => {
-  const history = useHistory();
-
+const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
+  initSwiper,
+  setShowModal,
+  swiperCallback,
+}) => {
   const onGoogleLoginSuccess = (response: any) => {
     console.log(response);
   };
@@ -41,7 +40,12 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({ initSwiper }) => {
   };
 
   return (
-    <IonSlides pager={true} className='slides' onIonSlidesDidLoad={initSwiper}>
+    <IonSlides
+      pager={true}
+      className='slides'
+      onIonSlidesDidLoad={initSwiper}
+      onIonSlideDidChange={swiperCallback}
+    >
       <IonSlide>
         <div className='slide'>
           <Container>
@@ -154,9 +158,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({ initSwiper }) => {
               expand='block'
               fill='solid'
               style={{ margin: "1rem" }}
-              onClick={() => {
-                history.push("signup");
-              }}
+              onClick={() => setShowModal(true)}
             >
               Create New Account
             </IonButton>

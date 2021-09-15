@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   IonButton,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
   IonContent,
   IonFab,
   IonFabButton,
@@ -22,6 +25,7 @@ import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import Container from "../../components/container/Container";
 import OnboardingSlides from "./OnboardingSlides";
+import SignUpModal from "./signup/SignUpModal";
 
 interface MessagesProps {
   messages: string[];
@@ -40,12 +44,16 @@ const Messages: React.FC<MessagesProps> = ({ messages }) => {
 };
 
 const Onboarding: React.FC = () => {
-  const [messages, setMessages] = useState<string[]>([]);
-  const [count, setCount] = useState(1);
   const history = useHistory();
   const { login } = useAuth();
   const slides = useRef(null);
+
+  const [messages, setMessages] = useState<string[]>([]);
+  const [count, setCount] = useState(1);
   const [swiper, setSwiper] = useState<any>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [completed, setCompleted] = useState(false);
+
   const addMessages = () => {
     var newMessages = [...messages];
     if (newMessages.length > 10) {
@@ -56,8 +64,9 @@ const Onboarding: React.FC = () => {
   };
 
   useInterval(() => {
-    addMessages();
-  }, 500);
+    // Update wall
+    console.log(swiper.activeIndex);
+  }, 1500);
 
   const initSwiper = async function (this: any) {
     setSwiper(await this.getSwiper());
@@ -66,13 +75,21 @@ const Onboarding: React.FC = () => {
   return (
     <IonPage>
       <IonContent fullscreen scrollY={false}>
-        <OnboardingSlides initSwiper={initSwiper} />
+        <OnboardingSlides
+          initSwiper={initSwiper}
+          setShowModal={setShowModal}
+          swiperCallback={() => {
+            if (swiper) {
+              setCompleted(swiper.activeIndex === 3);
+            }
+          }}
+        />
         <IonFab
           vertical='top'
           horizontal='end'
           slot='fixed'
-          style={{ margin: "1rem" }}
-          onClick={() => {}}
+          style={{ margin: "1rem", opacity: completed ? 0 : 1 }}
+          className='skip-button'
         >
           <IonButton
             color='medium'
@@ -86,6 +103,7 @@ const Onboarding: React.FC = () => {
             Skip
           </IonButton>
         </IonFab>
+        <SignUpModal showModal={showModal} setShowModal={setShowModal} />
       </IonContent>
     </IonPage>
   );

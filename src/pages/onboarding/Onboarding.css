@@ -27,3 +27,7 @@
     padding: 0 10px;
   }
 }
+
+.skip-button {
+  transition: opacity 0.2s linear;
+}
