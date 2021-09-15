@@ -11,13 +11,11 @@ import AppProviders from "./contexts/AppProviders";
 
 ReactDOM.render(
   <AppProviders>
-    <React.StrictMode>
-      <Provider store={store}>
-        <PersistGate persistor={persistor}>
-          <App />
-        </PersistGate>
-      </Provider>
-    </React.StrictMode>
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <App />
+      </PersistGate>
+    </Provider>
   </AppProviders>,
   document.getElementById("root")
 );

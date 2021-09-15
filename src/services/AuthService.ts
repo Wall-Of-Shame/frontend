@@ -1,7 +1,6 @@
 import store from "../app/store";
 import { GENERAL_ERROR } from "../constants/Messages";
-import { PersonData } from "../interfaces/models/Persons";
-import { UserPostData } from "../interfaces/models/Users";
+import { UserData, UserPostData } from "../interfaces/models/Users";
 import { clearUser, setUser } from "../reducers/MiscDux";
 import ApiService from "../services/APIService";
 import TokenUtils from "../utils/TokenUtils";
@@ -32,7 +31,7 @@ const login = async (data: UserPostData): Promise<null> => {
   return TokenUtils.storeToken(response);
 };
 
-const getUser = async (): Promise<PersonData | null> => {
+const getUser = async (): Promise<UserData | null> => {
   const token = TokenUtils.getToken();
   if (!token) {
     return Promise.resolve(null);

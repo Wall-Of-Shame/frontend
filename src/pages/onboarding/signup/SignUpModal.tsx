@@ -1,17 +1,12 @@
-import {
-  IonButton,
-  IonContent,
-  IonIcon,
-  IonInput,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonModal,
-  IonRow,
-} from "@ionic/react";
+import { IonModal } from "@ionic/react";
 import { useState } from "react";
+import store from "../../../app/store";
 import "./SignUpModal.scss";
-import { arrowBackOutline } from "ionicons/icons";
+import PersonalDetails from "./PersonalDetails";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+import EmailVerification from "./EmailVerification";
+import ProfileSetUp from "./ProfileSetUp";
+import { setUser } from "../../../reducers/MiscDux";
 
 interface SignUpModalProps {
   showModal: boolean;
@@ -20,10 +15,58 @@ interface SignUpModalProps {
 
 const SignUpModal: React.FC<SignUpModalProps> = (props: SignUpModalProps) => {
   const { showModal, setShowModal } = props;
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [pageNumber, setPageNumber] = useState(0);
+  const [animationDirection, setAnimationDirection] = useState("left");
+
+  const renderPage = () => {
+    switch (pageNumber) {
+      case 0:
+        return (
+          <PersonalDetails
+            setShowModal={setShowModal}
+            nextPage={() => {
+              setAnimationDirection("left");
+              setPageNumber(1);
+            }}
+          />
+        );
+      case 1:
+        return (
+          <EmailVerification
+            nextPage={() => {
+              setAnimationDirection("left");
+              setPageNumber(2);
+            }}
+            prevPage={() => {
+              setAnimationDirection("right");
+              setPageNumber(0);
+            }}
+          />
+        );
+      case 2:
+        return (
+          <ProfileSetUp
+            completionCallback={() => {
+              setShowModal(false);
+              store.dispatch(
+                setUser({
+                  username: "asthenosphere",
+                  name: "Wang Luo",
+                  discardedAt: null,
+                  createdAt: new Date(),
+                  updatedAt: new Date(),
+                  id: 1,
+                })
+              );
+            }}
+            prevPage={() => {
+              setAnimationDirection("right");
+              setPageNumber(1);
+            }}
+          />
+        );
+    }
+  };
 
   return (
     <IonModal
@@ -31,86 +74,13 @@ const SignUpModal: React.FC<SignUpModalProps> = (props: SignUpModalProps) => {
       onDidDismiss={() => setShowModal(false)}
       backdropDismiss={false}
     >
-      <IonContent fullscreen>
-        <IonRow className='ion-padding' style={{ marginTop: "2rem" }}>
-          <IonIcon
-            icon={arrowBackOutline}
-            size='large'
-            onClick={() => setShowModal(false)}
-          />
-        </IonRow>
-        <IonList className='ion-padding-vertical'>
-          <IonItem>
-            <IonLabel color='primary' position='floating'>
-              Username
-            </IonLabel>
-            <IonInput
-              name='name'
-              type='text'
-              value={username}
-              autocapitalize='on'
-              required
-              onIonChange={(event: CustomEvent) => {
-                setUsername(event.detail.value);
-              }}
-            />
-          </IonItem>
-          <IonItem>
-            <IonLabel color='primary' position='floating'>
-              Email
-            </IonLabel>
-            <IonInput
-              name='name'
-              type='email'
-              value={email}
-              autocapitalize='on'
-              required
-              onIonChange={(event: CustomEvent) => {
-                setEmail(event.detail.value);
-              }}
-            />
-          </IonItem>
-          <IonItem>
-            <IonLabel color='primary' position='floating'>
-              Password
-            </IonLabel>
-            <IonInput
-              name='name'
-              type='password'
-              value={password}
-              autocapitalize='on'
-              required
-              onIonChange={(event: CustomEvent) => {
-                setPassword(event.detail.value);
-              }}
-            />
-          </IonItem>
-          <IonItem>
-            <IonLabel color='primary' position='floating'>
-              Confirm Password
-            </IonLabel>
-            <IonInput
-              name='name'
-              type='password'
-              value={passwordConfirmation}
-              autocapitalize='on'
-              required
-              onIonChange={(event: CustomEvent) => {
-                setPasswordConfirmation(event.detail.value);
-              }}
-            />
-          </IonItem>
-        </IonList>
-        <br />
-        <IonButton
-          expand='block'
-          fill='solid'
-          routerLink='signup/verify'
-          className='ion-padding-horizontal'
-        >
-          Next
-        </IonButton>
-      </IonContent>
+      <TransitionGroup className={"wrapper-" + animationDirection}>
+        <CSSTransition key={pageNumber} classNames='slide' timeout={350}>
+          <div className='animating' key={pageNumber}>
+            {renderPage()}
+          </div>
+        </CSSTransition>
+      </TransitionGroup>
     </IonModal>
   );
 };

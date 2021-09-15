@@ -1,8 +1,7 @@
-import { UserPostData } from "../models/Users";
-import { PersonData } from "../models/Persons";
+import { UserData, UserPostData } from "../models/Users";
 
 export default interface AuthContextInterface {
-  data: PersonData | null;
+  data: UserData | null;
   signup(data: UserPostData): Promise<void>;
   login(data: UserPostData): Promise<void>;
   logout(): Promise<void>;

@@ -1,6 +1,6 @@
 import { IonApp, IonRouterOutlet, IonSplitPane } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import Menu from "../components/menu/Menu";
 
 /* Core CSS required for Ionic components to work properly */
@@ -20,9 +20,13 @@ import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
 
 /* Theme variables */
-import "../theme/variables.css";
+import "../theme/variables.scss";
 
 import TabRootPage from "../pages/TabRootPage";
+
+const redirectToChallenges = (): React.ReactNode => (
+  <Redirect to={"/challenges"} />
+);
 
 const AuthenticatedApp: React.FC = () => {
   return (
@@ -32,7 +36,10 @@ const AuthenticatedApp: React.FC = () => {
           <Menu />
           <IonRouterOutlet id='main'>
             <Switch>
-              <Route path='/' component={TabRootPage} />
+              <Route path='/challenges' component={TabRootPage} />
+              <Route path='/wall-of-shame' component={TabRootPage} />
+              <Route path='/profile' component={TabRootPage} />
+              <Route render={redirectToChallenges} />
             </Switch>
           </IonRouterOutlet>
         </IonSplitPane>

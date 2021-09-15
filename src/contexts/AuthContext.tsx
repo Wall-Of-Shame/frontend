@@ -68,7 +68,9 @@ const AuthProvider: React.FunctionComponent = (props) => {
   const logout = (): Promise<void> =>
     AuthService.logout()
       .then(reload)
-      .then(() => window.location.replace(window.location.href));
+      .then(() => {
+        window.location.href = "onboarding";
+      });
 
   return (
     <AuthContext.Provider value={{ data, signup, login, logout }} {...props} />

@@ -1,6 +1,6 @@
 import React from "react";
 
-import UserContextInterface from "../interfaces/contexts/UserIContext";
+import UserContextInterface from "../interfaces/contexts/UserContext";
 
 import { useAuth } from "./AuthContext";
 

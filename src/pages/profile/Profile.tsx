@@ -1,4 +1,5 @@
 import {
+  IonButton,
   IonContent,
   IonHeader,
   IonPage,
@@ -6,9 +7,11 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import Container from "../../components/container/Container";
+import { useAuth } from "../../contexts/AuthContext";
 import "./Profile.scss";
 
 const Profile: React.FC = () => {
+  const { logout } = useAuth();
   return (
     <IonPage>
       <IonHeader>
@@ -22,7 +25,16 @@ const Profile: React.FC = () => {
             <IonTitle size='large'>Profile</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <Container>Profile</Container>
+        <Container>
+          <IonButton
+            expand='block'
+            onClick={() => {
+              logout();
+            }}
+          >
+            Log out
+          </IonButton>
+        </Container>
       </IonContent>
     </IonPage>
   );

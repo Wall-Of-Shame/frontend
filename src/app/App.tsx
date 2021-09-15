@@ -16,6 +16,7 @@ const App: React.FC = () => {
   const user = useUser();
 
   console.log(user);
+  console.log(user.user === null);
   return (
     <React.Suspense
       fallback={
@@ -26,7 +27,7 @@ const App: React.FC = () => {
         />
       }
     >
-      {!!user ? <UnauthenticatedAppPage /> : <AuthenticatedApp />}
+      {user ? <UnauthenticatedAppPage /> : <AuthenticatedApp />}
     </React.Suspense>
   );
 };

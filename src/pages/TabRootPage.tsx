@@ -11,7 +11,6 @@ import { Redirect, Route } from "react-router";
 import "./TabRootPage.scss";
 import { person, alarm, statsChart } from "ionicons/icons";
 import Challenges from "./challenges";
-import Onboarding from "./onboarding";
 import Profile from "./profile";
 import WallOfShame from "./wallOfShame";
 
@@ -19,9 +18,6 @@ const TabRootPage: React.FC = () => {
   return (
     <IonTabs>
       <IonRouterOutlet>
-        <Route exact path='/onboarding'>
-          <Onboarding />
-        </Route>
         <Route exact path='/challenges'>
           <Challenges />
         </Route>
