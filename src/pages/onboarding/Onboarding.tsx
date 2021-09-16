@@ -63,10 +63,12 @@ const Onboarding: React.FC = () => {
     setCount(count + 1);
   };
 
+  /*
   useInterval(() => {
     // Update wall
     console.log(swiper.activeIndex);
   }, 1500);
+  */
 
   const initSwiper = async function (this: any) {
     setSwiper(await this.getSwiper());

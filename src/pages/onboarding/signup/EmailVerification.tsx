@@ -249,7 +249,7 @@ const EmailVerification: React.FC<EmailVerificationProps> = (
           onClick={verifyCode}
           disabled={false && checkIncompleteCode()}
         >
-          Next
+          Verify
         </IonButton>
         <IonRow
           class='ion-justify-content-center'

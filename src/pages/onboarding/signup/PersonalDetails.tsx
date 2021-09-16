@@ -63,7 +63,7 @@ const PersonalDetails: React.FC<PersonalDetailsProps> = (
           </IonText>
         </IonRow>
         <IonList className='ion-padding-vertical'>
-          <IonItem>
+          <IonItem lines='full'>
             <IonLabel color='primary' position='floating'>
               Email
             </IonLabel>
@@ -78,7 +78,7 @@ const PersonalDetails: React.FC<PersonalDetailsProps> = (
               }}
             />
           </IonItem>
-          <IonItem>
+          <IonItem lines='full'>
             <IonLabel color='primary' position='floating'>
               Password
             </IonLabel>
@@ -92,7 +92,7 @@ const PersonalDetails: React.FC<PersonalDetailsProps> = (
               }}
             />
           </IonItem>
-          <IonItem>
+          <IonItem lines='full'>
             <IonLabel color='primary' position='floating'>
               Confirm Password
             </IonLabel>

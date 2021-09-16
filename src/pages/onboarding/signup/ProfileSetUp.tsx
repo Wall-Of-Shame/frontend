@@ -44,7 +44,7 @@ const ProfileSetUp: React.FC<PersonalDetailsProps> = (
           </IonText>
         </IonRow>
         <IonList className='ion-padding-vertical'>
-          <IonItem>
+          <IonItem lines='full'>
             <IonLabel color='primary' position='floating'>
               Display name
             </IonLabel>
@@ -58,7 +58,7 @@ const ProfileSetUp: React.FC<PersonalDetailsProps> = (
               }}
             />
           </IonItem>
-          <IonItem>
+          <IonItem lines='full'>
             <IonLabel color='primary' position='floating'>
               Username
             </IonLabel>
@@ -73,6 +73,9 @@ const ProfileSetUp: React.FC<PersonalDetailsProps> = (
             />
           </IonItem>
         </IonList>
+        <IonRow slot='start' style={{ textAlign: "left", marginLeft: "1rem" }}>
+          <IonText>Your username will allow others to find you easily</IonText>
+        </IonRow>
         <IonButton
           expand='block'
           fill='solid'
