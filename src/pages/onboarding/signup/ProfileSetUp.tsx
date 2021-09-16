@@ -1,8 +1,6 @@
 import {
   IonButton,
   IonContent,
-  IonFab,
-  IonIcon,
   IonInput,
   IonItem,
   IonLabel,
@@ -11,7 +9,6 @@ import {
   IonText,
 } from "@ionic/react";
 import "./SignUpModal.scss";
-import { arrowBackOutline } from "ionicons/icons";
 import Container from "../../../components/container";
 import "../../../theme/transitions.scss";
 import { SignUpModalState } from "./SignUpModal";
@@ -20,13 +17,12 @@ interface PersonalDetailsProps {
   state: SignUpModalState;
   setState: React.Dispatch<Partial<SignUpModalState>>;
   completionCallback: () => void;
-  prevPage: () => void;
 }
 
 const ProfileSetUp: React.FC<PersonalDetailsProps> = (
   props: PersonalDetailsProps
 ) => {
-  const { state, setState, prevPage, completionCallback } = props;
+  const { state, setState, completionCallback } = props;
 
   const verifyInputs = (): boolean => {
     // API call to check for uniqueness of username
@@ -35,9 +31,6 @@ const ProfileSetUp: React.FC<PersonalDetailsProps> = (
 
   return (
     <IonContent fullscreen>
-      <IonFab horizontal='start' vertical='top' style={{ marginTop: "1rem" }}>
-        <IonIcon icon={arrowBackOutline} size='large' onClick={prevPage} />
-      </IonFab>
       <Container>
         <IonRow slot='start'>
           <IonText

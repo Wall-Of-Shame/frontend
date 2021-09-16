@@ -77,12 +77,19 @@ const SignUpModal: React.FC<SignUpModalProps> = (props: SignUpModalProps) => {
             state={state}
             setState={setState}
             completionCallback={() => {
+              setState({
+                email: "",
+                password: "",
+                passwordConfirmation: "",
+                displayName: "",
+                username: "",
+                verificationCode: ["", "", "", "", "", ""],
+              });
               setShowModal(false);
               setTimeout(() => {
                 setAnimationDirection("left");
                 setPageNumber(0);
               }, 300);
-
               store.dispatch(
                 setUser({
                   username: "asthenosphere",
@@ -93,10 +100,6 @@ const SignUpModal: React.FC<SignUpModalProps> = (props: SignUpModalProps) => {
                   id: 1,
                 })
               );
-            }}
-            prevPage={() => {
-              setAnimationDirection("right");
-              setPageNumber(1);
             }}
           />
         );
