@@ -10,13 +10,15 @@ import {
   IonRow,
   IonText,
 } from "@ionic/react";
-import { useState } from "react";
 import "./SignUpModal.scss";
 import { arrowBackOutline } from "ionicons/icons";
 import Container from "../../../components/container";
 import "../../../theme/transitions.scss";
+import { SignUpModalState } from "./SignUpModal";
 
 interface PersonalDetailsProps {
+  state: SignUpModalState;
+  setState: React.Dispatch<Partial<SignUpModalState>>;
   completionCallback: () => void;
   prevPage: () => void;
 }
@@ -24,13 +26,11 @@ interface PersonalDetailsProps {
 const ProfileSetUp: React.FC<PersonalDetailsProps> = (
   props: PersonalDetailsProps
 ) => {
-  const { prevPage, completionCallback } = props;
-  const [displayName, setDisplayName] = useState("");
-  const [username, setUsername] = useState("");
+  const { state, setState, prevPage, completionCallback } = props;
 
   const verifyInputs = (): boolean => {
     // API call to check for uniqueness of username
-    return displayName.length > 0 && username.length > 0;
+    return state.displayName.length > 0 && state.username.length > 0;
   };
 
   return (
@@ -58,10 +58,10 @@ const ProfileSetUp: React.FC<PersonalDetailsProps> = (
             <IonInput
               name='display_name'
               type='text'
-              value={displayName}
+              value={state.displayName}
               required
               onIonChange={(event: CustomEvent) => {
-                setDisplayName(event.detail.value);
+                setState({ displayName: event.detail.value });
               }}
             />
           </IonItem>
@@ -72,10 +72,10 @@ const ProfileSetUp: React.FC<PersonalDetailsProps> = (
             <IonInput
               name='username'
               type='text'
-              value={username}
+              value={state.username}
               required
               onIonChange={(event: CustomEvent) => {
-                setUsername(event.detail.value);
+                setState({ username: event.detail.value });
               }}
             />
           </IonItem>

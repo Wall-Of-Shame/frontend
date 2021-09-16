@@ -10,15 +10,17 @@ import {
   IonRow,
   IonText,
 } from "@ionic/react";
-import { useState } from "react";
 import "./SignUpModal.scss";
 import { arrowBackOutline } from "ionicons/icons";
 import Container from "../../../components/container";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { isValidEmail, isValidPassword } from "../../../utils/ProfileUtils";
 import "../../../theme/transitions.scss";
+import { SignUpModalState } from "./SignUpModal";
 
 interface PersonalDetailsProps {
+  state: SignUpModalState;
+  setState: React.Dispatch<Partial<SignUpModalState>>;
   setShowModal: (showModal: boolean) => void;
   nextPage: () => void;
 }
@@ -26,18 +28,15 @@ interface PersonalDetailsProps {
 const PersonalDetails: React.FC<PersonalDetailsProps> = (
   props: PersonalDetailsProps
 ) => {
-  const { setShowModal, nextPage } = props;
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const { state, setState, setShowModal, nextPage } = props;
 
   const verifyInputs = (): boolean => {
     return true;
     /*
     return (
-      isValidEmail(email) &&
-      isValidPassword(password) &&
-      password === passwordConfirmation
+      isValidEmail(state.email) &&
+      isValidPassword(state.password) &&
+      state.password === state.passwordConfirmation
     );
     */
   };
@@ -71,11 +70,11 @@ const PersonalDetails: React.FC<PersonalDetailsProps> = (
             <IonInput
               name='name'
               type='email'
-              value={email}
+              value={state.email}
               autocapitalize='on'
               required
               onIonChange={(event: CustomEvent) => {
-                setEmail(event.detail.value);
+                setState({ email: event.detail.value });
               }}
             />
           </IonItem>
@@ -86,10 +85,10 @@ const PersonalDetails: React.FC<PersonalDetailsProps> = (
             <IonInput
               name='name'
               type='password'
-              value={password}
+              value={state.password}
               required
               onIonChange={(event: CustomEvent) => {
-                setPassword(event.detail.value);
+                setState({ password: event.detail.value });
               }}
             />
           </IonItem>
@@ -100,11 +99,11 @@ const PersonalDetails: React.FC<PersonalDetailsProps> = (
             <IonInput
               name='name'
               type='password'
-              value={passwordConfirmation}
+              value={state.passwordConfirmation}
               autocapitalize='on'
               required
               onIonChange={(event: CustomEvent) => {
-                setPasswordConfirmation(event.detail.value);
+                setState({ passwordConfirmation: event.detail.value });
               }}
             />
           </IonItem>

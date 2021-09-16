@@ -10,10 +10,14 @@ import {
   IonText,
 } from "@ionic/react";
 import { arrowBackOutline } from "ionicons/icons";
-import { useRef, useState } from "react";
+import { useRef } from "react";
+import { Link } from "react-router-dom";
 import Container from "../../../components/container";
+import { SignUpModalState } from "./SignUpModal";
 
 interface EmailVerificationProps {
+  state: SignUpModalState;
+  setState: React.Dispatch<Partial<SignUpModalState>>;
   nextPage: () => void;
   prevPage: () => void;
 }
@@ -21,30 +25,17 @@ interface EmailVerificationProps {
 const EmailVerification: React.FC<EmailVerificationProps> = (
   props: EmailVerificationProps
 ) => {
-  const { nextPage, prevPage } = props;
+  const { state, setState, nextPage, prevPage } = props;
 
   const verifyCode = () => {
     let code = "";
-    code = code
-      .concat(firstCode)
-      .concat(secondCode)
-      .concat(thirdCode)
-      .concat(fourthCode)
-      .concat(fifthCode)
-      .concat(sixthCode);
+    code = state.verificationCode.reduce((prev, curr) => prev.concat(curr));
     console.log(code);
     nextPage();
   };
 
   const checkIncompleteCode = (): boolean => {
-    return !(
-      firstCode &&
-      secondCode &&
-      thirdCode &&
-      fourthCode &&
-      fifthCode &&
-      sixthCode
-    );
+    return state.verificationCode.every((code) => code.length > 0);
   };
 
   const firstRef = useRef<any>(null);
@@ -54,12 +45,6 @@ const EmailVerification: React.FC<EmailVerificationProps> = (
   const fifthRef = useRef<any>(null);
   const sixthRef = useRef<any>(null);
 
-  const [firstCode, setFirstCode] = useState("");
-  const [secondCode, setSecondCode] = useState("");
-  const [thirdCode, setThirdCode] = useState("");
-  const [fourthCode, setFourthCode] = useState("");
-  const [fifthCode, setFifthCode] = useState("");
-  const [sixthCode, setSixthCode] = useState("");
   return (
     <IonContent fullscreen>
       <IonFab horizontal='start' vertical='top' style={{ marginTop: "1rem" }}>
@@ -95,11 +80,17 @@ const EmailVerification: React.FC<EmailVerificationProps> = (
                 name='first'
                 type='tel'
                 maxlength={1}
-                value={firstCode}
+                value={state.verificationCode[0]}
                 required
                 autocomplete='off'
                 onIonChange={(event: CustomEvent) => {
-                  setFirstCode(event.detail.value);
+                  setState({
+                    verificationCode: [
+                      ...state.verificationCode.slice(0, 0),
+                      event.detail.value,
+                      ...state.verificationCode.slice(1),
+                    ],
+                  });
                   if (event.detail.value.length > 0) {
                     secondRef.current.setFocus();
                   }
@@ -117,11 +108,17 @@ const EmailVerification: React.FC<EmailVerificationProps> = (
                 name='second'
                 type='tel'
                 maxlength={1}
-                value={secondCode}
+                value={state.verificationCode[1]}
                 required
                 autocomplete='off'
                 onIonChange={(event: CustomEvent) => {
-                  setSecondCode(event.detail.value);
+                  setState({
+                    verificationCode: [
+                      ...state.verificationCode.slice(0, 1),
+                      event.detail.value,
+                      ...state.verificationCode.slice(2),
+                    ],
+                  });
                   if (event.detail.value.length > 0) {
                     thirdRef.current.setFocus();
                   }
@@ -139,11 +136,17 @@ const EmailVerification: React.FC<EmailVerificationProps> = (
                 name='third'
                 type='tel'
                 maxlength={1}
-                value={thirdCode}
+                value={state.verificationCode[2]}
                 required
                 autocomplete='off'
                 onIonChange={(event: CustomEvent) => {
-                  setThirdCode(event.detail.value);
+                  setState({
+                    verificationCode: [
+                      ...state.verificationCode.slice(0, 2),
+                      event.detail.value,
+                      ...state.verificationCode.slice(3),
+                    ],
+                  });
                   if (event.detail.value.length > 0) {
                     fourthRef.current.setFocus();
                   }
@@ -161,11 +164,17 @@ const EmailVerification: React.FC<EmailVerificationProps> = (
                 name='fourth'
                 type='tel'
                 maxlength={1}
-                value={fourthCode}
+                value={state.verificationCode[3]}
                 required
                 autocomplete='off'
                 onIonChange={(event: CustomEvent) => {
-                  setFourthCode(event.detail.value);
+                  setState({
+                    verificationCode: [
+                      ...state.verificationCode.slice(0, 3),
+                      event.detail.value,
+                      ...state.verificationCode.slice(4),
+                    ],
+                  });
                   if (event.detail.value.length > 0) {
                     fifthRef.current.setFocus();
                   }
@@ -183,11 +192,17 @@ const EmailVerification: React.FC<EmailVerificationProps> = (
                 name='fifth'
                 type='tel'
                 maxlength={1}
-                value={fifthCode}
+                value={state.verificationCode[4]}
                 required
                 autocomplete='off'
                 onIonChange={(event: CustomEvent) => {
-                  setFifthCode(event.detail.value);
+                  setState({
+                    verificationCode: [
+                      ...state.verificationCode.slice(0, 4),
+                      event.detail.value,
+                      ...state.verificationCode.slice(5),
+                    ],
+                  });
                   if (event.detail.value.length > 0) {
                     sixthRef.current.setFocus();
                   }
@@ -205,11 +220,17 @@ const EmailVerification: React.FC<EmailVerificationProps> = (
                 name='sixth'
                 type='tel'
                 maxlength={1}
-                value={sixthCode}
+                value={state.verificationCode[5]}
                 required
                 autocomplete='off'
                 onIonChange={(event: CustomEvent) => {
-                  setSixthCode(event.detail.value);
+                  setState({
+                    verificationCode: [
+                      ...state.verificationCode.slice(0, 5),
+                      event.detail.value,
+                      ...state.verificationCode.slice(6),
+                    ],
+                  });
                 }}
                 style={{
                   borderBottom: "solid 1px",
@@ -230,6 +251,17 @@ const EmailVerification: React.FC<EmailVerificationProps> = (
         >
           Next
         </IonButton>
+        <IonRow
+          class='ion-justify-content-center'
+          style={{ marginTop: "1rem" }}
+        >
+          <IonText class='ion-text-center' color='medium'>
+            Did not receive the email?&nbsp;
+            <Link to={"#"} style={{ textDecoration: "none" }}>
+              <IonText style={{ fontWeight: "bold" }}>Resend</IonText>
+            </Link>
+          </IonText>
+        </IonRow>
       </Container>
     </IonContent>
   );

@@ -165,7 +165,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
             <IonRow class='ion-justify-content-center'>
               <IonText class='ion-text-center' color='medium'>
                 Have an account?&nbsp;
-                <Link to={"/challenges"} style={{ textDecoration: "none" }}>
+                <Link to={"#"} style={{ textDecoration: "none" }}>
                   <IonText style={{ fontWeight: "bold" }}>Log in</IonText>
                 </Link>
               </IonText>

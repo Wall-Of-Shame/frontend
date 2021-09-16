@@ -1,5 +1,5 @@
 import { IonModal } from "@ionic/react";
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import store from "../../../app/store";
 import "./SignUpModal.scss";
 import PersonalDetails from "./PersonalDetails";
@@ -13,16 +13,42 @@ interface SignUpModalProps {
   setShowModal: (showModal: boolean) => void;
 }
 
+export interface SignUpModalState {
+  email: string;
+  password: string;
+  passwordConfirmation: string;
+  displayName: string;
+  username: string;
+  verificationCode: string[];
+}
+
 const SignUpModal: React.FC<SignUpModalProps> = (props: SignUpModalProps) => {
   const { showModal, setShowModal } = props;
   const [pageNumber, setPageNumber] = useState(0);
   const [animationDirection, setAnimationDirection] = useState("left");
+
+  const [state, setState] = useReducer(
+    (s: SignUpModalState, a: Partial<SignUpModalState>) => ({
+      ...s,
+      ...a,
+    }),
+    {
+      email: "",
+      password: "",
+      passwordConfirmation: "",
+      displayName: "",
+      username: "",
+      verificationCode: ["", "", "", "", "", ""],
+    }
+  );
 
   const renderPage = () => {
     switch (pageNumber) {
       case 0:
         return (
           <PersonalDetails
+            state={state}
+            setState={setState}
             setShowModal={setShowModal}
             nextPage={() => {
               setAnimationDirection("left");
@@ -33,6 +59,8 @@ const SignUpModal: React.FC<SignUpModalProps> = (props: SignUpModalProps) => {
       case 1:
         return (
           <EmailVerification
+            state={state}
+            setState={setState}
             nextPage={() => {
               setAnimationDirection("left");
               setPageNumber(2);
@@ -46,8 +74,15 @@ const SignUpModal: React.FC<SignUpModalProps> = (props: SignUpModalProps) => {
       case 2:
         return (
           <ProfileSetUp
+            state={state}
+            setState={setState}
             completionCallback={() => {
               setShowModal(false);
+              setTimeout(() => {
+                setAnimationDirection("left");
+                setPageNumber(0);
+              }, 300);
+
               store.dispatch(
                 setUser({
                   username: "asthenosphere",
