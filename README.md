@@ -65,3 +65,7 @@ Contain helper functions and data for usage around the application.
 1. For any new page (i.e. a screen that requires its own route), please copy all the code in Page.tsx to your new page, rename the component and modify from there. This is to ensure the general layout of our App is kept consistent (i.e. top bar, bottom tabs etc.).
 
 2. For components with huge number of states, please follow the useReducer pattern instead of the normal useState for better maintainability.
+
+## To Take Note
+
+When developing on Chrome, please comment out all the code inside the <script> tag in index.html. This is meant to be a hacky fix to the iOS swiping gesture issue, however, it interferes with Chrome's touch events in phone mode, causing the page to become not clickable.
