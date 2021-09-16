@@ -69,3 +69,20 @@ Contain helper functions and data for usage around the application.
 ## To Take Note
 
 When developing on Chrome, please comment out all the code inside the <script> tag in index.html. This is meant to be a hacky fix to the iOS swiping gesture issue, however, it interferes with Chrome's touch events in phone mode, causing the page to become not clickable.
+
+```
+<script>
+  /* Comment out this part
+  const element = document.querySelector("div");
+  element.addEventListener("touchstart", (e) => {
+    if (
+      e.pageX > window.innerWidth * 0.05 &&
+      e.pageX < window.innerWidth * 0.95
+    ) {
+      return;
+    }
+    e.preventDefault();
+  });
+  */
+</script>
+```
