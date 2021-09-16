@@ -1,7 +1,14 @@
-import { IonApp, IonRouterOutlet, IonSplitPane } from "@ionic/react";
+import {
+  IonApp,
+  IonIcon,
+  IonLabel,
+  IonRouterOutlet,
+  IonTabBar,
+  IonTabButton,
+  IonTabs,
+} from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { Redirect, Route, Switch } from "react-router-dom";
-import Menu from "../components/menu/Menu";
+import { Redirect, Route } from "react-router-dom";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -22,27 +29,49 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "../theme/variables.scss";
 
-import TabRootPage from "../pages/TabRootPage";
-
-const redirectToChallenges = (): React.ReactNode => (
-  <Redirect to={"/challenges"} />
-);
+import { alarm, statsChart, person } from "ionicons/icons";
+import Challenges from "../pages/challenges";
+import Profile from "../pages/profile";
+import WallOfShame from "../pages/wallOfShame";
+import ChallengeDetails from "../pages/challenges/details/ChallengeDetails";
 
 const AuthenticatedApp: React.FC = () => {
   return (
     <IonApp>
       <IonReactRouter>
-        <IonSplitPane contentId='main' when='(min-width: 0px)'>
-          <Menu />
-          <IonRouterOutlet id='main'>
-            <Switch>
-              <Route path='/challenges' component={TabRootPage} />
-              <Route path='/wall-of-shame' component={TabRootPage} />
-              <Route path='/profile' component={TabRootPage} />
-              <Route render={redirectToChallenges} />
-            </Switch>
+        <IonTabs>
+          <IonRouterOutlet>
+            <Route exact path='/challenges'>
+              <Challenges />
+            </Route>
+            <Route exact path='/challenges/:id'>
+              <ChallengeDetails />
+            </Route>
+            <Route exact path='/wall-of-shame'>
+              <WallOfShame />
+            </Route>
+            <Route exact path='/profile'>
+              <Profile />
+            </Route>
+            <Route exact path='/'>
+              <Redirect to='/challenges' />
+            </Route>
           </IonRouterOutlet>
-        </IonSplitPane>
+          <IonTabBar slot='bottom' className='tabs-nav'>
+            <IonTabButton tab='challenges' href='/challenges'>
+              <IonIcon icon={alarm} />
+              <IonLabel>Challenges</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab='wall-of-shame' href='/wall-of-shame'>
+              <IonIcon icon={statsChart} />
+              <IonLabel>Wall of Shame</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab='profile' href='/profile'>
+              <IonIcon icon={person} />
+              <IonLabel>Profile</IonLabel>
+            </IonTabButton>
+          </IonTabBar>
+        </IonTabs>
       </IonReactRouter>
     </IonApp>
   );

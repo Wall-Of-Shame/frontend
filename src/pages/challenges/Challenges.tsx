@@ -4,9 +4,11 @@ import {
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
+  IonCol,
   IonContent,
   IonFab,
   IonFabButton,
+  IonGrid,
   IonHeader,
   IonIcon,
   IonLabel,
@@ -22,14 +24,12 @@ import yoda from "../../assets/avatar-yoda.png";
 import rey from "../../assets/avatar-rey.png";
 import poe from "../../assets/avatar-poe.png";
 import luke from "../../assets/avatar-luke.png";
-import finn from "../../assets/avatar-finn.png";
-import leia from "../../assets/avatar-leia.png";
 import "./Challenges.scss";
 import { useState } from "react";
-import { add } from "ionicons/icons";
+import { add, chevronForward } from "ionicons/icons";
 
-const Tab1: React.FC = () => {
-  const [tab, setTab] = useState("active");
+const Challenges: React.FC = () => {
+  const [tab, setTab] = useState("ongoing");
 
   return (
     <IonPage>
@@ -50,126 +50,210 @@ const Tab1: React.FC = () => {
           style={{ marginTop: "1rem" }}
           mode='md'
         >
-          <IonSegmentButton value='active'>
-            <IonLabel>Active</IonLabel>
+          <IonSegmentButton value='ongoing'>
+            <IonLabel>Ongoing</IonLabel>
           </IonSegmentButton>
-          <IonSegmentButton value='invitations'>
-            <IonLabel>Invitations</IonLabel>
-          </IonSegmentButton>
-          <IonSegmentButton value='history'>
-            <IonLabel>History</IonLabel>
+          <IonSegmentButton value='pending'>
+            <IonLabel>Pending</IonLabel>
           </IonSegmentButton>
         </IonSegment>
-        <IonCard>
-          <IonCardHeader>
-            <IonCardTitle style={{ fontSize: "1.4rem" }}>
-              Watch CS3216 Lecture
-            </IonCardTitle>
-          </IonCardHeader>
-          <IonCardContent>
-            <IonText style={{ fontSize: "0.8rem" }}>
-              Ends in: 1 day 4 hours
-            </IonText>
-            <IonRow style={{ paddingTop: "0.5rem" }}>
-              <IonAvatar style={{ marginRight: "0.25rem" }}>
-                <img src={luke} alt='user1' />
-              </IonAvatar>
-              <IonAvatar style={{ marginRight: "0.25rem" }}>
-                <img src={yoda} alt='user2' />
-              </IonAvatar>
-              <IonAvatar style={{ marginRight: "0.25rem" }}>
-                <img src={poe} alt='user3' />
-              </IonAvatar>
-              <IonAvatar style={{ marginRight: "0.25rem" }}>
-                <img src={rey} alt='user4' />
-              </IonAvatar>
+        <IonCard button routerLink={"challenges/1"}>
+          <IonGrid className='ion-no-padding'>
+            <IonRow className='ion-align-items-center'>
+              <IonCol size='11'>
+                <IonCardHeader
+                  className='ion-no-padding ion-padding-top ion-padding-horizontal'
+                  style={{ paddingBottom: "0.75rem" }}
+                >
+                  <IonCardTitle style={{ fontSize: "1.2rem" }}>
+                    Watch CS3216 Lecture
+                  </IonCardTitle>
+                </IonCardHeader>
+                <IonCardContent>
+                  <IonRow>
+                    <IonText
+                      style={{
+                        fontSize: "0.8rem",
+                        fontWeight: "bold",
+                        marginBottom: "0.25rem",
+                      }}
+                    >
+                      Ends in: 1 day 4 hours
+                    </IonText>
+                  </IonRow>
+                  <IonRow>
+                    <IonText style={{ fontSize: "0.8rem" }}>
+                      4 participants
+                    </IonText>
+                  </IonRow>
+                  <IonRow
+                    style={{ paddingTop: "0.5rem" }}
+                    className='ion-align-items-center'
+                  >
+                    <IonAvatar
+                      className='avatar'
+                      style={{ marginRight: "0.25rem" }}
+                    >
+                      <img src={luke} alt='user1' />
+                    </IonAvatar>
+                    <IonAvatar
+                      className='avatar'
+                      style={{ marginRight: "0.25rem" }}
+                    >
+                      <img src={yoda} alt='user2' />
+                    </IonAvatar>
+                    <IonAvatar
+                      className='avatar'
+                      style={{ marginRight: "0.25rem" }}
+                    >
+                      <img src={poe} alt='user3' />
+                    </IonAvatar>
+                    <IonAvatar
+                      className='avatar'
+                      style={{ marginRight: "0.25rem" }}
+                    >
+                      <img src={rey} alt='user4' />
+                    </IonAvatar>
+                  </IonRow>
+                </IonCardContent>
+              </IonCol>
+              <IonCol size='1'>
+                <IonIcon icon={chevronForward} style={{ fontSize: "24px" }} />
+              </IonCol>
             </IonRow>
-          </IonCardContent>
+          </IonGrid>
         </IonCard>
-        <IonCard>
-          <IonCardHeader
-            className='ion-no-padding ion-padding-top ion-padding-horizontal'
-            style={{ paddingBottom: "0.5rem" }}
-          >
-            <IonCardTitle style={{ fontSize: "1.2rem" }}>
-              Watch CS3216 Lecture
-            </IonCardTitle>
-          </IonCardHeader>
-          <IonCardContent>
-            <IonText style={{ fontSize: "0.8rem" }}>
-              Ends in: 1 day 4 hours
-            </IonText>
-            <IonRow
-              style={{ paddingTop: "0.5rem" }}
-              className='ion-align-items-center'
-            >
-              <IonText style={{ fontSize: "0.8rem", marginRight: "0.5rem" }}>
-                4 participants
-              </IonText>
-              <IonAvatar className='avatar' style={{ marginRight: "0.25rem" }}>
-                <img src={finn} alt='user1' />
-              </IonAvatar>
-              <IonAvatar className='avatar' style={{ marginRight: "0.25rem" }}>
-                <img src={rey} alt='user2' />
-              </IonAvatar>
-              <IonAvatar className='avatar' style={{ marginRight: "0.25rem" }}>
-                <img src={poe} alt='user3' />
-              </IonAvatar>
-              <IonAvatar className='avatar' style={{ marginRight: "0.25rem" }}>
-                <img src={yoda} alt='user4' />
-              </IonAvatar>
-              <IonAvatar className='avatar' style={{ marginRight: "0.25rem" }}>
-                <img src={finn} alt='user1' />
-              </IonAvatar>
-              <IonAvatar className='avatar' style={{ marginRight: "0.25rem" }}>
-                <img src={rey} alt='user2' />
-              </IonAvatar>
-              <IonAvatar className='avatar' style={{ marginRight: "0.25rem" }}>
-                <img src={poe} alt='user3' />
-              </IonAvatar>
-              <IonAvatar className='avatar' style={{ marginRight: "0.25rem" }}>
-                <img src={yoda} alt='user4' />
-              </IonAvatar>
-              <IonAvatar className='avatar' style={{ marginRight: "0.25rem" }}>
-                <img src={finn} alt='user1' />
-              </IonAvatar>
-              <IonAvatar className='avatar' style={{ marginRight: "0.25rem" }}>
-                <img src={rey} alt='user2' />
-              </IonAvatar>
-              <IonAvatar className='avatar' style={{ marginRight: "0.25rem" }}>
-                <img src={poe} alt='user3' />
-              </IonAvatar>
-              <IonAvatar className='avatar' style={{ marginRight: "0.25rem" }}>
-                <img src={yoda} alt='user4' />
-              </IonAvatar>
+        <IonCard button routerLink={"challenges/1"}>
+          <IonGrid className='ion-no-padding'>
+            <IonRow className='ion-align-items-center'>
+              <IonCol size='11'>
+                <IonCardHeader
+                  className='ion-no-padding ion-padding-top ion-padding-horizontal'
+                  style={{ paddingBottom: "0.75rem" }}
+                >
+                  <IonCardTitle style={{ fontSize: "1.2rem" }}>
+                    Watch CS3216 Lecture
+                  </IonCardTitle>
+                </IonCardHeader>
+                <IonCardContent>
+                  <IonRow>
+                    <IonText
+                      style={{
+                        fontSize: "0.8rem",
+                        fontWeight: "bold",
+                        marginBottom: "0.25rem",
+                      }}
+                    >
+                      Ends in: 1 day 4 hours
+                    </IonText>
+                  </IonRow>
+                  <IonRow>
+                    <IonText style={{ fontSize: "0.8rem" }}>
+                      4 participants
+                    </IonText>
+                  </IonRow>
+                  <IonRow
+                    style={{ paddingTop: "0.5rem" }}
+                    className='ion-align-items-center'
+                  >
+                    <IonAvatar
+                      className='avatar'
+                      style={{ marginRight: "0.25rem" }}
+                    >
+                      <img src={luke} alt='user1' />
+                    </IonAvatar>
+                    <IonAvatar
+                      className='avatar'
+                      style={{ marginRight: "0.25rem" }}
+                    >
+                      <img src={yoda} alt='user2' />
+                    </IonAvatar>
+                    <IonAvatar
+                      className='avatar'
+                      style={{ marginRight: "0.25rem" }}
+                    >
+                      <img src={poe} alt='user3' />
+                    </IonAvatar>
+                    <IonAvatar
+                      className='avatar'
+                      style={{ marginRight: "0.25rem" }}
+                    >
+                      <img src={rey} alt='user4' />
+                    </IonAvatar>
+                  </IonRow>
+                </IonCardContent>
+              </IonCol>
+              <IonCol size='1'>
+                <IonIcon icon={chevronForward} style={{ fontSize: "24px" }} />
+              </IonCol>
             </IonRow>
-          </IonCardContent>
+          </IonGrid>
         </IonCard>
-        <IonCard>
-          <IonCardHeader>
-            <IonCardTitle style={{ fontSize: "1.5rem" }}>
-              Watch CS3216 Lecture
-            </IonCardTitle>
-          </IonCardHeader>
-          <IonCardContent>
-            <IonText style={{ fontSize: "0.8rem" }}>
-              Ends in: 1 day 4 hours
-            </IonText>
-            <IonRow style={{ paddingTop: "0.5rem" }}>
-              <IonAvatar style={{ marginRight: "0.25rem" }}>
-                <img src={poe} alt='user1' />
-              </IonAvatar>
-              <IonAvatar style={{ marginRight: "0.25rem" }}>
-                <img src={rey} alt='user2' />
-              </IonAvatar>
-              <IonAvatar style={{ marginRight: "0.25rem" }}>
-                <img src={finn} alt='user3' />
-              </IonAvatar>
-              <IonAvatar style={{ marginRight: "0.25rem" }}>
-                <img src={leia} alt='user4' />
-              </IonAvatar>
+        <IonCard button routerLink={"challenges/1"}>
+          <IonGrid className='ion-no-padding'>
+            <IonRow className='ion-align-items-center'>
+              <IonCol size='11'>
+                <IonCardHeader
+                  className='ion-no-padding ion-padding-top ion-padding-horizontal'
+                  style={{ paddingBottom: "0.75rem" }}
+                >
+                  <IonCardTitle style={{ fontSize: "1.2rem" }}>
+                    Watch CS3216 Lecture
+                  </IonCardTitle>
+                </IonCardHeader>
+                <IonCardContent>
+                  <IonRow>
+                    <IonText
+                      style={{
+                        fontSize: "0.8rem",
+                        fontWeight: "bold",
+                        marginBottom: "0.25rem",
+                      }}
+                    >
+                      Ends in: 1 day 4 hours
+                    </IonText>
+                  </IonRow>
+                  <IonRow>
+                    <IonText style={{ fontSize: "0.8rem" }}>
+                      4 participants
+                    </IonText>
+                  </IonRow>
+                  <IonRow
+                    style={{ paddingTop: "0.5rem" }}
+                    className='ion-align-items-center'
+                  >
+                    <IonAvatar
+                      className='avatar'
+                      style={{ marginRight: "0.25rem" }}
+                    >
+                      <img src={luke} alt='user1' />
+                    </IonAvatar>
+                    <IonAvatar
+                      className='avatar'
+                      style={{ marginRight: "0.25rem" }}
+                    >
+                      <img src={yoda} alt='user2' />
+                    </IonAvatar>
+                    <IonAvatar
+                      className='avatar'
+                      style={{ marginRight: "0.25rem" }}
+                    >
+                      <img src={poe} alt='user3' />
+                    </IonAvatar>
+                    <IonAvatar
+                      className='avatar'
+                      style={{ marginRight: "0.25rem" }}
+                    >
+                      <img src={rey} alt='user4' />
+                    </IonAvatar>
+                  </IonRow>
+                </IonCardContent>
+              </IonCol>
+              <IonCol size='1'>
+                <IonIcon icon={chevronForward} style={{ fontSize: "24px" }} />
+              </IonCol>
             </IonRow>
-          </IonCardContent>
+          </IonGrid>
         </IonCard>
         <IonFab vertical='bottom' horizontal='end' slot='fixed'>
           <IonFabButton>
@@ -181,4 +265,4 @@ const Tab1: React.FC = () => {
   );
 };
 
-export default Tab1;
+export default Challenges;

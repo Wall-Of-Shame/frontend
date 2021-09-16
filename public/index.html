@@ -30,5 +30,17 @@
 
   <body>
     <div id="root"></div>
+    <script>
+      const element = document.querySelector("div");
+      element.addEventListener("touchstart", (e) => {
+        if (
+          e.pageX > window.innerWidth * 0.05 &&
+          e.pageX < window.innerWidth * 0.95
+        ) {
+          return;
+        }
+        e.preventDefault();
+      });
+    </script>
   </body>
 </html>
