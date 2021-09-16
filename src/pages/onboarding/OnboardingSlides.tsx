@@ -18,13 +18,15 @@ import "./OnboardingSlides.scss";
 
 interface OnboardingSlidesProps {
   initSwiper: (this: any) => Promise<void>;
-  setShowModal: (showModal: boolean) => void;
+  setShowSignUpModal: (showModal: boolean) => void;
+  setShowLoginModal: (showModal: boolean) => void;
   swiperCallback: () => void;
 }
 
 const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
   initSwiper,
-  setShowModal,
+  setShowSignUpModal,
+  setShowLoginModal,
   swiperCallback,
 }) => {
   const onGoogleLoginSuccess = (response: any) => {
@@ -137,6 +139,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
               appId='555300749049260'
               autoLoad={false}
               callback={onFacebookLogin}
+              disableMobileRedirect={true}
               render={(renderProps) => (
                 <IonButton
                   expand='block'
@@ -158,14 +161,20 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
               expand='block'
               fill='solid'
               style={{ margin: "1rem" }}
-              onClick={() => setShowModal(true)}
+              onClick={() => setShowSignUpModal(true)}
             >
               Create New Account
             </IonButton>
             <IonRow class='ion-justify-content-center'>
               <IonText class='ion-text-center' color='medium'>
                 Have an account?&nbsp;
-                <Link to={"#"} style={{ textDecoration: "none" }}>
+                <Link
+                  to={"#"}
+                  style={{ textDecoration: "none" }}
+                  onClick={() => {
+                    setShowLoginModal(true);
+                  }}
+                >
                   <IonText style={{ fontWeight: "bold" }}>Log in</IonText>
                 </Link>
               </IonText>

@@ -26,6 +26,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import Container from "../../components/container/Container";
 import OnboardingSlides from "./OnboardingSlides";
 import SignUpModal from "./signup/SignUpModal";
+import LoginModal from "./login/LoginModal";
 
 interface MessagesProps {
   messages: string[];
@@ -51,7 +52,8 @@ const Onboarding: React.FC = () => {
   const [messages, setMessages] = useState<string[]>([]);
   const [count, setCount] = useState(1);
   const [swiper, setSwiper] = useState<any>(null);
-  const [showModal, setShowModal] = useState(false);
+  const [showSignUpModal, setShowSignUpModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const [completed, setCompleted] = useState(false);
 
   const addMessages = () => {
@@ -79,10 +81,12 @@ const Onboarding: React.FC = () => {
       <IonContent fullscreen scrollY={false}>
         <OnboardingSlides
           initSwiper={initSwiper}
-          setShowModal={setShowModal}
+          setShowSignUpModal={setShowSignUpModal}
+          setShowLoginModal={setShowLoginModal}
           swiperCallback={() => {
             if (swiper) {
-              setCompleted(swiper.activeIndex === 3);
+              const didComplete = swiper.activeIndex === 3;
+              setCompleted(didComplete);
             }
           }}
         />
@@ -105,7 +109,14 @@ const Onboarding: React.FC = () => {
             Skip
           </IonButton>
         </IonFab>
-        <SignUpModal showModal={showModal} setShowModal={setShowModal} />
+        <SignUpModal
+          showModal={showSignUpModal}
+          setShowModal={setShowSignUpModal}
+        />
+        <LoginModal
+          showModal={showLoginModal}
+          setShowModal={setShowLoginModal}
+        />
       </IonContent>
     </IonPage>
   );

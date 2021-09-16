@@ -73,7 +73,7 @@ const ProfileSetUp: React.FC<PersonalDetailsProps> = (
             />
           </IonItem>
         </IonList>
-        <IonRow slot='start' style={{ textAlign: "left", marginLeft: "1rem" }}>
+        <IonRow slot='start' style={{ textAlign: "left", margin: "1rem" }}>
           <IonText>Your username will allow others to find you easily</IonText>
         </IonRow>
         <IonButton
