@@ -6,12 +6,29 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
+import { useEffect } from "react";
+import { useLocation } from "react-router";
 import Container from "../../components/container/Container";
 import { useAuth } from "../../contexts/AuthContext";
+import { hideTabs, showTabs } from "../../utils/TabsUtils";
 import "./Profile.scss";
 
 const Profile: React.FC = () => {
   const { logout } = useAuth();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (
+      location.pathname !== "/challenges" &&
+      location.pathname !== "/wall-of-shame" &&
+      location.pathname !== "/profile"
+    ) {
+      hideTabs();
+    } else {
+      showTabs();
+    }
+  }, [location.pathname]);
+
   return (
     <IonPage>
       <IonHeader>

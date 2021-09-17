@@ -9,15 +9,30 @@ import {
   IonSegment,
   IonSegmentButton,
 } from "@ionic/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./WallOfShame.scss";
 import yoda from "../../assets/avatar-yoda.png";
 import rey from "../../assets/avatar-rey.png";
 import luke from "../../assets/avatar-luke.png";
 import finn from "../../assets/avatar-finn.png";
+import { hideTabs, showTabs } from "../../utils/TabsUtils";
+import { useLocation } from "react-router";
 
 const WallOfShame: React.FC = () => {
   const [tab, setTab] = useState("live");
+  const location = useLocation();
+
+  useEffect(() => {
+    if (
+      location.pathname !== "/challenges" &&
+      location.pathname !== "/wall-of-shame" &&
+      location.pathname !== "/profile"
+    ) {
+      hideTabs();
+    } else {
+      showTabs();
+    }
+  }, [location.pathname]);
 
   return (
     <IonPage>

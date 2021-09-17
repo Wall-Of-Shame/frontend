@@ -25,11 +25,26 @@ import rey from "../../assets/avatar-rey.png";
 import poe from "../../assets/avatar-poe.png";
 import luke from "../../assets/avatar-luke.png";
 import "./Challenges.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { add, chevronForward } from "ionicons/icons";
+import { hideTabs, showTabs } from "../../utils/TabsUtils";
+import { useLocation } from "react-router";
 
 const Challenges: React.FC = () => {
   const [tab, setTab] = useState("ongoing");
+  const location = useLocation();
+
+  useEffect(() => {
+    if (
+      location.pathname !== "/challenges" &&
+      location.pathname !== "/wall-of-shame" &&
+      location.pathname !== "/profile"
+    ) {
+      hideTabs();
+    } else {
+      showTabs();
+    }
+  }, [location.pathname]);
 
   return (
     <IonPage>

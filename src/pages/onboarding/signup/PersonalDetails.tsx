@@ -46,7 +46,7 @@ const PersonalDetails: React.FC<PersonalDetailsProps> = (
       <IonFab
         horizontal='start'
         vertical='top'
-        style={{ marginTop: "1rem", marginLeft: "1rem" }}
+        style={{ marginTop: "1rem", marginLeft: "0.5rem" }}
       >
         <IonIcon
           icon={arrowBackOutline}
