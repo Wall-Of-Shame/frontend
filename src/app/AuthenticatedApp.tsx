@@ -35,12 +35,16 @@ import Profile from "../pages/profile";
 import WallOfShame from "../pages/wallOfShame";
 import ChallengeDetails from "../pages/challenges/details/ChallengeDetails";
 
+const redirectToChallenges = (): React.ReactNode => (
+  <Redirect to={"/challenges"} />
+);
+
 const AuthenticatedApp: React.FC = () => {
   return (
     <IonApp>
       <IonReactRouter>
         <IonTabs>
-          <IonRouterOutlet>
+          <IonRouterOutlet animated={false}>
             <Route exact path='/challenges'>
               <Challenges />
             </Route>
@@ -53,9 +57,7 @@ const AuthenticatedApp: React.FC = () => {
             <Route exact path='/profile'>
               <Profile />
             </Route>
-            <Route exact path='/'>
-              <Redirect to='/challenges' />
-            </Route>
+            <Route render={redirectToChallenges} />
           </IonRouterOutlet>
           <IonTabBar slot='bottom' className='tabs-nav'>
             <IonTabButton tab='challenges' href='/challenges'>

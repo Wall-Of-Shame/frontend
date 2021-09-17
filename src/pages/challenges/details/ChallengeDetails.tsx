@@ -1,21 +1,35 @@
 import {
+  IonBackButton,
+  IonButtons,
   IonContent,
   IonHeader,
   IonPage,
-  IonTitle,
   IonToolbar,
 } from "@ionic/react";
+import { arrowBackOutline } from "ionicons/icons";
 
-const ChallengeDetails: React.FC = () => {
+interface ChallengeDetailsProps {}
+
+const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
   return (
     <IonPage>
-      <IonContent fullscreen>
-        <IonHeader collapse='condense' style={{ marginTop: "2.75rem" }}>
-          <IonToolbar>
-            <IonTitle size='large'>Challenges</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-      </IonContent>
+      <IonHeader className='ion-no-border'>
+        <IonToolbar>
+          <IonButtons slot='start'>
+            <IonBackButton
+              text=''
+              icon={arrowBackOutline}
+              color='dark'
+              style={{
+                marginTop: "1.5rem",
+                marginLeft: "1.5rem",
+              }}
+            />
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
+
+      <IonContent fullscreen></IonContent>
     </IonPage>
   );
 };

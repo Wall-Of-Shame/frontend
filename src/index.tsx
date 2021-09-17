@@ -8,6 +8,11 @@ import App from "./app/App";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 import AppProviders from "./contexts/AppProviders";
+import { setupConfig } from "@ionic/react";
+
+setupConfig({
+  swipeBackEnabled: false,
+});
 
 ReactDOM.render(
   <AppProviders>

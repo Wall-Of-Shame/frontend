@@ -43,7 +43,11 @@ const PersonalDetails: React.FC<PersonalDetailsProps> = (
 
   return (
     <IonContent fullscreen>
-      <IonFab horizontal='start' vertical='top' style={{ marginTop: "1rem" }}>
+      <IonFab
+        horizontal='start'
+        vertical='top'
+        style={{ marginTop: "1rem", marginLeft: "1rem" }}
+      >
         <IonIcon
           icon={arrowBackOutline}
           size='large'
