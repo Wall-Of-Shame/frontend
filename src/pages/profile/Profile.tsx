@@ -31,13 +31,13 @@ const Profile: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
+      <IonHeader className='ion-no-border'>
         <IonToolbar>
           <IonTitle>Profile</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonHeader collapse='condense'>
+        <IonHeader collapse='condense' className='ion-no-border'>
           <IonToolbar>
             <IonTitle size='large'>Profile</IonTitle>
           </IonToolbar>

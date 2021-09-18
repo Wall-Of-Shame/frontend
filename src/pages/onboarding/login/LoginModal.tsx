@@ -65,15 +65,19 @@ const LoginModal: React.FC<LoginModalProps> = (props: LoginModalProps) => {
   const handleLogin = async () => {
     // API call to login and refresh app
     setState({ isLoading: true });
-    login(state.email, state.password).catch((error) => {
-      setState({
-        isLoading: false,
-        showAlert: true,
-        alertHeader: "Ooooops",
-        alertMessage:
-          "Our server does not recognise your email or password, try again?",
+    login(state.email, state.password)
+      .then(() => {
+        setState({ isLoading: false });
+      })
+      .catch((error) => {
+        setState({
+          isLoading: false,
+          showAlert: true,
+          alertHeader: "Ooooops",
+          alertMessage:
+            "Our server does not recognise your email or password, try again?",
+        });
       });
-    });
   };
 
   return (

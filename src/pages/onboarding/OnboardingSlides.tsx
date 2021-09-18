@@ -123,6 +123,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
                 <IonButton
                   expand='block'
                   fill='solid'
+                  shape='round'
                   color='quaternary'
                   style={{ margin: "1rem" }}
                   onClick={renderProps.onClick}
@@ -145,6 +146,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
                 <IonButton
                   expand='block'
                   fill='solid'
+                  shape='round'
                   color='tertiary'
                   style={{ margin: "1rem", color: "#000000" }}
                   onClick={renderProps.onClick}
@@ -163,6 +165,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
               expand='block'
               fill='solid'
               color='quinary'
+              shape='round'
               style={{ margin: "1rem" }}
               onClick={() => setShowSignUpModal(true)}
             >

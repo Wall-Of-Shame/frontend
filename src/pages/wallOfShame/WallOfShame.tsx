@@ -1,13 +1,14 @@
 import {
   IonAvatar,
+  IonButton,
+  IonCol,
   IonContent,
+  IonGrid,
   IonItem,
   IonLabel,
   IonList,
   IonPage,
   IonRow,
-  IonSegment,
-  IonSegmentButton,
 } from "@ionic/react";
 import { useEffect, useState } from "react";
 import "./WallOfShame.scss";
@@ -53,20 +54,30 @@ const WallOfShame: React.FC = () => {
             </h1>
           </IonRow>
         </div>
-
-        <IonSegment
-          onIonChange={(e) => setTab(e.detail.value ?? "live")}
-          value={tab}
-          style={{ marginTop: "1rem" }}
-        >
-          <IonSegmentButton value='live'>
-            <IonLabel>Live</IonLabel>
-          </IonSegmentButton>
-          <IonSegmentButton value='forbes'>
-            <IonLabel>Forbes 100</IonLabel>
-          </IonSegmentButton>
-        </IonSegment>
-
+        <IonGrid>
+          <IonRow>
+            <IonCol size='6' style={{ paddingRight: "0px" }}>
+              <IonButton
+                color='senary'
+                expand='block'
+                style={{ fontWeight: tab === "live" ? "bold" : "normal" }}
+                onClick={() => setTab("live")}
+              >
+                Live
+              </IonButton>
+            </IonCol>
+            <IonCol size='6' style={{ paddingLeft: "0px" }}>
+              <IonButton
+                color='tertiary'
+                expand='block'
+                style={{ fontWeight: tab !== "live" ? "bold" : "normal" }}
+                onClick={() => setTab("shameful")}
+              >
+                Shameful 100
+              </IonButton>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
         <IonList>
           <IonItem>
             <IonAvatar slot='start'>
