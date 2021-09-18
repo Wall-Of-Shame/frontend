@@ -33,7 +33,8 @@ import { alarm, statsChart, person } from "ionicons/icons";
 import Challenges from "../pages/challenges";
 import Profile from "../pages/profile";
 import WallOfShame from "../pages/wallOfShame";
-import ChallengeDetails from "../pages/challenges/details/ChallengeDetails";
+import ChallengeDetails from "../pages/challenges/details";
+import CreateChallenge from "../pages/challenges/create";
 
 const redirectToChallenges = (): React.ReactNode => (
   <Redirect to={"/challenges"} />
@@ -50,6 +51,9 @@ const AuthenticatedApp: React.FC = () => {
             </Route>
             <Route exact path='/challenges/:id'>
               <ChallengeDetails />
+            </Route>
+            <Route exact path='/challenges/create'>
+              <CreateChallenge />
             </Route>
             <Route exact path='/wall-of-shame'>
               <WallOfShame />

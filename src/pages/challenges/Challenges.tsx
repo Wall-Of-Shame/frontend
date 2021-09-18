@@ -28,11 +28,12 @@ import "./Challenges.scss";
 import { useEffect, useState } from "react";
 import { chevronForward, addOutline } from "ionicons/icons";
 import { hideTabs, showTabs } from "../../utils/TabsUtils";
-import { useLocation } from "react-router";
+import { useHistory, useLocation } from "react-router";
 
 const Challenges: React.FC = () => {
   const [tab, setTab] = useState("ongoing");
   const location = useLocation();
+  const history = useHistory();
 
   useEffect(() => {
     if (
@@ -63,6 +64,7 @@ const Challenges: React.FC = () => {
                   marginRight: "1rem",
                 }}
                 color='dark'
+                onClick={() => history.push("/challenges/create")}
               >
                 <IonIcon slot='end' icon={addOutline} />
               </IonButton>

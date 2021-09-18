@@ -99,7 +99,6 @@ const PersonalDetails: React.FC<PersonalDetailsProps> = (
               name='name'
               type='email'
               value={state.email}
-              autocapitalize='on'
               required
               onIonChange={(event: CustomEvent) => {
                 setState({ email: event.detail.value });
@@ -128,7 +127,6 @@ const PersonalDetails: React.FC<PersonalDetailsProps> = (
               name='name'
               type='password'
               value={state.passwordConfirmation}
-              autocapitalize='on'
               required
               onIonChange={(event: CustomEvent) => {
                 setState({ passwordConfirmation: event.detail.value });

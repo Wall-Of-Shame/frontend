@@ -1,0 +1,212 @@
+import {
+  IonBackButton,
+  IonButton,
+  IonButtons,
+  IonCol,
+  IonContent,
+  IonGrid,
+  IonHeader,
+  IonIcon,
+  IonInput,
+  IonItemDivider,
+  IonLabel,
+  IonPage,
+  IonRadio,
+  IonRadioGroup,
+  IonRow,
+  IonText,
+  IonTextarea,
+  IonToolbar,
+} from "@ionic/react";
+import { addOutline, arrowBackOutline, pencil } from "ionicons/icons";
+import { useReducer } from "react";
+import "./CreateChallenge.scss";
+
+interface CreateChallengeProps {}
+
+interface CreateChallengeState {
+  title: string;
+  description: string;
+  punishmentType: "last" | "fail";
+  isLoading: boolean;
+  showAlert: boolean;
+  alertHeader: string;
+  alertMessage: string;
+  hasConfirm: boolean;
+  confirmHandler: () => void;
+  cancelHandler: () => void;
+  okHandler?: () => void;
+}
+
+const CreateChallenge: React.FC<CreateChallengeProps> = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [state, setState] = useReducer(
+    (s: CreateChallengeState, a: Partial<CreateChallengeState>) => ({
+      ...s,
+      ...a,
+    }),
+    {
+      title: "",
+      description: "",
+      punishmentType: "fail",
+      isLoading: false,
+      showAlert: false,
+      alertHeader: "",
+      alertMessage: "",
+      hasConfirm: false,
+      confirmHandler: () => {},
+      cancelHandler: () => {},
+      okHandler: undefined,
+    }
+  );
+
+  return (
+    <IonPage>
+      <IonHeader className='ion-no-border'>
+        <IonToolbar>
+          <IonButtons slot='start'>
+            <IonBackButton
+              text=''
+              icon={arrowBackOutline}
+              color='dark'
+              style={{
+                marginTop: "1.5rem",
+                marginLeft: "1rem",
+              }}
+            />
+          </IonButtons>
+          <IonButtons slot='end'>
+            <IonButton
+              style={{
+                marginTop: "1.5rem",
+                marginRight: "1rem",
+              }}
+              color='dark'
+            >
+              <IonIcon slot='end' icon={pencil} />
+            </IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
+
+      <IonContent fullscreen>
+        <IonGrid style={{ marginTop: "0.5rem" }}>
+          <IonRow className='ion-padding'>
+            <IonText style={{ fontWeight: "bold", fontSize: "1.5rem" }}>
+              Create a new challenge
+            </IonText>
+          </IonRow>
+        </IonGrid>
+        <IonGrid>
+          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
+            <IonText style={{ fontWeight: "bold" }}>
+              What's the challenge called?
+            </IonText>
+          </IonRow>
+          <IonRow className='ion-padding-horizontal'>
+            <div
+              style={{
+                border: "solid 1px #adadad",
+                width: "100%",
+                borderRadius: "0.5rem",
+              }}
+            >
+              <IonInput
+                value={""}
+                debounce={300}
+                placeholder='Enter title'
+                style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}
+              />
+            </div>
+          </IonRow>
+          <IonRow
+            className='ion-padding-horizontal ion-justify-content-end'
+            style={{ marginTop: "0.5rem" }}
+          >
+            <IonText style={{ fontSize: "14px", color: "#adadad" }}>
+              {"0/30"}
+            </IonText>
+          </IonRow>
+        </IonGrid>
+        <IonGrid>
+          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
+            <IonText style={{ fontWeight: "bold" }}>
+              What do they need to do?
+            </IonText>
+          </IonRow>
+          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
+            <div
+              style={{
+                border: "solid 1px #adadad",
+                width: "100%",
+                borderRadius: "0.5rem",
+              }}
+            >
+              <IonTextarea
+                value={""}
+                debounce={300}
+                rows={4}
+                placeholder='Enter challenge description'
+                style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}
+              />
+            </div>
+          </IonRow>
+        </IonGrid>
+        <IonGrid>
+          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
+            <IonText style={{ fontWeight: "bold" }}>
+              Who gets thrown onto the wall?
+            </IonText>
+          </IonRow>
+          <IonRow className='ion-padding-bottom ion-padding-horizontal'>
+            <IonRadioGroup
+              value={state.punishmentType}
+              style={{ width: "100%" }}
+            >
+              <IonRow style={{ marginTop: "0.75rem" }}>
+                <IonCol size='10'>
+                  <IonLabel>Anyone who doesn't finish in time</IonLabel>
+                </IonCol>
+                <IonCol size='2'>
+                  <IonRow className='ion-justify-content-end'>
+                    <IonRadio value='fail' mode='md' color='quinary' />
+                  </IonRow>
+                </IonCol>
+              </IonRow>
+              <IonRow style={{ marginTop: "0.75rem" }}>
+                <IonCol size='10'>
+                  <IonLabel>Last person to complete</IonLabel>
+                </IonCol>
+                <IonCol size='2'>
+                  <IonRow className='ion-justify-content-end'>
+                    <IonRadio value='last' mode='md' color='quinary' />
+                  </IonRow>
+                </IonCol>
+              </IonRow>
+            </IonRadioGroup>
+          </IonRow>
+        </IonGrid>
+        <IonItemDivider style={{ marginBottom: "0.25rem" }} />
+        <IonGrid>
+          <IonRow className='ion-padding-horizontal ion-padding-bottom ion-align-items-center'>
+            <IonCol size='6'>
+              <IonText style={{ fontWeight: "bold", fontSize: "1.25rem" }}>
+                8 participants
+              </IonText>
+            </IonCol>
+            <IonCol size='6'>
+              <IonRow className='ion-justify-content-end'>
+                <IonIcon
+                  icon={addOutline}
+                  style={{ fontSize: "1.5rem", padding: "0.25rem" }}
+                />
+              </IonRow>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+      </IonContent>
+    </IonPage>
+  );
+};
+
+export default CreateChallenge;
