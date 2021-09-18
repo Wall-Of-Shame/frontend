@@ -123,6 +123,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
                 <IonButton
                   expand='block'
                   fill='solid'
+                  color='quaternary'
                   style={{ margin: "1rem" }}
                   onClick={renderProps.onClick}
                 >
@@ -144,7 +145,8 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
                 <IonButton
                   expand='block'
                   fill='solid'
-                  style={{ margin: "1rem" }}
+                  color='tertiary'
+                  style={{ margin: "1rem", color: "#000000" }}
                   onClick={renderProps.onClick}
                 >
                   <IonIcon src={logoFacebook} />
@@ -160,6 +162,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
             <IonButton
               expand='block'
               fill='solid'
+              color='quinary'
               style={{ margin: "1rem" }}
               onClick={() => setShowSignUpModal(true)}
             >
@@ -170,7 +173,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
                 Have an account?&nbsp;
                 <Link
                   to={"#"}
-                  style={{ textDecoration: "none" }}
+                  style={{ textDecoration: "none", color: "#000" }}
                   onClick={() => {
                     setShowLoginModal(true);
                   }}

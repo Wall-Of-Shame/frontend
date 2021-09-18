@@ -1,13 +1,12 @@
 import { IonModal } from "@ionic/react";
 import { useReducer, useState } from "react";
-import store from "../../../app/store";
 import "./SignUpModal.scss";
 import PersonalDetails from "./PersonalDetails";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import EmailVerification from "./EmailVerification";
 import ProfileSetUp from "./ProfileSetUp";
-import { setUser } from "../../../reducers/MiscDux";
 import LoadingSpinner from "../../../components/loadingSpinner";
+import Alert from "../../../components/alert";
 
 interface SignUpModalProps {
   showModal: boolean;
@@ -21,6 +20,13 @@ export interface SignUpModalState {
   displayName: string;
   username: string;
   isLoading: boolean;
+  showAlert: boolean;
+  alertHeader: string;
+  alertMessage: string;
+  hasConfirm: boolean;
+  confirmHandler: () => void;
+  cancelHandler: () => void;
+  okHandler?: () => void;
 }
 
 const SignUpModal: React.FC<SignUpModalProps> = (props: SignUpModalProps) => {
@@ -40,6 +46,13 @@ const SignUpModal: React.FC<SignUpModalProps> = (props: SignUpModalProps) => {
       displayName: "",
       username: "",
       isLoading: false,
+      showAlert: false,
+      alertHeader: "",
+      alertMessage: "",
+      hasConfirm: false,
+      confirmHandler: () => {},
+      cancelHandler: () => {},
+      okHandler: undefined,
     }
   );
 
@@ -90,16 +103,6 @@ const SignUpModal: React.FC<SignUpModalProps> = (props: SignUpModalProps) => {
                 setAnimationDirection("left");
                 setPageNumber(0);
               }, 300);
-              store.dispatch(
-                setUser({
-                  username: "asthenosphere",
-                  name: "Wang Luo",
-                  discardedAt: null,
-                  createdAt: new Date(),
-                  updatedAt: new Date(),
-                  id: 1,
-                })
-              );
             }}
           />
         );
@@ -123,6 +126,20 @@ const SignUpModal: React.FC<SignUpModalProps> = (props: SignUpModalProps) => {
         loading={state.isLoading}
         message={"Loading"}
         closeLoading={() => {}}
+      />
+      <Alert
+        showAlert={state.showAlert}
+        closeAlert={(): void => {
+          setState({
+            showAlert: false,
+          });
+        }}
+        alertHeader={state.alertHeader}
+        alertMessage={state.alertMessage}
+        hasConfirm={state.hasConfirm}
+        confirmHandler={state.confirmHandler}
+        cancelHandler={state.cancelHandler}
+        okHandler={state.okHandler}
       />
     </IonModal>
   );

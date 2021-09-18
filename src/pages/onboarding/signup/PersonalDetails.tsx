@@ -42,10 +42,20 @@ const PersonalDetails: React.FC<PersonalDetailsProps> = (
 
   const handleSubmit = () => {
     setState({ isLoading: true });
-    signup(state.email, state.password).then(() => {
-      setState({ isLoading: false });
-      nextPage();
-    });
+    signup(state.email, state.password)
+      .then(() => {
+        setState({ isLoading: false });
+        nextPage();
+      })
+      .catch((error) => {
+        setState({
+          isLoading: false,
+          showAlert: true,
+          alertHeader: "Ooooops",
+          alertMessage:
+            "This email is already in use, maybe try another one instead?",
+        });
+      });
   };
 
   return (
@@ -75,7 +85,14 @@ const PersonalDetails: React.FC<PersonalDetailsProps> = (
         </IonRow>
         <IonList className='ion-padding-vertical'>
           <IonItem lines='full'>
-            <IonLabel color='primary' position='floating'>
+            <IonLabel
+              color={
+                state.email !== "" && !isValidEmail(state.email)
+                  ? "danger"
+                  : "primary"
+              }
+              position='floating'
+            >
               Email
             </IonLabel>
             <IonInput
@@ -122,6 +139,8 @@ const PersonalDetails: React.FC<PersonalDetailsProps> = (
         <IonButton
           expand='block'
           fill='solid'
+          color='secondary'
+          shape='round'
           className='ion-padding-horizontal'
           style={{ marginTop: "2rem" }}
           disabled={!verifyInputs()}

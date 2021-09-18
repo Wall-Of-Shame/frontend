@@ -69,6 +69,7 @@ const AuthProvider: React.FunctionComponent = (props) => {
       console.log(user);
     } catch (error) {
       console.log(error);
+      return Promise.reject(error);
     }
   };
 
@@ -83,6 +84,7 @@ const AuthProvider: React.FunctionComponent = (props) => {
       console.log(user);
     } catch (error) {
       console.log(error);
+      return Promise.reject(error);
     }
   };
 
