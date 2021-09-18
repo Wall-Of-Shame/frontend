@@ -99,7 +99,17 @@ const AuthProvider: React.FunctionComponent = (props) => {
     return auth.currentUser;
   };
 
-  const resendVerificationEmail = async (email: string): Promise<void> => {};
+  const resendVerificationEmail = async (): Promise<void> => {
+    try {
+      const user = auth.currentUser;
+      if (!user) {
+        Promise.reject(new Error("User does not exist"));
+      }
+      sendEmailVerification(user!);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const logout = (): Promise<void> =>
     AuthService.logout()

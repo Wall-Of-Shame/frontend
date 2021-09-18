@@ -23,7 +23,8 @@ const EmailVerification: React.FC<EmailVerificationProps> = (
   props: EmailVerificationProps
 ) => {
   const { state, setState, nextPage, prevPage } = props;
-  const { getFirebaseUser, refreshFirebaseUser } = useAuth();
+  const { getFirebaseUser, refreshFirebaseUser, resendVerificationEmail } =
+    useAuth();
 
   const handleContinue = async () => {
     setState({ isLoading: true });
@@ -34,6 +35,13 @@ const EmailVerification: React.FC<EmailVerificationProps> = (
       if (user?.emailVerified) {
         nextPage();
       }
+    });
+  };
+
+  const handleResendEmail = async () => {
+    setState({ isLoading: true });
+    resendVerificationEmail().then(() => {
+      setState({ isLoading: false });
     });
   };
 
@@ -101,7 +109,11 @@ const EmailVerification: React.FC<EmailVerificationProps> = (
         >
           <IonText class='ion-text-center' color='medium'>
             Did not receive the email?&nbsp;
-            <Link to={"#"} style={{ textDecoration: "none" }}>
+            <Link
+              to={"#"}
+              style={{ textDecoration: "none" }}
+              onClick={handleResendEmail}
+            >
               <IonText style={{ fontWeight: "bold" }}>Resend</IonText>
             </Link>
           </IonText>
