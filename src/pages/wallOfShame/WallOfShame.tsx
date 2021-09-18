@@ -4,11 +4,14 @@ import {
   IonCol,
   IonContent,
   IonGrid,
+  IonIcon,
   IonItem,
   IonLabel,
   IonList,
   IonPage,
   IonRow,
+  IonSelect,
+  IonSelectOption,
 } from "@ionic/react";
 import { useEffect, useState } from "react";
 import "./WallOfShame.scss";
@@ -18,10 +21,16 @@ import luke from "../../assets/avatar-luke.png";
 import finn from "../../assets/avatar-finn.png";
 import { hideTabs, showTabs } from "../../utils/TabsUtils";
 import { useLocation } from "react-router";
+import { medal } from "ionicons/icons";
 
 const WallOfShame: React.FC = () => {
   const [tab, setTab] = useState("live");
   const location = useLocation();
+
+  const countries = ["Singapore", "Malaysia", "Indonesia", "Thailand"];
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [country, setCountry] = useState("Singapore");
 
   useEffect(() => {
     if (
@@ -34,6 +43,195 @@ const WallOfShame: React.FC = () => {
       showTabs();
     }
   }, [location.pathname]);
+
+  const renderWall = () => {
+    switch (tab) {
+      case "live":
+        return (
+          <IonList>
+            <IonItem>
+              <IonAvatar slot='start'>
+                <img src={luke} alt='user1' />
+              </IonAvatar>
+              <IonLabel>
+                <h6>Luke has failed to:</h6>
+                <h4 style={{ fontWeight: "bold" }}>
+                  WATCH ALL CS1010 LECTURES
+                </h4>
+                <p>1 second ago</p>
+              </IonLabel>
+            </IonItem>
+            <IonItem>
+              <IonAvatar slot='start'>
+                <img src={yoda} alt='user2' />
+              </IonAvatar>
+              <IonLabel>
+                <h6>Master Yoda has failed to:</h6>
+                <h4 style={{ fontWeight: "bold" }}>
+                  WATCH ALL CS3216 LECTURES
+                </h4>
+                <p>1 second ago</p>
+              </IonLabel>
+            </IonItem>
+            <IonItem>
+              <IonAvatar slot='start'>
+                <img src={rey} alt='user3' />
+              </IonAvatar>
+              <IonLabel>
+                <h6>Rey has failed to:</h6>
+                <h4 style={{ fontWeight: "bold" }}>
+                  WATCH ALL CS3217 LECTURES
+                </h4>
+                <p>1 second ago</p>
+              </IonLabel>
+            </IonItem>
+            <IonItem>
+              <IonAvatar slot='start'>
+                <img src={finn} alt='user4' />
+              </IonAvatar>
+              <IonLabel>
+                <h6>Finn has failed to:</h6>
+                <h4 style={{ fontWeight: "bold" }}>RUN 10KM BY THIS WEEKEND</h4>
+                <p>1 second ago</p>
+              </IonLabel>
+            </IonItem>
+            <IonItem>
+              <IonAvatar slot='start'>
+                <img src={luke} alt='user1' />
+              </IonAvatar>
+              <IonLabel>
+                <h6>Luke has failed to:</h6>
+                <h4 style={{ fontWeight: "bold" }}>
+                  WATCH ALL CS1010 LECTURES
+                </h4>
+                <p>1 second ago</p>
+              </IonLabel>
+            </IonItem>
+            <IonItem>
+              <IonAvatar slot='start'>
+                <img src={yoda} alt='user2' />
+              </IonAvatar>
+              <IonLabel>
+                <h6>Master Yoda has failed to:</h6>
+                <h4 style={{ fontWeight: "bold" }}>
+                  WATCH ALL CS3216 LECTURES
+                </h4>
+                <p>1 second ago</p>
+              </IonLabel>
+            </IonItem>
+            <IonItem>
+              <IonAvatar slot='start'>
+                <img src={rey} alt='user3' />
+              </IonAvatar>
+              <IonLabel>
+                <h6>Rey has failed to:</h6>
+                <h4 style={{ fontWeight: "bold" }}>
+                  WATCH ALL CS3217 LECTURES
+                </h4>
+                <p>1 second ago</p>
+              </IonLabel>
+            </IonItem>
+            <IonItem>
+              <IonAvatar slot='start'>
+                <img src={finn} alt='user4' />
+              </IonAvatar>
+              <IonLabel>
+                <h6>Finn has failed to:</h6>
+                <h4 style={{ fontWeight: "bold" }}>RUN 10KM BY THIS WEEKEND</h4>
+                <p>1 second ago</p>
+              </IonLabel>
+            </IonItem>
+          </IonList>
+        );
+      case "shameful":
+        return (
+          <IonList>
+            <IonItem className='ion-padding-horizontal' lines='none'>
+              <IonLabel>Country</IonLabel>
+              <IonSelect
+                ok-text='Okay'
+                cancel-text='Nah'
+                onIonChange={(e) => setCountry(e.detail.value)}
+              >
+                {countries.map((c) => {
+                  return (
+                    <IonSelectOption value={c} key={c}>
+                      {c}
+                    </IonSelectOption>
+                  );
+                })}
+              </IonSelect>
+            </IonItem>
+            <IonItem lines='none'>
+              <IonAvatar slot='start'>
+                <img src={luke} alt='user1' />
+              </IonAvatar>
+              <IonLabel>
+                <h4 style={{ fontWeight: "bold" }}>Luke</h4>
+              </IonLabel>
+              <IonIcon slot='end' icon={medal}></IonIcon>
+              <IonLabel slot='end'>45</IonLabel>
+            </IonItem>
+            <IonItem lines='none'>
+              <IonAvatar slot='start'>
+                <img src={yoda} alt='user2' />
+              </IonAvatar>
+              <IonLabel>
+                <h4 style={{ fontWeight: "bold" }}>Yoda</h4>
+              </IonLabel>
+              <IonIcon slot='end' icon={medal}></IonIcon>
+              <IonLabel slot='end'>42</IonLabel>
+            </IonItem>
+            <IonItem lines='none'>
+              <IonAvatar slot='start'>
+                <img src={rey} alt='user3' />
+              </IonAvatar>
+              <IonLabel>
+                <h4 style={{ fontWeight: "bold" }}>Rey</h4>
+              </IonLabel>
+              <IonIcon slot='end' icon={medal}></IonIcon>
+              <IonLabel slot='end'>33</IonLabel>
+            </IonItem>
+            <IonItem lines='none'>
+              <IonAvatar slot='start'>
+                <img src={finn} alt='user4' />
+              </IonAvatar>
+              <IonLabel>
+                <h4 style={{ fontWeight: "bold" }}>Finn</h4>
+              </IonLabel>
+              <IonLabel slot='end'>25</IonLabel>
+            </IonItem>
+            <IonItem lines='none'>
+              <IonAvatar slot='start'>
+                <img src={finn} alt='user4' />
+              </IonAvatar>
+              <IonLabel>
+                <h4 style={{ fontWeight: "bold" }}>Finn</h4>
+              </IonLabel>
+              <IonLabel slot='end'>21</IonLabel>
+            </IonItem>
+            <IonItem lines='none'>
+              <IonAvatar slot='start'>
+                <img src={finn} alt='user4' />
+              </IonAvatar>
+              <IonLabel>
+                <h4 style={{ fontWeight: "bold" }}>Finn</h4>
+              </IonLabel>
+              <IonLabel slot='end'>15</IonLabel>
+            </IonItem>
+            <IonItem lines='none'>
+              <IonAvatar slot='start'>
+                <img src={finn} alt='user4' />
+              </IonAvatar>
+              <IonLabel>
+                <h4 style={{ fontWeight: "bold" }}>Finn</h4>
+              </IonLabel>
+              <IonLabel slot='end'>11</IonLabel>
+            </IonItem>
+          </IonList>
+        );
+    }
+  };
 
   return (
     <IonPage>
@@ -60,7 +258,9 @@ const WallOfShame: React.FC = () => {
               <IonButton
                 color='senary'
                 expand='block'
-                style={{ fontWeight: tab === "live" ? "bold" : "normal" }}
+                style={{
+                  fontWeight: tab === "live" ? "bold" : "normal",
+                }}
                 onClick={() => setTab("live")}
               >
                 Live
@@ -78,88 +278,7 @@ const WallOfShame: React.FC = () => {
             </IonCol>
           </IonRow>
         </IonGrid>
-        <IonList>
-          <IonItem>
-            <IonAvatar slot='start'>
-              <img src={luke} alt='user1' />
-            </IonAvatar>
-            <IonLabel>
-              <h6>Luke has failed to:</h6>
-              <h4 style={{ fontWeight: "bold" }}>WATCH ALL CS1010 LECTURES</h4>
-              <p>1 second ago</p>
-            </IonLabel>
-          </IonItem>
-          <IonItem>
-            <IonAvatar slot='start'>
-              <img src={yoda} alt='user2' />
-            </IonAvatar>
-            <IonLabel>
-              <h6>Master Yoda has failed to:</h6>
-              <h4 style={{ fontWeight: "bold" }}>WATCH ALL CS3216 LECTURES</h4>
-              <p>1 second ago</p>
-            </IonLabel>
-          </IonItem>
-          <IonItem>
-            <IonAvatar slot='start'>
-              <img src={rey} alt='user3' />
-            </IonAvatar>
-            <IonLabel>
-              <h6>Rey has failed to:</h6>
-              <h4 style={{ fontWeight: "bold" }}>WATCH ALL CS3217 LECTURES</h4>
-              <p>1 second ago</p>
-            </IonLabel>
-          </IonItem>
-          <IonItem>
-            <IonAvatar slot='start'>
-              <img src={finn} alt='user4' />
-            </IonAvatar>
-            <IonLabel>
-              <h6>Finn has failed to:</h6>
-              <h4 style={{ fontWeight: "bold" }}>RUN 10KM BY THIS WEEKEND</h4>
-              <p>1 second ago</p>
-            </IonLabel>
-          </IonItem>
-          <IonItem>
-            <IonAvatar slot='start'>
-              <img src={luke} alt='user1' />
-            </IonAvatar>
-            <IonLabel>
-              <h6>Luke has failed to:</h6>
-              <h4 style={{ fontWeight: "bold" }}>WATCH ALL CS1010 LECTURES</h4>
-              <p>1 second ago</p>
-            </IonLabel>
-          </IonItem>
-          <IonItem>
-            <IonAvatar slot='start'>
-              <img src={yoda} alt='user2' />
-            </IonAvatar>
-            <IonLabel>
-              <h6>Master Yoda has failed to:</h6>
-              <h4 style={{ fontWeight: "bold" }}>WATCH ALL CS3216 LECTURES</h4>
-              <p>1 second ago</p>
-            </IonLabel>
-          </IonItem>
-          <IonItem>
-            <IonAvatar slot='start'>
-              <img src={rey} alt='user3' />
-            </IonAvatar>
-            <IonLabel>
-              <h6>Rey has failed to:</h6>
-              <h4 style={{ fontWeight: "bold" }}>WATCH ALL CS3217 LECTURES</h4>
-              <p>1 second ago</p>
-            </IonLabel>
-          </IonItem>
-          <IonItem>
-            <IonAvatar slot='start'>
-              <img src={finn} alt='user4' />
-            </IonAvatar>
-            <IonLabel>
-              <h6>Finn has failed to:</h6>
-              <h4 style={{ fontWeight: "bold" }}>RUN 10KM BY THIS WEEKEND</h4>
-              <p>1 second ago</p>
-            </IonLabel>
-          </IonItem>
-        </IonList>
+        {renderWall()}
       </IonContent>
     </IonPage>
   );
