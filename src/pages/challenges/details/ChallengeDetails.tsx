@@ -2,6 +2,7 @@ import {
   IonBackButton,
   IonButton,
   IonButtons,
+  IonCol,
   IonContent,
   IonGrid,
   IonHeader,
@@ -12,7 +13,12 @@ import {
   IonText,
   IonToolbar,
 } from "@ionic/react";
-import { arrowBackOutline, pencil } from "ionicons/icons";
+import {
+  addOutline,
+  arrowBackOutline,
+  pencil,
+  removeOutline,
+} from "ionicons/icons";
 import "./ChallengeDetails.scss";
 
 interface ChallengeDetailsProps {}
@@ -83,7 +89,28 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
             <IonText>Fri, 12 September, 11:50 pm</IonText>
           </IonRow>
         </IonGrid>
-        <IonItemDivider />
+        <IonItemDivider style={{ marginBottom: "0.25rem" }} />
+        <IonGrid>
+          <IonRow className='ion-padding-horizontal ion-padding-bottom ion-align-items-center'>
+            <IonCol size='6'>
+              <IonText style={{ fontWeight: "bold", fontSize: "1.25rem" }}>
+                8 participants
+              </IonText>
+            </IonCol>
+            <IonCol size='6'>
+              <IonRow className='ion-justify-content-end'>
+                <IonIcon
+                  icon={removeOutline}
+                  style={{ fontSize: "1.5rem", padding: "0.25rem" }}
+                />
+                <IonIcon
+                  icon={addOutline}
+                  style={{ fontSize: "1.5rem", padding: "0.25rem" }}
+                />
+              </IonRow>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
       </IonContent>
     </IonPage>
   );

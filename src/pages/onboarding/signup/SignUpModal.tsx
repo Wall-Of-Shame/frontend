@@ -7,6 +7,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import EmailVerification from "./EmailVerification";
 import ProfileSetUp from "./ProfileSetUp";
 import { setUser } from "../../../reducers/MiscDux";
+import LoadingSpinner from "../../../components/loadingSpinner";
 
 interface SignUpModalProps {
   showModal: boolean;
@@ -19,7 +20,7 @@ export interface SignUpModalState {
   passwordConfirmation: string;
   displayName: string;
   username: string;
-  verificationCode: string[];
+  isLoading: boolean;
 }
 
 const SignUpModal: React.FC<SignUpModalProps> = (props: SignUpModalProps) => {
@@ -38,7 +39,7 @@ const SignUpModal: React.FC<SignUpModalProps> = (props: SignUpModalProps) => {
       passwordConfirmation: "",
       displayName: "",
       username: "",
-      verificationCode: ["", "", "", "", "", ""],
+      isLoading: false,
     }
   );
 
@@ -83,7 +84,6 @@ const SignUpModal: React.FC<SignUpModalProps> = (props: SignUpModalProps) => {
                 passwordConfirmation: "",
                 displayName: "",
                 username: "",
-                verificationCode: ["", "", "", "", "", ""],
               });
               setShowModal(false);
               setTimeout(() => {
@@ -119,6 +119,11 @@ const SignUpModal: React.FC<SignUpModalProps> = (props: SignUpModalProps) => {
           </div>
         </CSSTransition>
       </TransitionGroup>
+      <LoadingSpinner
+        loading={state.isLoading}
+        message={"Loading"}
+        closeLoading={() => {}}
+      />
     </IonModal>
   );
 };

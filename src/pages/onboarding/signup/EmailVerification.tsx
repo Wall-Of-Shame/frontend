@@ -1,18 +1,15 @@
 import {
   IonButton,
-  IonCol,
   IonContent,
   IonFab,
   IonIcon,
-  IonInput,
-  IonList,
   IonRow,
   IonText,
 } from "@ionic/react";
 import { arrowBackOutline } from "ionicons/icons";
-import { useRef } from "react";
 import { Link } from "react-router-dom";
 import Container from "../../../components/container";
+import { useAuth } from "../../../contexts/AuthContext";
 import { SignUpModalState } from "./SignUpModal";
 
 interface EmailVerificationProps {
@@ -26,24 +23,19 @@ const EmailVerification: React.FC<EmailVerificationProps> = (
   props: EmailVerificationProps
 ) => {
   const { state, setState, nextPage, prevPage } = props;
+  const { getFirebaseUser, refreshFirebaseUser } = useAuth();
 
-  const verifyCode = () => {
-    let code = "";
-    code = state.verificationCode.reduce((prev, curr) => prev.concat(curr));
-    console.log(code);
-    nextPage();
+  const handleContinue = async () => {
+    setState({ isLoading: true });
+    refreshFirebaseUser().then(() => {
+      setState({ isLoading: false });
+      const user = getFirebaseUser();
+      console.log(user);
+      if (user?.emailVerified) {
+        nextPage();
+      }
+    });
   };
-
-  const checkIncompleteCode = (): boolean => {
-    return state.verificationCode.every((code) => code.length > 0);
-  };
-
-  const firstRef = useRef<any>(null);
-  const secondRef = useRef<any>(null);
-  const thirdRef = useRef<any>(null);
-  const fourthRef = useRef<any>(null);
-  const fifthRef = useRef<any>(null);
-  const sixthRef = useRef<any>(null);
 
   return (
     <IonContent fullscreen>
@@ -61,9 +53,25 @@ const EmailVerification: React.FC<EmailVerificationProps> = (
               fontSize: "32px",
               fontWeight: "bold",
               marginLeft: "1rem",
+              marginRight: "1rem",
             }}
           >
-            Verify your email
+            Welcome!
+          </IonText>
+        </IonRow>
+        <IonRow
+          slot='start'
+          style={{ textAlign: "left", marginBottom: "1rem" }}
+        >
+          <IonText
+            style={{
+              fontSize: "18px",
+              marginLeft: "1rem",
+              marginRight: "1rem",
+            }}
+          >
+            Thanks for signing up! We have sent an email to{" "}
+            <IonText style={{ fontWeight: "bold" }}>{state.email}</IonText>
           </IonText>
         </IonRow>
         <IonRow slot='start' style={{ textAlign: "left" }}>
@@ -71,189 +79,21 @@ const EmailVerification: React.FC<EmailVerificationProps> = (
             style={{
               fontSize: "18px",
               marginLeft: "1rem",
+              marginRight: "1rem",
             }}
           >
-            Enter the verification code sent to your email
+            Click on the link in the verification email to complete your
+            registration
           </IonText>
         </IonRow>
-        <IonList className='ion-padding-vertical'>
-          <IonRow>
-            <IonCol>
-              <IonInput
-                ref={firstRef}
-                name='first'
-                type='tel'
-                maxlength={1}
-                value={state.verificationCode[0]}
-                required
-                autocomplete='off'
-                onIonChange={(event: CustomEvent) => {
-                  setState({
-                    verificationCode: [
-                      ...state.verificationCode.slice(0, 0),
-                      event.detail.value,
-                      ...state.verificationCode.slice(1),
-                    ],
-                  });
-                  if (event.detail.value.length > 0) {
-                    secondRef.current.setFocus();
-                  }
-                }}
-                style={{
-                  borderBottom: "solid 1px",
-                  textAlign: "center",
-                  textIndent: "0.5rem",
-                }}
-              />
-            </IonCol>
-            <IonCol>
-              <IonInput
-                ref={secondRef}
-                name='second'
-                type='tel'
-                maxlength={1}
-                value={state.verificationCode[1]}
-                required
-                autocomplete='off'
-                onIonChange={(event: CustomEvent) => {
-                  setState({
-                    verificationCode: [
-                      ...state.verificationCode.slice(0, 1),
-                      event.detail.value,
-                      ...state.verificationCode.slice(2),
-                    ],
-                  });
-                  if (event.detail.value.length > 0) {
-                    thirdRef.current.setFocus();
-                  }
-                }}
-                style={{
-                  borderBottom: "solid 1px",
-                  textAlign: "center",
-                  textIndent: "0.5rem",
-                }}
-              />
-            </IonCol>
-            <IonCol>
-              <IonInput
-                ref={thirdRef}
-                name='third'
-                type='tel'
-                maxlength={1}
-                value={state.verificationCode[2]}
-                required
-                autocomplete='off'
-                onIonChange={(event: CustomEvent) => {
-                  setState({
-                    verificationCode: [
-                      ...state.verificationCode.slice(0, 2),
-                      event.detail.value,
-                      ...state.verificationCode.slice(3),
-                    ],
-                  });
-                  if (event.detail.value.length > 0) {
-                    fourthRef.current.setFocus();
-                  }
-                }}
-                style={{
-                  borderBottom: "solid 1px",
-                  textAlign: "center",
-                  textIndent: "0.5rem",
-                }}
-              />
-            </IonCol>
-            <IonCol>
-              <IonInput
-                ref={fourthRef}
-                name='fourth'
-                type='tel'
-                maxlength={1}
-                value={state.verificationCode[3]}
-                required
-                autocomplete='off'
-                onIonChange={(event: CustomEvent) => {
-                  setState({
-                    verificationCode: [
-                      ...state.verificationCode.slice(0, 3),
-                      event.detail.value,
-                      ...state.verificationCode.slice(4),
-                    ],
-                  });
-                  if (event.detail.value.length > 0) {
-                    fifthRef.current.setFocus();
-                  }
-                }}
-                style={{
-                  borderBottom: "solid 1px",
-                  textAlign: "center",
-                  textIndent: "0.5rem",
-                }}
-              />
-            </IonCol>
-            <IonCol>
-              <IonInput
-                ref={fifthRef}
-                name='fifth'
-                type='tel'
-                maxlength={1}
-                value={state.verificationCode[4]}
-                required
-                autocomplete='off'
-                onIonChange={(event: CustomEvent) => {
-                  setState({
-                    verificationCode: [
-                      ...state.verificationCode.slice(0, 4),
-                      event.detail.value,
-                      ...state.verificationCode.slice(5),
-                    ],
-                  });
-                  if (event.detail.value.length > 0) {
-                    sixthRef.current.setFocus();
-                  }
-                }}
-                style={{
-                  borderBottom: "solid 1px",
-                  textAlign: "center",
-                  textIndent: "0.5rem",
-                }}
-              />
-            </IonCol>
-            <IonCol>
-              <IonInput
-                ref={sixthRef}
-                name='sixth'
-                type='tel'
-                maxlength={1}
-                value={state.verificationCode[5]}
-                required
-                autocomplete='off'
-                onIonChange={(event: CustomEvent) => {
-                  setState({
-                    verificationCode: [
-                      ...state.verificationCode.slice(0, 5),
-                      event.detail.value,
-                      ...state.verificationCode.slice(6),
-                    ],
-                  });
-                }}
-                style={{
-                  borderBottom: "solid 1px",
-                  textAlign: "center",
-                  textIndent: "0.5rem",
-                }}
-              />
-            </IonCol>
-          </IonRow>
-        </IonList>
         <IonButton
           expand='block'
           fill='solid'
           className='ion-padding-horizontal'
           style={{ marginTop: "2rem" }}
-          onClick={verifyCode}
-          disabled={false && checkIncompleteCode()}
+          onClick={handleContinue}
         >
-          Verify
+          Continue
         </IonButton>
         <IonRow
           class='ion-justify-content-center'

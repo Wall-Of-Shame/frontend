@@ -14,6 +14,7 @@ import {
 import { arrowBackOutline } from "ionicons/icons";
 import Container from "../../../components/container";
 import { useState } from "react";
+import { useAuth } from "../../../contexts/AuthContext";
 
 interface LoginModalProps {
   showModal: boolean;
@@ -24,9 +25,11 @@ const LoginModal: React.FC<LoginModalProps> = (props: LoginModalProps) => {
   const { showModal, setShowModal } = props;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { login } = useAuth();
 
   const handleLogin = async () => {
     // API call to login and refresh app
+    login(email, password);
   };
 
   return (

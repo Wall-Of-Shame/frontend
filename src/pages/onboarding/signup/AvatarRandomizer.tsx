@@ -13,14 +13,14 @@ import Container from "../../../components/container";
 import "../../../theme/transitions.scss";
 import { SignUpModalState } from "./SignUpModal";
 
-interface ProfileSetUpProps {
+interface PersonalDetailsProps {
   state: SignUpModalState;
   setState: React.Dispatch<Partial<SignUpModalState>>;
   completionCallback: () => void;
 }
 
-const ProfileSetUp: React.FC<ProfileSetUpProps> = (
-  props: ProfileSetUpProps
+const AvatarRandomizer: React.FC<PersonalDetailsProps> = (
+  props: PersonalDetailsProps
 ) => {
   const { state, setState, completionCallback } = props;
 
@@ -91,4 +91,4 @@ const ProfileSetUp: React.FC<ProfileSetUpProps> = (
   );
 };
 
-export default ProfileSetUp;
+export default AvatarRandomizer;

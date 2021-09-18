@@ -2,9 +2,15 @@
 import React from "react";
 import { useAsync } from "react-async";
 
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  signInWithEmailAndPassword,
+  User,
+} from "firebase/auth";
+import { auth } from "../firebase";
 import LoadingSpinner from "../components/loadingSpinner/LoadingSpinner";
 import AuthContextInterface from "../interfaces/contexts/AuthContext";
-import { UserPostData } from "../interfaces/models/Users";
 import AuthService from "../services/AuthService";
 
 const AuthContext = React.createContext<AuthContextInterface | undefined>(
@@ -51,19 +57,49 @@ const AuthProvider: React.FunctionComponent = (props) => {
     }
   }
 
-  const signup = (signupData: UserPostData): Promise<void> =>
-    AuthService.signup(signupData)
-      .then(reload)
-      .catch((e: Error) => {
-        return Promise.reject(new Error(e.message));
-      });
+  const signup = async (email: string, password: string): Promise<void> => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      sendEmailVerification(user);
+      console.log(user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  const login = (loginData: UserPostData): Promise<void> =>
-    AuthService.login(loginData)
-      .then(reload)
-      .catch((e: Error) => {
-        return Promise.reject(new Error(e.message));
-      });
+  const login = async (email: string, password: string): Promise<void> => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      console.log(user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const refreshFirebaseUser = async (): Promise<void> => {
+    try {
+      const user = auth.currentUser;
+      return user?.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getFirebaseUser = (): User | null => {
+    return auth.currentUser;
+  };
+
+  const resendVerificationEmail = async (email: string): Promise<void> => {};
 
   const logout = (): Promise<void> =>
     AuthService.logout()
@@ -73,7 +109,18 @@ const AuthProvider: React.FunctionComponent = (props) => {
       });
 
   return (
-    <AuthContext.Provider value={{ data, signup, login, logout }} {...props} />
+    <AuthContext.Provider
+      value={{
+        data,
+        signup,
+        login,
+        refreshFirebaseUser,
+        getFirebaseUser,
+        resendVerificationEmail,
+        logout,
+      }}
+      {...props}
+    />
   );
 };
 

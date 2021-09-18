@@ -1,13 +1,13 @@
 import {
   IonAvatar,
+  IonButton,
+  IonButtons,
   IonCard,
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
   IonCol,
   IonContent,
-  IonFab,
-  IonFabButton,
   IonGrid,
   IonHeader,
   IonIcon,
@@ -26,7 +26,7 @@ import poe from "../../assets/avatar-poe.png";
 import luke from "../../assets/avatar-luke.png";
 import "./Challenges.scss";
 import { useEffect, useState } from "react";
-import { add, chevronForward } from "ionicons/icons";
+import { chevronForward, addOutline } from "ionicons/icons";
 import { hideTabs, showTabs } from "../../utils/TabsUtils";
 import { useLocation } from "react-router";
 
@@ -48,7 +48,7 @@ const Challenges: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
+      <IonHeader className='ion-no-border'>
         <IonToolbar>
           <IonTitle>Challenges</IonTitle>
         </IonToolbar>
@@ -57,6 +57,16 @@ const Challenges: React.FC = () => {
         <IonHeader collapse='condense' className='ion-no-border'>
           <IonToolbar>
             <IonTitle size='large'>Challenges</IonTitle>
+            <IonButtons slot='end'>
+              <IonButton
+                style={{
+                  marginRight: "1rem",
+                }}
+                color='dark'
+              >
+                <IonIcon slot='end' icon={addOutline} />
+              </IonButton>
+            </IonButtons>
           </IonToolbar>
         </IonHeader>
         <IonSegment
@@ -270,11 +280,6 @@ const Challenges: React.FC = () => {
             </IonRow>
           </IonGrid>
         </IonCard>
-        <IonFab vertical='bottom' horizontal='end' slot='fixed'>
-          <IonFabButton>
-            <IonIcon icon={add} />
-          </IonFabButton>
-        </IonFab>
       </IonContent>
     </IonPage>
   );

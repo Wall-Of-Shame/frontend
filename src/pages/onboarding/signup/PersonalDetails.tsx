@@ -17,6 +17,7 @@ import Container from "../../../components/container";
 import { isValidEmail, isValidPassword } from "../../../utils/ProfileUtils";
 import "../../../theme/transitions.scss";
 import { SignUpModalState } from "./SignUpModal";
+import { useAuth } from "../../../contexts/AuthContext";
 
 interface PersonalDetailsProps {
   state: SignUpModalState;
@@ -29,16 +30,22 @@ const PersonalDetails: React.FC<PersonalDetailsProps> = (
   props: PersonalDetailsProps
 ) => {
   const { state, setState, setShowModal, nextPage } = props;
+  const { signup } = useAuth();
 
   const verifyInputs = (): boolean => {
-    return true;
-    /*
     return (
       isValidEmail(state.email) &&
       isValidPassword(state.password) &&
       state.password === state.passwordConfirmation
     );
-    */
+  };
+
+  const handleSubmit = () => {
+    setState({ isLoading: true });
+    signup(state.email, state.password).then(() => {
+      setState({ isLoading: false });
+      nextPage();
+    });
   };
 
   return (
@@ -118,7 +125,7 @@ const PersonalDetails: React.FC<PersonalDetailsProps> = (
           className='ion-padding-horizontal'
           style={{ marginTop: "2rem" }}
           disabled={!verifyInputs()}
-          onClick={nextPage}
+          onClick={handleSubmit}
         >
           Next
         </IonButton>
