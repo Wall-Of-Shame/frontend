@@ -96,22 +96,34 @@ const Profile: React.FC = () => {
           </IonRow>
         </IonGrid>
 
-        <IonGrid>
+        <IonGrid style = {{ paddingBottom: "2rem" }}>
           <IonRow className="ion-align-items-center">
             <IonCol>
-              <IonCard className="ion-justify-content-center">
-                <IonCardContent>20 Challenges Completed</IonCardContent>
+              <IonCard className="profile-statistic" color='senary'>
+                <IonCardContent>
+                  <IonText style={{ fontSize: "1.2rem", fontWeight: 600 }}>
+                    20 Challenges Completed
+                  </IonText>
+                </IonCardContent>
               </IonCard>
             </IonCol>
             <IonCol>
-              <IonCard className="ion-justify-content-center">
-                <IonCardContent>4 Shameful failures</IonCardContent>
+              <IonCard className="profile-statistic" color='tertiary'>
+                <IonCardContent>
+                  <IonText style={{ fontSize: "1.2rem", fontWeight: 600, padding: "1rem" }}>
+                    4 Shameful Failures
+                  </IonText>
+                </IonCardContent>
               </IonCard>
             </IonCol>
           </IonRow>
         </IonGrid>
 
-        <IonCard button routerLink={"challenges/1"}>
+        <IonText style={{ fontSize: "1rem", fontWeight: 600, paddingLeft: "1rem", color: "grey"}}>
+          Challenge history
+        </IonText>
+
+        <IonCard button>
           <IonGrid className="ion-no-padding">
             <IonRow className="ion-align-items-center">
               <IonCol size="11">
