@@ -44,7 +44,7 @@ const getUser = async (): Promise<UserData | null> => {
     }
     throw new Error(response.statusText);
   } catch (error) {
-    //logout();
+    logout();
     return Promise.reject(error);
   }
 };

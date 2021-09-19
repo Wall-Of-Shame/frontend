@@ -183,9 +183,21 @@ const Profile: React.FC = () => {
                 color='senary'
               >
                 <IonCardContent>
-                  <IonText style={{ fontSize: "1.2rem", fontWeight: 600 }}>
-                    20 Challenges Completed
-                  </IonText>
+                  <IonRow className='ion-justify-content-center'>
+                    <IonText
+                      style={{
+                        fontSize: "1.2rem",
+                        fontWeight: 600,
+                      }}
+                    >
+                      20
+                    </IonText>
+                  </IonRow>
+                  <IonRow className='ion-justify-content-center'>
+                    <IonText style={{ fontSize: "1.1rem", fontWeight: 500 }}>
+                      Challenges Completed
+                    </IonText>
+                  </IonRow>
                 </IonCardContent>
               </IonCard>
             </IonCol>
@@ -195,15 +207,21 @@ const Profile: React.FC = () => {
                 color='tertiary'
               >
                 <IonCardContent>
-                  <IonText
-                    style={{
-                      fontSize: "1.2rem",
-                      fontWeight: 600,
-                      padding: "1rem",
-                    }}
-                  >
-                    4 Shameful Failures
-                  </IonText>
+                  <IonRow className='ion-justify-content-center'>
+                    <IonText
+                      style={{
+                        fontSize: "1.2rem",
+                        fontWeight: 600,
+                      }}
+                    >
+                      4
+                    </IonText>
+                  </IonRow>
+                  <IonRow className='ion-justify-content-center'>
+                    <IonText style={{ fontSize: "1.1rem", fontWeight: 500 }}>
+                      Shameful Failures
+                    </IonText>
+                  </IonRow>
                 </IonCardContent>
               </IonCard>
             </IonCol>

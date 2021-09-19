@@ -6,6 +6,8 @@ import ProfileSetUp from "./ProfileSetUp";
 import LoadingSpinner from "../loadingSpinner";
 import Alert from "../alert";
 import AvatarRandomizer from "./AvatarRandomizer";
+import { useUser } from "../../contexts/UserContext";
+import { Avatar, Settings } from "../../interfaces/models/Users";
 
 interface ProfileSetUpModalProps {
   showModal: boolean;
@@ -15,7 +17,8 @@ interface ProfileSetUpModalProps {
 export interface ProfileSetUpModalState {
   displayName: string;
   username: string;
-  avatar: string;
+  settings: Settings;
+  avatar: Avatar;
   isLoading: boolean;
   showAlert: boolean;
   alertHeader: string;
@@ -29,6 +32,7 @@ export interface ProfileSetUpModalState {
 const ProfileSetUpModal: React.FC<ProfileSetUpModalProps> = (
   props: ProfileSetUpModalProps
 ) => {
+  const { updateProfile } = useUser();
   const { showModal, setShowModal } = props;
   const [pageNumber, setPageNumber] = useState(0);
   const [animationDirection, setAnimationDirection] = useState("left");
@@ -41,7 +45,15 @@ const ProfileSetUpModal: React.FC<ProfileSetUpModalProps> = (
     {
       displayName: "",
       username: "",
-      avatar: "",
+      settings: {
+        deadlineReminder: true,
+        invitations: true,
+      },
+      avatar: {
+        animal: "CAT",
+        color: "BROWN",
+        background: "#cdcdcd",
+      },
       isLoading: false,
       showAlert: false,
       alertHeader: "",
@@ -53,6 +65,29 @@ const ProfileSetUpModal: React.FC<ProfileSetUpModalProps> = (
     }
   );
 
+  const handleProfileUpdate = async () => {
+    console.log("What");
+    setState({ isLoading: true });
+    try {
+      await updateProfile(
+        state.displayName,
+        state.username,
+        state.settings,
+        state.avatar
+      );
+      setState({ isLoading: false });
+      setAnimationDirection("left");
+      setPageNumber(1);
+    } catch (error) {
+      setState({
+        isLoading: false,
+        showAlert: true,
+        alertHeader: "Ooooops",
+        alertMessage: "This username is already taken, maybe try another one?",
+      });
+    }
+  };
+
   const renderPage = () => {
     switch (pageNumber) {
       case 0:
@@ -60,10 +95,8 @@ const ProfileSetUpModal: React.FC<ProfileSetUpModalProps> = (
           <ProfileSetUp
             state={state}
             setState={setState}
-            completionCallback={() => {
-              setAnimationDirection("left");
-              setPageNumber(1);
-            }}
+            setShowModal={setShowModal}
+            completionCallback={handleProfileUpdate}
           />
         );
       case 1:
@@ -74,8 +107,16 @@ const ProfileSetUpModal: React.FC<ProfileSetUpModalProps> = (
             completionCallback={() => {
               setState({
                 displayName: "",
-                avatar: "",
                 username: "",
+                settings: {
+                  deadlineReminder: true,
+                  invitations: true,
+                },
+                avatar: {
+                  animal: "CAT",
+                  color: "BROWN",
+                  background: "#cdcdcd",
+                },
               });
               setShowModal(false);
               setTimeout(() => {

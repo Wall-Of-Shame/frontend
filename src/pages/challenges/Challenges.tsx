@@ -30,8 +30,11 @@ import { chevronForward, addOutline } from "ionicons/icons";
 import { hideTabs, showTabs } from "../../utils/TabsUtils";
 import { useHistory, useLocation } from "react-router";
 import SetUpProfileModal from "../../components/setupProfile/ProfileSetUpModal";
+import { useUser } from "../../contexts/UserContext";
 
 const Challenges: React.FC = () => {
+  const { user } = useUser();
+
   const [tab, setTab] = useState("ongoing");
   const [showModal, setShowModal] = useState(false);
   const location = useLocation();
@@ -50,9 +53,13 @@ const Challenges: React.FC = () => {
   }, [location.pathname]);
 
   useEffect(() => {
+    console.log(user);
     setTimeout(() => {
-      setShowModal(true);
+      if (!user?.username || !user?.name) {
+        setShowModal(true);
+      }
     }, 1000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
