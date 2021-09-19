@@ -3,49 +3,41 @@ import {
   IonBackButton,
   IonButton,
   IonButtons,
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardTitle,
-  IonCol,
   IonContent,
-  IonGrid,
   IonHeader,
   IonIcon,
+  IonInput,
+  IonItem,
   IonLabel,
+  IonList,
   IonPage,
-  IonRow,
-  IonSegment,
-  IonSegmentButton,
   IonText,
   IonTitle,
-  IonToggle,
   IonToolbar,
 } from "@ionic/react";
 import "./EditProfile.scss";
 import { useEffect, useState } from "react";
-import { arrowBackOutline, checkmark } from "ionicons/icons";
-import { useHistory, useLocation } from "react-router";
+import { close, checkmark } from "ionicons/icons";
+import yoda from "../../../assets/avatar-yoda.png";
 
 const EditProfile: React.FC = () => {
-  const [tab, setTab] = useState("ongoing");
-
   return (
     <IonPage>
       <IonHeader className="ion-no-border">
         <IonToolbar>
           <IonTitle
             style={{
-              marginTop: "1rem",
+              marginTop: "0.9rem",
+              textAlign: "left",
+              fontSize: "1.2rem"
             }}
-            slot="start"
           >
             Edit Profile
           </IonTitle>
           <IonButtons slot="start">
             <IonBackButton
               text=""
-              icon={arrowBackOutline}
+              icon={close}
               color="dark"
               style={{
                 marginTop: "1.5rem",
@@ -72,7 +64,43 @@ const EditProfile: React.FC = () => {
       </IonHeader>
 
       <IonContent fullscreen>
+        <div className="edit-avatar-container">
+          <IonAvatar className="edit-profile-avatar ion-margin-bottom">
+            <img src={yoda} />
+          </IonAvatar>
+          <IonText>Pick another avatar</IonText>
+        </div>
 
+        <IonList className="ion-padding-vertical">
+          <IonItem lines="full" className="ion-margin-bottom">
+            <IonLabel color="primary" position="floating">
+              Display name
+            </IonLabel>
+            <IonInput
+              name="display_name"
+              type="text"
+              value="John Tan"
+              required
+              // onIonChange={(event: CustomEvent) => {
+              //   setState({ displayName: event.detail.value });
+              // }}
+            />
+          </IonItem>
+          <IonItem lines="full">
+            <IonLabel color="primary" position="floating">
+              Username
+            </IonLabel>
+            <IonInput
+              name="username"
+              type="text"
+              value="johntan98"
+              required
+              // onIonChange={(event: CustomEvent) => {
+              //   setState({ username: event.detail.value });
+              // }}
+            />
+          </IonItem>
+        </IonList>
       </IonContent>
     </IonPage>
   );

@@ -1,34 +1,22 @@
 import {
-  IonAvatar,
   IonBackButton,
-  IonButton,
   IonButtons,
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardTitle,
   IonCol,
   IonContent,
   IonGrid,
   IonHeader,
-  IonIcon,
-  IonLabel,
   IonPage,
   IonRow,
-  IonSegment,
-  IonSegmentButton,
   IonText,
   IonTitle,
   IonToggle,
   IonToolbar,
 } from "@ionic/react";
 import "./Settings.scss";
-import { useEffect, useState } from "react";
-import { arrowBackOutline, checkmark } from "ionicons/icons";
-import { useHistory, useLocation } from "react-router";
+import { useState } from "react";
+import { arrowBackOutline } from "ionicons/icons";
 
 const Settings: React.FC = () => {
-  const [tab, setTab] = useState("ongoing");
 
   return (
     <IonPage>
@@ -36,9 +24,10 @@ const Settings: React.FC = () => {
         <IonToolbar>
           <IonTitle
             style={{
-              marginTop: "1rem",
+              marginTop: "0.9rem",
+              textAlign: "left",
+              fontSize: "1.2rem"
             }}
-            slot="start"
           >
             Settings
           </IonTitle>
