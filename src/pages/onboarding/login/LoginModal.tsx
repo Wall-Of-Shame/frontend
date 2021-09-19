@@ -68,6 +68,7 @@ const LoginModal: React.FC<LoginModalProps> = (props: LoginModalProps) => {
     login(state.email, state.password)
       .then(() => {
         setState({ isLoading: false });
+        window.location.reload();
       })
       .catch((error) => {
         setState({
@@ -116,7 +117,7 @@ const LoginModal: React.FC<LoginModalProps> = (props: LoginModalProps) => {
                 }
                 position='floating'
               >
-                Email
+                Email*
               </IonLabel>
               <IonInput
                 name='name'
@@ -131,7 +132,7 @@ const LoginModal: React.FC<LoginModalProps> = (props: LoginModalProps) => {
             </IonItem>
             <IonItem lines='full'>
               <IonLabel color='primary' position='floating'>
-                Password
+                Password*
               </IonLabel>
               <IonInput
                 name='name'

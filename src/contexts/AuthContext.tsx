@@ -17,6 +17,7 @@ import LoadingSpinner from "../components/loadingSpinner/LoadingSpinner";
 import AuthContextInterface from "../interfaces/contexts/AuthContext";
 import AuthService from "../services/AuthService";
 import { FirebaseError } from "@firebase/util";
+import TokenUtils from "../utils/TokenUtils";
 
 const googleProvider = new GoogleAuthProvider();
 const facebookProvider = new FacebookAuthProvider();
@@ -75,7 +76,8 @@ const AuthProvider: React.FunctionComponent = (props) => {
       const user = userCredential.user;
       await sendEmailVerification(user);
       const token = await user.getIdToken();
-      AuthService.signup(token);
+      AuthService.login(token);
+      await AuthService.getUser();
     } catch (error) {
       console.log(error);
       return Promise.reject(error);
@@ -126,13 +128,13 @@ const AuthProvider: React.FunctionComponent = (props) => {
         password
       );
       const user = userCredential.user;
-      try {
-        const token = await user.getIdToken();
-        await AuthService.login(token);
-      } catch (error) {
-        return Promise.reject(error);
-      }
-      console.log(user);
+      const token = await user.getIdToken();
+      console.log("Token");
+      console.log(token);
+      await AuthService.login(token);
+      await AuthService.getUser().then(() => {
+        reload();
+      });
     } catch (error) {
       console.log(error);
       return Promise.reject(error);

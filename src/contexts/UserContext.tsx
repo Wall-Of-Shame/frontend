@@ -1,6 +1,7 @@
 import React from "react";
 
 import UserContextInterface from "../interfaces/contexts/UserContext";
+import { Avatar, Settings } from "../interfaces/models/Users";
 
 import { useAuth } from "./AuthContext";
 
@@ -11,7 +12,17 @@ const UserContext = React.createContext<UserContextInterface | undefined>(
 // Allows user data to be accessible from everywhere
 const UserProvider: React.FunctionComponent = (props) => {
   const { data } = useAuth();
-  return <UserContext.Provider value={{ user: data }} {...props} />;
+
+  const updateProfile = async (
+    name: string,
+    username: string,
+    settings: Settings,
+    avatar: Avatar
+  ): Promise<void> => {};
+
+  return (
+    <UserContext.Provider value={{ user: data, updateProfile }} {...props} />
+  );
 };
 
 const useUser = (): UserContextInterface => {

@@ -1,4 +1,4 @@
-import { IonApp, IonRouterOutlet, IonSplitPane } from "@ionic/react";
+import { IonApp, IonRouterOutlet } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { Redirect, Route, Switch } from "react-router-dom";
 
@@ -30,14 +30,12 @@ const UnauthenticatedApp: React.FC = () => {
   return (
     <IonApp>
       <IonReactRouter>
-        <IonSplitPane contentId='main' when='(min-width: 0px)'>
-          <IonRouterOutlet id='main'>
-            <Switch>
-              <Route exact path='/onboarding' component={Onboarding} />
-              <Route render={redirectToOnboarding} />
-            </Switch>
-          </IonRouterOutlet>
-        </IonSplitPane>
+        <IonRouterOutlet id='main'>
+          <Switch>
+            <Route exact path='/onboarding' component={Onboarding} />
+            <Route render={redirectToOnboarding} />
+          </Switch>
+        </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>
   );

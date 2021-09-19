@@ -1,7 +1,11 @@
-import { UserData } from "../models/Users";
+import { Avatar, Settings, UserData } from "../models/Users";
 
-type UserContextInterface = {
+export default interface UserContextInterface {
   user: UserData | null;
-};
-
-export default UserContextInterface;
+  updateProfile(
+    name: string,
+    username: string,
+    settings: Settings,
+    avatar: Avatar
+  ): Promise<void>;
+}

@@ -1,8 +1,7 @@
 import store from "../app/store";
-import { GENERAL_ERROR } from "../constants/Messages";
 import { UserData } from "../interfaces/models/Users";
 import { clearUser, setUser } from "../reducers/MiscDux";
-import ApiService from "../services/APIService";
+import APIService from "../services/APIService";
 import TokenUtils from "../utils/TokenUtils";
 
 const logout = (): Promise<void> => {
@@ -11,30 +10,20 @@ const logout = (): Promise<void> => {
   return Promise.resolve();
 };
 
-const signup = async (token: string): Promise<null> => {
+const login = async (token: string): Promise<void> => {
   const data = {
     token: token,
   };
-  const response = await ApiService.post("users/create", data).catch(
-    (error: any) => {
-      return Promise.reject(
-        new Error(error.response?.data?.error ?? GENERAL_ERROR)
-      );
-    }
-  );
-  return TokenUtils.storeToken(response);
-};
-
-const login = async (token: string): Promise<null> => {
-  const data = {
-    token: token,
-  };
-  const response = await ApiService.post("auth", data).catch((error: any) => {
-    return Promise.reject(
-      new Error(error.response?.data?.error ?? GENERAL_ERROR)
-    );
-  });
-  return TokenUtils.storeToken(response);
+  try {
+    const response = await APIService.post("auth", data);
+    console.log(response);
+    console.log("WTF");
+    await TokenUtils.storeToken(response);
+    store.dispatch(setUser(response.data.user));
+  } catch (error: any) {
+    console.log(error);
+    return Promise.reject(error);
+  }
 };
 
 const getUser = async (): Promise<UserData | null> => {
@@ -44,22 +33,24 @@ const getUser = async (): Promise<UserData | null> => {
   }
 
   try {
-    const response = await ApiService.get("users/self");
+    const response = await APIService.get("self");
     if (response.status === 200) {
-      const { user } = response.data;
+      console.log("Damn");
+      console.log(response);
+      const user = response.data;
+      console.log(user);
       store.dispatch(setUser(user));
       return user;
     }
     throw new Error(response.statusText);
   } catch (error) {
-    logout();
+    //logout();
     return Promise.reject(error);
   }
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-  signup,
   login,
   logout,
   getUser,
