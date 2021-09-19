@@ -1,7 +1,6 @@
 import {
   IonApp,
   IonIcon,
-  IonLabel,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
@@ -38,11 +37,16 @@ import CreateChallenge from "../pages/challenges/create";
 import EditProfile from "../pages/profile/edit";
 import Settings from "../pages/profile/settings";
 
+import "./App.scss";
+import { useState } from "react";
+
 const redirectToChallenges = (): React.ReactNode => (
   <Redirect to={"/challenges"} />
 );
 
 const AuthenticatedApp: React.FC = () => {
+  const [tab, setTab] = useState("challenges");
+
   return (
     <IonApp>
       <IonReactRouter>
@@ -71,18 +75,36 @@ const AuthenticatedApp: React.FC = () => {
             </Route>
             <Route render={redirectToChallenges} />
           </IonRouterOutlet>
-          <IonTabBar slot='bottom' className='tabs-nav'>
+          <IonTabBar
+            slot='bottom'
+            className='tabs-nav'
+            onIonTabsDidChange={(e) => {
+              setTab(e.detail.tab);
+            }}
+          >
             <IonTabButton tab='challenges' href='/challenges'>
               <IonIcon icon={alarm} />
-              <IonLabel>Challenges</IonLabel>
+              {tab === "challenges" && (
+                <div className='indicator'>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+              )}
             </IonTabButton>
             <IonTabButton tab='wall-of-shame' href='/wall-of-shame'>
               <IonIcon icon={statsChart} />
-              <IonLabel>Wall of Shame</IonLabel>
+              {tab === "wall-of-shame" && (
+                <div className='indicator'>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+              )}
             </IonTabButton>
             <IonTabButton tab='profile' href='/profile'>
               <IonIcon icon={person} />
-              <IonLabel>Profile</IonLabel>
+              {tab === "profile" && (
+                <div className='indicator'>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+              )}
             </IonTabButton>
           </IonTabBar>
         </IonTabs>

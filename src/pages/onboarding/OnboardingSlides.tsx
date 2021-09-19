@@ -156,7 +156,8 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
                 Have an account?&nbsp;
                 <Link
                   to={"#"}
-                  style={{ textDecoration: "none", color: "#000" }}
+                  color='primary'
+                  style={{ textDecoration: "none" }}
                   onClick={() => {
                     setShowLoginModal(true);
                   }}
