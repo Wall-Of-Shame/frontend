@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   IonAvatar,
   IonButton,
@@ -11,18 +12,28 @@ import {
   IonGrid,
   IonHeader,
   IonIcon,
+  IonItem,
+  IonLabel,
+  IonList,
   IonPage,
   IonRow,
   IonText,
   IonTitle,
   IonToolbar,
+  IonPopover,
 } from "@ionic/react";
 import yoda from "../../assets/avatar-yoda.png";
 import rey from "../../assets/avatar-rey.png";
 import poe from "../../assets/avatar-poe.png";
 import luke from "../../assets/avatar-luke.png";
 import { useEffect } from "react";
-import { chevronForward, ellipsisVertical } from "ionicons/icons";
+import {
+  chevronForward,
+  ellipsisVertical,
+  createOutline,
+  settingsOutline,
+  logOutOutline,
+} from "ionicons/icons";
 import { useLocation } from "react-router";
 import Container from "../../components/container/Container";
 import { useAuth } from "../../contexts/AuthContext";
@@ -32,6 +43,10 @@ import "./Profile.scss";
 const Profile: React.FC = () => {
   const { logout } = useAuth();
   const location = useLocation();
+  const [popoverState, setShowPopover] = useState({
+    showPopover: false,
+    event: undefined,
+  });
 
   useEffect(() => {
     if (
@@ -47,6 +62,49 @@ const Profile: React.FC = () => {
 
   return (
     <IonPage>
+      <IonPopover
+        cssClass="popover"
+        event={popoverState.event}
+        isOpen={popoverState.showPopover}
+        onDidDismiss={() =>
+          setShowPopover({ showPopover: false, event: undefined })
+        }
+      >
+        <IonList>
+          <IonItem button detail={false} lines="none">
+            <IonIcon
+              slot="start"
+              icon={createOutline}
+              style={{ fontSize: "24px" }}
+            />
+            <IonLabel>Edit profile</IonLabel>
+          </IonItem>
+          <IonItem button detail={false} lines="none">
+            <IonIcon
+              slot="start"
+              icon={settingsOutline}
+              style={{ fontSize: "24px" }}
+            />
+            <IonLabel>Settings</IonLabel>
+          </IonItem>
+          <IonItem
+            button
+            detail={false}
+            lines="none"
+            onClick={() => {
+              logout();
+            }}
+          >
+            <IonIcon
+              slot="start"
+              icon={logOutOutline}
+              style={{ fontSize: "24px" }}
+            />
+            <IonLabel>Log out</IonLabel>
+          </IonItem>
+        </IonList>
+      </IonPopover>
+
       <IonHeader className="ion-no-border">
         <IonToolbar>
           <IonButtons slot="end">
@@ -55,7 +113,10 @@ const Profile: React.FC = () => {
                 marginRight: "1rem",
               }}
               color="dark"
-              onClick={() => null}
+              onClick={(e: any) => {
+                e.persist();
+                setShowPopover({ showPopover: true, event: e });
+              }}
             >
               <IonIcon
                 slot="end"
@@ -96,10 +157,10 @@ const Profile: React.FC = () => {
           </IonRow>
         </IonGrid>
 
-        <IonGrid style = {{ paddingBottom: "2rem" }}>
+        <IonGrid style={{ paddingBottom: "2rem" }}>
           <IonRow className="ion-align-items-center">
             <IonCol>
-              <IonCard className="profile-statistic" color='senary'>
+              <IonCard className="profile-statistic" color="senary">
                 <IonCardContent>
                   <IonText style={{ fontSize: "1.2rem", fontWeight: 600 }}>
                     20 Challenges Completed
@@ -108,9 +169,15 @@ const Profile: React.FC = () => {
               </IonCard>
             </IonCol>
             <IonCol>
-              <IonCard className="profile-statistic" color='tertiary'>
+              <IonCard className="profile-statistic" color="tertiary">
                 <IonCardContent>
-                  <IonText style={{ fontSize: "1.2rem", fontWeight: 600, padding: "1rem" }}>
+                  <IonText
+                    style={{
+                      fontSize: "1.2rem",
+                      fontWeight: 600,
+                      padding: "1rem",
+                    }}
+                  >
                     4 Shameful Failures
                   </IonText>
                 </IonCardContent>
@@ -119,7 +186,14 @@ const Profile: React.FC = () => {
           </IonRow>
         </IonGrid>
 
-        <IonText style={{ fontSize: "1rem", fontWeight: 600, paddingLeft: "1rem", color: "grey"}}>
+        <IonText
+          style={{
+            fontSize: "1rem",
+            fontWeight: 600,
+            paddingLeft: "1rem",
+            color: "grey",
+          }}
+        >
           Challenge history
         </IonText>
 
