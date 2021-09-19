@@ -35,6 +35,8 @@ import Profile from "../pages/profile";
 import WallOfShame from "../pages/wallOfShame";
 import ChallengeDetails from "../pages/challenges/details";
 import CreateChallenge from "../pages/challenges/create";
+import EditProfile from "../pages/profile/edit";
+import Settings from "../pages/profile/settings";
 
 const redirectToChallenges = (): React.ReactNode => (
   <Redirect to={"/challenges"} />
@@ -60,6 +62,12 @@ const AuthenticatedApp: React.FC = () => {
             </Route>
             <Route exact path='/profile'>
               <Profile />
+            </Route>
+            <Route exact path='/profile/edit'>
+              <EditProfile />
+            </Route>
+            <Route exact path='/profile/settings'>
+              <Settings />
             </Route>
             <Route render={redirectToChallenges} />
           </IonRouterOutlet>
