@@ -146,7 +146,11 @@ const WallOfShame: React.FC = () => {
       case "shameful":
         return (
           <IonList>
-            <IonItem className='ion-padding-horizontal' lines='none'>
+            <IonItem
+              className='ion-padding-horizontal'
+              style={{ paddingBottom: "1rem" }}
+              lines='full'
+            >
               <IonLabel>Country</IonLabel>
               <IonSelect
                 ok-text='Okay'

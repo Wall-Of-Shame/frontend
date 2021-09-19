@@ -4,12 +4,15 @@ import {
   IonButtons,
   IonCol,
   IonContent,
+  IonDatetime,
   IonGrid,
   IonHeader,
   IonIcon,
   IonInput,
+  IonItem,
   IonItemDivider,
   IonLabel,
+  IonList,
   IonPage,
   IonRadio,
   IonRadioGroup,
@@ -19,7 +22,8 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { addOutline, arrowBackOutline, pencil } from "ionicons/icons";
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
+import { addYears, format, formatISO } from "date-fns";
 import "./CreateChallenge.scss";
 
 interface CreateChallengeProps {}
@@ -58,6 +62,10 @@ const CreateChallenge: React.FC<CreateChallengeProps> = () => {
       cancelHandler: () => {},
       okHandler: undefined,
     }
+  );
+
+  const [selectedDate, setSelectedDate] = useState<string>(
+    Date.now().toString()
   );
 
   return (
@@ -185,6 +193,26 @@ const CreateChallenge: React.FC<CreateChallengeProps> = () => {
               </IonRow>
             </IonRadioGroup>
           </IonRow>
+        </IonGrid>
+        <IonGrid>
+          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
+            <IonText style={{ fontWeight: "bold" }}>
+              When does the challenge end?
+            </IonText>
+          </IonRow>
+          <IonList>
+            <IonItem lines='none'>
+              <IonLabel>End time</IonLabel>
+              <IonDatetime
+                displayFormat='D MMM YYYY HH:mm'
+                min={formatISO(Date.now()).slice(0, -6)}
+                max={formatISO(addYears(Date.now(), 10)).slice(0, -6)}
+                value={selectedDate}
+                placeholder={format(Date.now(), "d MMM yyyy HH:mm")}
+                onIonChange={(e) => setSelectedDate(e.detail.value!)}
+              ></IonDatetime>
+            </IonItem>
+          </IonList>
         </IonGrid>
         <IonItemDivider style={{ marginBottom: "0.25rem" }} />
         <IonGrid>

@@ -81,6 +81,13 @@ const AuthProvider: React.FunctionComponent = (props) => {
         password
       );
       const user = userCredential.user;
+      try {
+        const token = await user.getIdToken();
+        console.log("HAHA");
+        console.log(token);
+      } catch (error) {
+        return Promise.reject(error);
+      }
       console.log(user);
     } catch (error) {
       console.log(error);
