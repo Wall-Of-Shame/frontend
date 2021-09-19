@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react/jsx-props-no-spreading */
 import React from "react";
 import { useAsync } from "react-async";
@@ -7,11 +8,18 @@ import {
   sendEmailVerification,
   signInWithEmailAndPassword,
   User,
+  FacebookAuthProvider,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 import { auth } from "../firebase";
 import LoadingSpinner from "../components/loadingSpinner/LoadingSpinner";
 import AuthContextInterface from "../interfaces/contexts/AuthContext";
 import AuthService from "../services/AuthService";
+import { FirebaseError } from "@firebase/util";
+
+const googleProvider = new GoogleAuthProvider();
+const facebookProvider = new FacebookAuthProvider();
 
 const AuthContext = React.createContext<AuthContextInterface | undefined>(
   undefined
@@ -65,10 +73,47 @@ const AuthProvider: React.FunctionComponent = (props) => {
         password
       );
       const user = userCredential.user;
-      sendEmailVerification(user);
-      console.log(user);
+      await sendEmailVerification(user);
+      const token = await user.getIdToken();
+      AuthService.signup(token);
     } catch (error) {
       console.log(error);
+      return Promise.reject(error);
+    }
+  };
+
+  const continueWithGoogle = async (): Promise<void> => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const credential = GoogleAuthProvider.credentialFromResult(result)!;
+      const idToken = await result.user.getIdToken();
+      console.log(idToken);
+    } catch (error: any) {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.email;
+      // The AuthCredential type that was used.
+      const credential = GoogleAuthProvider.credentialFromError(error);
+      return Promise.reject(error);
+    }
+  };
+
+  const continueWithFacebook = async (): Promise<void> => {
+    try {
+      const result = await signInWithPopup(auth, facebookProvider);
+      const credential = FacebookAuthProvider.credentialFromResult(result)!;
+      const idToken = await result.user.getIdToken();
+      console.log(idToken);
+    } catch (error: any) {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.email;
+      // The AuthCredential type that was used.
+      const credential = GoogleAuthProvider.credentialFromError(error);
       return Promise.reject(error);
     }
   };
@@ -83,8 +128,7 @@ const AuthProvider: React.FunctionComponent = (props) => {
       const user = userCredential.user;
       try {
         const token = await user.getIdToken();
-        console.log("HAHA");
-        console.log(token);
+        await AuthService.login(token);
       } catch (error) {
         return Promise.reject(error);
       }
@@ -133,6 +177,8 @@ const AuthProvider: React.FunctionComponent = (props) => {
         data,
         signup,
         login,
+        continueWithGoogle,
+        continueWithFacebook,
         refreshFirebaseUser,
         getFirebaseUser,
         resendVerificationEmail,

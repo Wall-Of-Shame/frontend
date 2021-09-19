@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   IonButton,
   IonIcon,
@@ -8,24 +7,13 @@ import {
   IonText,
 } from "@ionic/react";
 import React from "react";
-import GoogleLogin from "react-google-login";
-import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { logoGoogle, logoFacebook } from "ionicons/icons";
-import {
-  FacebookAuthProvider,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signInWithRedirect,
-} from "firebase/auth";
 
 import "./Onboarding.scss";
 import { Link } from "react-router-dom";
 import Container from "../../components/container/Container";
 import "./OnboardingSlides.scss";
-import { auth } from "../../firebase";
-
-const googleProvider = new GoogleAuthProvider();
-const facebookProvider = new FacebookAuthProvider();
+import { useAuth } from "../../contexts/AuthContext";
 
 interface OnboardingSlidesProps {
   initSwiper: (this: any) => Promise<void>;
@@ -40,21 +28,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
   setShowLoginModal,
   swiperCallback,
 }) => {
-  const onGoogleLoginSuccess = (response: any) => {
-    console.log(response);
-  };
-
-  const onGoogleLoginFailure = (response: any) => {
-    console.log(response);
-  };
-
-  const onFacebookLogin = (response: any) => {
-    console.log(response);
-  };
-
-  auth.onAuthStateChanged(function (user) {
-    // console.log(user);
-  });
+  const { continueWithGoogle, continueWithFacebook } = useAuth();
 
   return (
     <IonSlides
@@ -138,34 +112,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
               shape='round'
               color='quaternary'
               style={{ margin: "1rem" }}
-              onClick={() => {
-                signInWithPopup(auth, googleProvider)
-                  .then((result) => {
-                    // This gives you a Google Access Token. You can use it to access the Google API.
-                    const credential =
-                      GoogleAuthProvider.credentialFromResult(result)!;
-                    const token = credential.accessToken;
-                    console.log(credential);
-
-                    // The signed-in user info.
-                    const user = result.user;
-                    // ...
-                    result.user.getIdToken().then((token) => {
-                      console.log(token);
-                    });
-                  })
-                  .catch((error) => {
-                    // Handle Errors here.
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    // The email of the user's account used.
-                    const email = error.email;
-                    // The AuthCredential type that was used.
-                    const credential =
-                      GoogleAuthProvider.credentialFromError(error);
-                    // ...
-                  });
-              }}
+              onClick={continueWithGoogle}
             >
               <IonIcon src={logoGoogle} />
               &nbsp;&nbsp;Continue with Google
@@ -176,38 +123,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
               shape='round'
               color='tertiary'
               style={{ margin: "1rem" }}
-              onClick={() => {
-                console.log("Sign in");
-                // signInWithRedirect(auth, facebookProvider);
-
-                signInWithPopup(auth, facebookProvider)
-                  .then(async (result) => {
-                    console.log("WTF");
-                    // The signed-in user info.
-                    const user = result.user;
-                    console.log(user);
-                    // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-                    const credential =
-                      FacebookAuthProvider.credentialFromResult(result)!;
-                    const accessToken = credential.accessToken;
-                    try {
-                      console.log(await user.getIdToken());
-                    } catch (error) {}
-                    // ...
-                  })
-                  .catch((error) => {
-                    // Handle Errors here.
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    // The email of the user's account used.
-                    const email = error.email;
-                    // The AuthCredential type that was used.
-                    const credential =
-                      FacebookAuthProvider.credentialFromError(error);
-
-                    // ...
-                  });
-              }}
+              onClick={continueWithFacebook}
             >
               <IonIcon src={logoFacebook} />
               &nbsp;&nbsp;Continue with FaceBook

@@ -1,19 +1,26 @@
-import { DiscardableData } from "./Base";
-
-export interface UserPostData {
+export interface UserData {
+  userId: string;
+  email: string;
   username: string;
   name?: string;
-  password: string | null;
+  completedChallengeCount: number;
+  failedChallengeCount: number;
+  settings: Settings;
 }
 
 export interface UserPatchData {
   username: string;
-  name: string;
+  name?: string;
+  settings: Settings;
 }
 
-export interface UserListData extends DiscardableData {
-  username: string;
-  name: string;
+export interface Settings {
+  deadlineReminder: boolean;
+  invitations: boolean;
 }
 
-export type UserData = UserListData;
+export interface Avatar {
+  animal: "CAT" | "DOG" | "RABBIT";
+  color: string;
+  background: string;
+}

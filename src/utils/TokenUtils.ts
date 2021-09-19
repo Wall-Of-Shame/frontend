@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios";
 
 import LoginData from "../interfaces/models/Auth";
 
-export const ACCESS_TOKEN_KEY = "accessToken";
+export const ACCESS_TOKEN_KEY = "token";
 
 const getAccessToken = (): string | null => {
   return localStorage.getItem(ACCESS_TOKEN_KEY);
