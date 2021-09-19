@@ -88,9 +88,11 @@ const AuthProvider: React.FunctionComponent = (props) => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const credential = GoogleAuthProvider.credentialFromResult(result)!;
-      const idToken = await result.user.getIdToken();
-      console.log(idToken);
+      const token = await result.user.getIdToken();
+      AuthService.login(token);
+      await AuthService.getUser();
     } catch (error: any) {
+      console.log(error);
       // Handle Errors here.
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -106,9 +108,11 @@ const AuthProvider: React.FunctionComponent = (props) => {
     try {
       const result = await signInWithPopup(auth, facebookProvider);
       const credential = FacebookAuthProvider.credentialFromResult(result)!;
-      const idToken = await result.user.getIdToken();
-      console.log(idToken);
+      const token = await result.user.getIdToken();
+      AuthService.login(token);
+      await AuthService.getUser();
     } catch (error: any) {
+      console.log(error);
       // Handle Errors here.
       const errorCode = error.code;
       const errorMessage = error.message;

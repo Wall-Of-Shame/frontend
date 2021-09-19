@@ -112,7 +112,11 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
               shape='round'
               color='quaternary'
               style={{ margin: "1rem" }}
-              onClick={continueWithGoogle}
+              onClick={async () => {
+                continueWithGoogle().then(() => {
+                  window.location.reload();
+                });
+              }}
             >
               <IonIcon src={logoGoogle} />
               &nbsp;&nbsp;Continue with Google
@@ -123,7 +127,11 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
               shape='round'
               color='tertiary'
               style={{ margin: "1rem" }}
-              onClick={continueWithFacebook}
+              onClick={async () => {
+                continueWithFacebook().then(() => {
+                  window.location.reload();
+                });
+              }}
             >
               <IonIcon src={logoFacebook} />
               &nbsp;&nbsp;Continue with FaceBook

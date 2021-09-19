@@ -16,7 +16,7 @@ const App: React.FC = () => {
   const user = useUser();
 
   console.log("In App");
-  console.log(user);
+  console.log(user.user);
   return (
     <React.Suspense
       fallback={
