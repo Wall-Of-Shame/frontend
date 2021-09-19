@@ -34,7 +34,7 @@ import {
   settingsOutline,
   logOutOutline,
 } from "ionicons/icons";
-import { useLocation } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import Container from "../../components/container/Container";
 import { useAuth } from "../../contexts/AuthContext";
 import { hideTabs, showTabs } from "../../utils/TabsUtils";
@@ -43,6 +43,7 @@ import "./Profile.scss";
 const Profile: React.FC = () => {
   const { logout } = useAuth();
   const location = useLocation();
+  const history = useHistory();
   const [popoverState, setShowPopover] = useState({
     showPopover: false,
     event: undefined,
@@ -71,7 +72,15 @@ const Profile: React.FC = () => {
         }
       >
         <IonList>
-          <IonItem button detail={false} lines="none">
+          <IonItem
+            button
+            detail={false}
+            lines="none"
+            onClick={() => {
+              setShowPopover({ showPopover: false, event: undefined });
+              history.push("/profile/edit");
+            }}
+          >
             <IonIcon
               slot="start"
               icon={createOutline}
@@ -79,7 +88,15 @@ const Profile: React.FC = () => {
             />
             <IonLabel>Edit profile</IonLabel>
           </IonItem>
-          <IonItem button detail={false} lines="none">
+          <IonItem
+            button
+            detail={false}
+            lines="none"
+            onClick={() => {
+              setShowPopover({ showPopover: false, event: undefined });
+              history.push("/profile/settings");
+            }}
+          >
             <IonIcon
               slot="start"
               icon={settingsOutline}
@@ -92,6 +109,7 @@ const Profile: React.FC = () => {
             detail={false}
             lines="none"
             onClick={() => {
+              setShowPopover({ showPopover: false, event: undefined });
               logout();
             }}
           >
@@ -110,6 +128,7 @@ const Profile: React.FC = () => {
           <IonButtons slot="end">
             <IonButton
               style={{
+                marginTop: "1.5rem",
                 marginRight: "1rem",
               }}
               color="dark"
@@ -160,7 +179,10 @@ const Profile: React.FC = () => {
         <IonGrid style={{ paddingBottom: "2rem" }}>
           <IonRow className="ion-align-items-center">
             <IonCol>
-              <IonCard className="profile-statistic" color="senary">
+              <IonCard
+                className="profile-statistic ion-text-center"
+                color="senary"
+              >
                 <IonCardContent>
                   <IonText style={{ fontSize: "1.2rem", fontWeight: 600 }}>
                     20 Challenges Completed
@@ -169,7 +191,10 @@ const Profile: React.FC = () => {
               </IonCard>
             </IonCol>
             <IonCol>
-              <IonCard className="profile-statistic" color="tertiary">
+              <IonCard
+                className="profile-statistic ion-text-center"
+                color="tertiary"
+              >
                 <IonCardContent>
                   <IonText
                     style={{
