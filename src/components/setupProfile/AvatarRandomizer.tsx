@@ -1,6 +1,8 @@
 import {
   IonButton,
   IonContent,
+  IonFab,
+  IonIcon,
   IonInput,
   IonItem,
   IonLabel,
@@ -8,21 +10,23 @@ import {
   IonRow,
   IonText,
 } from "@ionic/react";
-import "./SignUpModal.scss";
-import Container from "../../../components/container";
-import "../../../theme/transitions.scss";
-import { SignUpModalState } from "./SignUpModal";
+import "./ProfileSetUpModal.scss";
+import Container from "../container";
+import "../../theme/transitions.scss";
+import { ProfileSetUpModalState } from "./ProfileSetUpModal";
+import { arrowBackOutline } from "ionicons/icons";
 
-interface PersonalDetailsProps {
-  state: SignUpModalState;
-  setState: React.Dispatch<Partial<SignUpModalState>>;
+interface AvatarRandomizerProps {
+  state: ProfileSetUpModalState;
+  setState: React.Dispatch<Partial<ProfileSetUpModalState>>;
   completionCallback: () => void;
+  prevPage: () => void;
 }
 
-const AvatarRandomizer: React.FC<PersonalDetailsProps> = (
-  props: PersonalDetailsProps
+const AvatarRandomizer: React.FC<AvatarRandomizerProps> = (
+  props: AvatarRandomizerProps
 ) => {
-  const { state, setState, completionCallback } = props;
+  const { state, setState, completionCallback, prevPage } = props;
 
   const verifyInputs = (): boolean => {
     // API call to check for uniqueness of username
@@ -31,6 +35,13 @@ const AvatarRandomizer: React.FC<PersonalDetailsProps> = (
 
   return (
     <IonContent fullscreen>
+      <IonFab
+        horizontal='start'
+        vertical='top'
+        style={{ marginTop: "1rem", marginLeft: "0.5rem" }}
+      >
+        <IonIcon icon={arrowBackOutline} size='large' onClick={prevPage} />
+      </IonFab>
       <Container>
         <IonRow slot='start'>
           <IonText
@@ -46,7 +57,7 @@ const AvatarRandomizer: React.FC<PersonalDetailsProps> = (
         <IonList className='ion-padding-vertical'>
           <IonItem lines='full'>
             <IonLabel color='primary' position='floating'>
-              Display name
+              Display name*
             </IonLabel>
             <IonInput
               name='display_name'
@@ -60,7 +71,7 @@ const AvatarRandomizer: React.FC<PersonalDetailsProps> = (
           </IonItem>
           <IonItem lines='full'>
             <IonLabel color='primary' position='floating'>
-              Username
+              Username*
             </IonLabel>
             <IonInput
               name='username'

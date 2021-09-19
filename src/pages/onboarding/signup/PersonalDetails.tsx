@@ -93,7 +93,7 @@ const PersonalDetails: React.FC<PersonalDetailsProps> = (
               }
               position='floating'
             >
-              Email
+              Email*
             </IonLabel>
             <IonInput
               name='name'
@@ -107,7 +107,7 @@ const PersonalDetails: React.FC<PersonalDetailsProps> = (
           </IonItem>
           <IonItem lines='full'>
             <IonLabel color='primary' position='floating'>
-              Password
+              Password*
             </IonLabel>
             <IonInput
               name='name'
@@ -121,7 +121,7 @@ const PersonalDetails: React.FC<PersonalDetailsProps> = (
           </IonItem>
           <IonItem lines='full'>
             <IonLabel color='primary' position='floating'>
-              Confirm Password
+              Confirm Password*
             </IonLabel>
             <IonInput
               name='name'

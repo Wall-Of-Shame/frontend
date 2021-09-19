@@ -29,9 +29,11 @@ import { useEffect, useState } from "react";
 import { chevronForward, addOutline } from "ionicons/icons";
 import { hideTabs, showTabs } from "../../utils/TabsUtils";
 import { useHistory, useLocation } from "react-router";
+import SetUpProfileModal from "../../components/setupProfile/ProfileSetUpModal";
 
 const Challenges: React.FC = () => {
   const [tab, setTab] = useState("ongoing");
+  const [showModal, setShowModal] = useState(false);
   const location = useLocation();
   const history = useHistory();
 
@@ -46,6 +48,12 @@ const Challenges: React.FC = () => {
       showTabs();
     }
   }, [location.pathname]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setShowModal(true);
+    }, 1000);
+  }, []);
 
   return (
     <IonPage>
@@ -84,6 +92,15 @@ const Challenges: React.FC = () => {
             <IonLabel>Pending</IonLabel>
           </IonSegmentButton>
         </IonSegment>
+        <IonButton
+          expand='block'
+          color='quinary'
+          shape='round'
+          onClick={() => setShowModal(true)}
+          style={{ margin: "1.5rem" }}
+        >
+          Set up profile
+        </IonButton>
         <IonCard button routerLink={"challenges/1"}>
           <IonGrid className='ion-no-padding'>
             <IonRow className='ion-align-items-center'>
@@ -282,6 +299,7 @@ const Challenges: React.FC = () => {
             </IonRow>
           </IonGrid>
         </IonCard>
+        <SetUpProfileModal showModal={showModal} setShowModal={setShowModal} />
       </IonContent>
     </IonPage>
   );

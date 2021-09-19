@@ -8,14 +8,14 @@ import {
   IonRow,
   IonText,
 } from "@ionic/react";
-import "./SignUpModal.scss";
-import Container from "../../../components/container";
-import "../../../theme/transitions.scss";
-import { SignUpModalState } from "./SignUpModal";
+import "./ProfileSetUpModal.scss";
+import Container from "../container";
+import "../../theme/transitions.scss";
+import { ProfileSetUpModalState } from "./ProfileSetUpModal";
 
 interface ProfileSetUpProps {
-  state: SignUpModalState;
-  setState: React.Dispatch<Partial<SignUpModalState>>;
+  state: ProfileSetUpModalState;
+  setState: React.Dispatch<Partial<ProfileSetUpModalState>>;
   completionCallback: () => void;
 }
 
@@ -32,21 +32,22 @@ const ProfileSetUp: React.FC<ProfileSetUpProps> = (
   return (
     <IonContent fullscreen>
       <Container>
-        <IonRow slot='start'>
+        <IonRow slot='start' className='ion-text-start'>
           <IonText
             style={{
               fontSize: "32px",
               fontWeight: "bold",
               marginLeft: "1rem",
+              marginRight: "1rem",
             }}
           >
-            Set up your profile
+            Complete your profile set up
           </IonText>
         </IonRow>
         <IonList className='ion-padding-vertical'>
           <IonItem lines='full'>
             <IonLabel color='primary' position='floating'>
-              Display name
+              Display name*
             </IonLabel>
             <IonInput
               name='display_name'
@@ -60,7 +61,7 @@ const ProfileSetUp: React.FC<ProfileSetUpProps> = (
           </IonItem>
           <IonItem lines='full'>
             <IonLabel color='primary' position='floating'>
-              Username
+              Username*
             </IonLabel>
             <IonInput
               name='username'
@@ -79,12 +80,14 @@ const ProfileSetUp: React.FC<ProfileSetUpProps> = (
         <IonButton
           expand='block'
           fill='solid'
+          shape='round'
+          color='secondary'
           className='ion-padding-horizontal'
           style={{ marginTop: "2rem" }}
           disabled={false && !verifyInputs()}
           onClick={completionCallback}
         >
-          Get Started
+          Next
         </IonButton>
       </Container>
     </IonContent>

@@ -45,9 +45,11 @@ const Profile: React.FC = () => {
         <Container>
           <IonButton
             expand='block'
+            color='secondary'
             onClick={() => {
               logout();
             }}
+            style={{ marginBottom: "1rem" }}
           >
             Log out
           </IonButton>

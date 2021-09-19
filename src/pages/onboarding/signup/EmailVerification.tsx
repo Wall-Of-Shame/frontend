@@ -97,6 +97,8 @@ const EmailVerification: React.FC<EmailVerificationProps> = (
         <IonButton
           expand='block'
           fill='solid'
+          shape='round'
+          color='secondary'
           className='ion-padding-horizontal'
           style={{ marginTop: "2rem" }}
           onClick={handleContinue}

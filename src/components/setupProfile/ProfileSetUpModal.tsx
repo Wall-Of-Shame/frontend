@@ -1,23 +1,21 @@
 import { IonModal } from "@ionic/react";
 import { useReducer, useState } from "react";
-import "./SignUpModal.scss";
-import PersonalDetails from "./PersonalDetails";
+import "./ProfileSetUpModal.scss";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import EmailVerification from "./EmailVerification";
-import LoadingSpinner from "../../../components/loadingSpinner";
-import Alert from "../../../components/alert";
+import ProfileSetUp from "./ProfileSetUp";
+import LoadingSpinner from "../loadingSpinner";
+import Alert from "../alert";
+import AvatarRandomizer from "./AvatarRandomizer";
 
-interface SignUpModalProps {
+interface ProfileSetUpModalProps {
   showModal: boolean;
   setShowModal: (showModal: boolean) => void;
 }
 
-export interface SignUpModalState {
-  email: string;
-  password: string;
-  passwordConfirmation: string;
+export interface ProfileSetUpModalState {
   displayName: string;
   username: string;
+  avatar: string;
   isLoading: boolean;
   showAlert: boolean;
   alertHeader: string;
@@ -28,22 +26,22 @@ export interface SignUpModalState {
   okHandler?: () => void;
 }
 
-const SignUpModal: React.FC<SignUpModalProps> = (props: SignUpModalProps) => {
+const ProfileSetUpModal: React.FC<ProfileSetUpModalProps> = (
+  props: ProfileSetUpModalProps
+) => {
   const { showModal, setShowModal } = props;
   const [pageNumber, setPageNumber] = useState(0);
   const [animationDirection, setAnimationDirection] = useState("left");
 
   const [state, setState] = useReducer(
-    (s: SignUpModalState, a: Partial<SignUpModalState>) => ({
+    (s: ProfileSetUpModalState, a: Partial<ProfileSetUpModalState>) => ({
       ...s,
       ...a,
     }),
     {
-      email: "",
-      password: "",
-      passwordConfirmation: "",
       displayName: "",
       username: "",
+      avatar: "",
       isLoading: false,
       showAlert: false,
       alertHeader: "",
@@ -59,11 +57,10 @@ const SignUpModal: React.FC<SignUpModalProps> = (props: SignUpModalProps) => {
     switch (pageNumber) {
       case 0:
         return (
-          <PersonalDetails
+          <ProfileSetUp
             state={state}
             setState={setState}
-            setShowModal={setShowModal}
-            nextPage={() => {
+            completionCallback={() => {
               setAnimationDirection("left");
               setPageNumber(1);
             }}
@@ -71,12 +68,20 @@ const SignUpModal: React.FC<SignUpModalProps> = (props: SignUpModalProps) => {
         );
       case 1:
         return (
-          <EmailVerification
+          <AvatarRandomizer
             state={state}
             setState={setState}
-            nextPage={() => {
-              setAnimationDirection("left");
+            completionCallback={() => {
+              setState({
+                displayName: "",
+                avatar: "",
+                username: "",
+              });
               setShowModal(false);
+              setTimeout(() => {
+                setAnimationDirection("left");
+                setPageNumber(0);
+              }, 300);
             }}
             prevPage={() => {
               setAnimationDirection("right");
@@ -123,4 +128,4 @@ const SignUpModal: React.FC<SignUpModalProps> = (props: SignUpModalProps) => {
   );
 };
 
-export default SignUpModal;
+export default ProfileSetUpModal;
