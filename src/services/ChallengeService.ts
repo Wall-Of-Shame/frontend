@@ -1,9 +1,9 @@
-import { ChallengeData } from "../interfaces/models/Challenges";
+import { ChallengeData, ChallengeList } from "../interfaces/models/Challenges";
 import { Avatar, Settings, UserData } from "../interfaces/models/Users";
 import APIService from "../services/APIService";
 import AuthService from "./AuthService";
 
-const getChallenges = async (): Promise<ChallengeData[]> => {
+const getChallenges = async (): Promise<ChallengeList> => {
   try {
     const response = await APIService.get("challenges");
     return response.data;

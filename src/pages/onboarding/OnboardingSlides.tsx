@@ -170,6 +170,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
                     window.location.reload();
                   })
                   .catch((error) => {
+                    console.log("Should call here");
                     console.log(error);
                     setState({
                       showAlert: true,

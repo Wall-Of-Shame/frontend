@@ -2,14 +2,15 @@
   --background-activated-opacity: 30%;
 }
 
-ion-searchbar {
-  .searchbar-input-container {
-    input {
-      font-size: 19px !important;
-      margin-left: 1rem;
+.modal-search {
+  ion-searchbar {
+    .searchbar-input-container {
+      input {
+        font-size: 19px !important;
+        margin-left: 1rem;
+      }
     }
   }
-
 }
 
 .user-avatar {
@@ -17,4 +18,3 @@ ion-searchbar {
   width: 4rem;
   margin: 0;
 }
-

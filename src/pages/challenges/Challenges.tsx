@@ -26,21 +26,51 @@ import rey from "../../assets/avatar-rey.png";
 import poe from "../../assets/avatar-poe.png";
 import luke from "../../assets/avatar-luke.png";
 import "./Challenges.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { chevronForward, addOutline } from "ionicons/icons";
 import { hideTabs, showTabs } from "../../utils/TabsUtils";
 import { useHistory, useLocation } from "react-router";
 import SetUpProfileModal from "../../components/setupProfile/ProfileSetUpModal";
 import { useUser } from "../../contexts/UserContext";
+import { useChallenge } from "../../contexts/ChallengeContext";
+
+interface ChallengesState {
+  isLoading: boolean;
+  showAlert: boolean;
+  alertHeader: string;
+  alertMessage: string;
+  hasConfirm: boolean;
+  confirmHandler: () => void;
+  cancelHandler: () => void;
+  okHandler?: () => void;
+}
 
 const Challenges: React.FC = () => {
   const { user } = useUser();
+  const location = useLocation();
+  const history = useHistory();
+  const { getAllChallenges } = useChallenge();
 
   const [tab, setTab] = useState("ongoing");
   const [searchText, setSearchText] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const location = useLocation();
-  const history = useHistory();
+
+  const [state, setState] = useReducer(
+    (s: ChallengesState, a: Partial<ChallengesState>) => ({
+      ...s,
+      ...a,
+    }),
+    {
+      isLoading: false,
+      showAlert: false,
+      alertHeader: "",
+      alertMessage: "",
+      hasConfirm: false,
+      confirmHandler: () => {},
+      cancelHandler: () => {},
+      okHandler: undefined,
+    }
+  );
 
   useEffect(() => {
     if (
@@ -55,7 +85,25 @@ const Challenges: React.FC = () => {
   }, [location.pathname]);
 
   useEffect(() => {
-    console.log(user);
+    const fetchData = async () => {
+      try {
+        const allChallenges = await getAllChallenges();
+        console.log(allChallenges);
+        setState({ isLoading: false });
+      } catch (error) {
+        setState({
+          isLoading: false,
+          alertHeader: "Something went wrong",
+          alertMessage: "Please reload and try again later.",
+          showAlert: true,
+        });
+      }
+    };
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     setTimeout(() => {
       if (!user?.username || !user?.name) {
         setShowModal(true);
@@ -87,17 +135,17 @@ const Challenges: React.FC = () => {
               </IonButton>
             </IonButtons>
           </IonToolbar>
-          <IonToolbar style={{ marginTop: "1rem" }}>
+          <IonToolbar className='challenges-search'>
             <IonSearchbar
-              animated
-              debounce={300}
               value={searchText}
-              onIonChange={(e) => {
-                setSearchText(e.detail.value ?? "");
-              }}
+              animated
+              onIonChange={(e) => setSearchText(e.detail.value!)}
+              placeholder='Search'
+              className='ion-margin-top'
             />
           </IonToolbar>
         </IonHeader>
+
         <IonSegment
           onIonChange={(e) => setTab(e.detail.value ?? "active")}
           value={tab}
@@ -110,6 +158,7 @@ const Challenges: React.FC = () => {
             <IonLabel>Pending</IonLabel>
           </IonSegmentButton>
         </IonSegment>
+
         {(!user?.username || !user?.name) && (
           <IonButton
             expand='block'

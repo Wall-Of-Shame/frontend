@@ -38,33 +38,34 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
       isOpen={showModal}
       onDidDismiss={() => setShowModal(false)}
       backdropDismiss={false}
-      cssClass="modal-container"
+      cssClass='modal-container'
     >
       <IonHeader translucent>
-        <IonToolbar className="toolbar">
+        <IonToolbar className='modal-search'>
           <IonSearchbar
+            key='modal-search'
             value={searchText}
             onIonChange={(e) => setSearchText(e.detail.value!)}
-            placeholder="Search for a name or username"
-            showCancelButton="never"
-            className="ion-margin-top"
-            color="white"
+            placeholder='Search for a name or username'
+            showCancelButton='never'
+            className='ion-margin-top'
+            color='white'
           ></IonSearchbar>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonGrid className="ion-margin-top">
+        <IonGrid className='ion-margin-top'>
           <IonText
-            className="ion-margin"
+            className='ion-margin'
             style={{ fontSize: 17, fontWeight: 600 }}
           >
             Recents
           </IonText>
 
-          <IonRow className="ion-margin">
-            <IonCol className="ion-align-item-center" size="3">
-              <IonAvatar className="user-avatar">
-                <img src={luke} alt="user1" />
+          <IonRow className='ion-margin'>
+            <IonCol className='ion-align-item-center' size='3'>
+              <IonAvatar className='user-avatar'>
+                <img src={luke} alt='user1' />
               </IonAvatar>
             </IonCol>
             <IonCol
@@ -73,7 +74,7 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
                 flexDirection: "column",
                 justifyContent: "center",
               }}
-              size="6"
+              size='6'
             >
               <IonRow style={{ paddingBottom: "0.5rem" }}>
                 <IonText style={{ fontSize: 17, fontWeight: 600 }}>yy</IonText>
@@ -86,12 +87,12 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
                 justifyContent: "center",
                 alignItems: "center",
               }}
-              size="3"
+              size='3'
             >
               <IonButton
-                shape="round"
-                color="secondary"
-                fill="solid"
+                shape='round'
+                color='secondary'
+                fill='solid'
                 style={{ height: "2.5rem", width: "4.5rem" }}
               >
                 <IonText
@@ -106,10 +107,10 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
             </IonCol>
           </IonRow>
 
-          <IonRow className="ion-margin">
-            <IonCol className="ion-align-item-center" size="3">
-              <IonAvatar className="user-avatar">
-                <img src={poe} alt="user1" />
+          <IonRow className='ion-margin'>
+            <IonCol className='ion-align-item-center' size='3'>
+              <IonAvatar className='user-avatar'>
+                <img src={poe} alt='user1' />
               </IonAvatar>
             </IonCol>
             <IonCol
@@ -118,7 +119,7 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
                 flexDirection: "column",
                 justifyContent: "center",
               }}
-              size="6"
+              size='6'
             >
               <IonRow style={{ paddingBottom: "0.5rem" }}>
                 <IonText style={{ fontSize: 17, fontWeight: 600 }}>
@@ -133,12 +134,12 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
                 justifyContent: "center",
                 alignItems: "center",
               }}
-              size="3"
+              size='3'
             >
               <IonButton
-                shape="round"
-                color="quinary"
-                fill="solid"
+                shape='round'
+                color='quinary'
+                fill='solid'
                 style={{ height: "2.5rem", width: "4.5rem" }}
               >
                 <IonText
@@ -153,10 +154,10 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
             </IonCol>
           </IonRow>
 
-          <IonRow className="ion-margin">
-            <IonCol className="ion-align-item-center" size="3">
-              <IonAvatar className="user-avatar">
-                <img src={rey} alt="user1" />
+          <IonRow className='ion-margin'>
+            <IonCol className='ion-align-item-center' size='3'>
+              <IonAvatar className='user-avatar'>
+                <img src={rey} alt='user1' />
               </IonAvatar>
             </IonCol>
             <IonCol
@@ -165,7 +166,7 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
                 flexDirection: "column",
                 justifyContent: "center",
               }}
-              size="6"
+              size='6'
             >
               <IonRow style={{ paddingBottom: "0.5rem" }}>
                 <IonText style={{ fontSize: 17, fontWeight: 600 }}>
@@ -180,12 +181,12 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
                 justifyContent: "center",
                 alignItems: "center",
               }}
-              size="3"
+              size='3'
             >
               <IonButton
-                shape="round"
-                color="tertiary"
-                fill="solid"
+                shape='round'
+                color='tertiary'
+                fill='solid'
                 style={{ height: "2.5rem", width: "4.5rem" }}
               >
                 <IonText
@@ -203,7 +204,7 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
       </IonContent>
       <IonFooter>
         <IonToolbar>
-          <IonRow className="ion-margin">
+          <IonRow className='ion-margin'>
             <IonText
               style={{
                 fontSize: 15,
@@ -213,15 +214,15 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
             </IonText>
           </IonRow>
           <IonRow
-            className="ion-justify-content-center"
+            className='ion-justify-content-center'
             style={{ marginBottom: "0.5rem" }}
           >
             <IonButton
-              shape="round"
-              color="primary"
-              fill="outline"
+              shape='round'
+              color='primary'
+              fill='outline'
               style={{ height: "3.2rem" }}
-              className="link-button"
+              className='link-button'
             >
               <IonText
                 style={{
@@ -234,11 +235,11 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
               </IonText>
             </IonButton>
           </IonRow>
-          <IonRow className="ion-justify-content-center">
+          <IonRow className='ion-justify-content-center'>
             <IonButton
-              shape="round"
-              color="secondary"
-              fill="solid"
+              shape='round'
+              color='secondary'
+              fill='solid'
               style={{ height: "3.2rem" }}
             >
               <IonText
@@ -260,8 +261,8 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
             }}
           />
           <IonButton
-            color="white"
-            expand="full"
+            color='white'
+            expand='full'
             onClick={() => setShowModal(false)}
             style={{ color: "black" }}
           >

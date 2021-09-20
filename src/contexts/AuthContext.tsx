@@ -90,6 +90,7 @@ const AuthProvider: React.FunctionComponent = (props) => {
       const result = await signInWithPopup(auth, googleProvider);
       const credential = GoogleAuthProvider.credentialFromResult(result)!;
       const token = await result.user.getIdToken();
+      console.log(token);
       AuthService.login(token);
       await AuthService.getUser();
     } catch (error: any) {

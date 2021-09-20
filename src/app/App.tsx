@@ -15,8 +15,6 @@ const UnauthenticatedAppPage = React.lazy(() => {
 const App: React.FC = () => {
   const user = useUser();
 
-  console.log("In App");
-  console.log(user.user);
   return (
     <React.Suspense
       fallback={

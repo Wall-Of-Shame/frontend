@@ -1,19 +1,22 @@
 import React from "react";
-import { useDispatch } from "react-redux";
 import ChallengeContextInterface from "../interfaces/contexts/ChallengeContext";
-import { ChallengeData, ChallengePost } from "../interfaces/models/Challenges";
+import {
+  ChallengeData,
+  ChallengeList,
+  ChallengePost,
+} from "../interfaces/models/Challenges";
+import ChallengeService from "../services/ChallengeService";
 
 const ChallengeContext = React.createContext<
   ChallengeContextInterface | undefined
 >(undefined);
 
 const ChallengeProvider: React.FC = (props) => {
-  const dispatch = useDispatch();
-
-  const getAllChallenges = async (): Promise<ChallengeData[]> => {
+  const getAllChallenges = async (): Promise<ChallengeList> => {
     try {
-      return [];
-      // eslint-disable-next-line no-unreachable
+      const response = await ChallengeService.getChallenges();
+      console.log(response);
+      return response;
     } catch (error) {
       return Promise.reject(error);
     }
