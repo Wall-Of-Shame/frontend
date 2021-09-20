@@ -19,13 +19,16 @@ interface OnboardingSlidesProps {
   initSwiper: (this: any) => Promise<void>;
   setShowSignUpModal: (showModal: boolean) => void;
   setShowLoginModal: (showModal: boolean) => void;
+  swipeNext: () => void;
   swiperCallback: () => void;
 }
 
 const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
   initSwiper,
+
   setShowSignUpModal,
   setShowLoginModal,
+  swipeNext,
   swiperCallback,
 }) => {
   const { continueWithGoogle, continueWithFacebook } = useAuth();
@@ -46,6 +49,21 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
               The <b>Wall Of Shame</b> is an app for you to achieve your goals
               today... <br /> <b>...by risking your fame 🤪</b>
             </p>
+            <IonRow
+              className='ion-justify-content-center'
+              style={{ marginTop: "2rem" }}
+            >
+              <IonButton
+                color='secondary'
+                shape='round'
+                fill='solid'
+                onClick={swipeNext}
+              >
+                <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
+                  Next
+                </IonText>
+              </IonButton>
+            </IonRow>
           </Container>
         </div>
       </IonSlide>
@@ -64,6 +82,21 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
             <br />
             When you want to cure your <b>procrastination</b> today 🧐
           </p>
+          <IonRow
+            className='ion-justify-content-center'
+            style={{ marginTop: "2rem" }}
+          >
+            <IonButton
+              color='secondary'
+              shape='round'
+              fill='solid'
+              onClick={swipeNext}
+            >
+              <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
+                Next
+              </IonText>
+            </IonButton>
+          </IonRow>
         </Container>
       </IonSlide>
 
@@ -75,6 +108,21 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
             <p>
               Please <b>DO NOT</b> use this if you are thin-skinned or shy 😅
             </p>
+            <IonRow
+              className='ion-justify-content-center'
+              style={{ marginTop: "2rem" }}
+            >
+              <IonButton
+                color='secondary'
+                shape='round'
+                fill='solid'
+                onClick={swipeNext}
+              >
+                <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
+                  Next
+                </IonText>
+              </IonButton>
+            </IonRow>
           </Container>
         </div>
       </IonSlide>

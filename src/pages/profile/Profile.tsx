@@ -76,6 +76,7 @@ const Profile: React.FC = () => {
             button
             detail={false}
             lines='none'
+            style={{ marginTop: "0.5rem" }}
             onClick={() => {
               setShowPopover({ showPopover: false, event: undefined });
               history.push("/profile/edit");
@@ -84,7 +85,7 @@ const Profile: React.FC = () => {
             <IonIcon
               slot='start'
               icon={createOutline}
-              style={{ fontSize: "24px" }}
+              style={{ fontSize: "1.5rem" }}
             />
             <IonLabel>Edit profile</IonLabel>
           </IonItem>
@@ -100,7 +101,7 @@ const Profile: React.FC = () => {
             <IonIcon
               slot='start'
               icon={settingsOutline}
-              style={{ fontSize: "24px" }}
+              style={{ fontSize: "1.5rem" }}
             />
             <IonLabel>Settings</IonLabel>
           </IonItem>
@@ -112,12 +113,12 @@ const Profile: React.FC = () => {
               setShowPopover({ showPopover: false, event: undefined });
               logout();
             }}
-            style={{ marginBottom: "1rem" }}
+            style={{ marginBottom: "0.5rem" }}
           >
             <IonIcon
               slot='start'
               icon={logOutOutline}
-              style={{ fontSize: "24px" }}
+              style={{ fontSize: "1.5rem" }}
             />
             <IonLabel>Log out</IonLabel>
           </IonItem>

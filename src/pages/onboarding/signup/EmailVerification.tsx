@@ -103,7 +103,6 @@ const EmailVerification: React.FC<EmailVerificationProps> = (
           </IonText>
         </IonRow>
         <IonButton
-          expand='block'
           fill='solid'
           shape='round'
           color='secondary'
@@ -111,7 +110,9 @@ const EmailVerification: React.FC<EmailVerificationProps> = (
           style={{ marginTop: "2rem" }}
           onClick={handleContinue}
         >
-          Continue
+          <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
+            Continue
+          </IonText>
         </IonButton>
         <IonRow
           class='ion-justify-content-center'

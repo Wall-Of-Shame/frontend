@@ -78,7 +78,6 @@ const ProfileSetUp: React.FC<ProfileSetUpProps> = (
           <IonText>Your username will allow others to find you easily</IonText>
         </IonRow>
         <IonButton
-          expand='block'
           fill='solid'
           shape='round'
           color='secondary'
@@ -87,7 +86,9 @@ const ProfileSetUp: React.FC<ProfileSetUpProps> = (
           disabled={!verifyInputs()}
           onClick={completionCallback}
         >
-          Next
+          <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
+            Next
+          </IonText>
         </IonButton>
       </Container>
     </IonContent>

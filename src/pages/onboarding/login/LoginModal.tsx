@@ -146,7 +146,6 @@ const LoginModal: React.FC<LoginModalProps> = (props: LoginModalProps) => {
             </IonItem>
           </IonList>
           <IonButton
-            expand='block'
             fill='solid'
             shape='round'
             color='secondary'
@@ -155,7 +154,9 @@ const LoginModal: React.FC<LoginModalProps> = (props: LoginModalProps) => {
             onClick={handleLogin}
             disabled={state.email === "" || state.password === ""}
           >
-            Let's Go
+            <IonText style={{ marginLeft: "1.5rem", marginRight: "1.5rem" }}>
+              Let's Go
+            </IonText>
           </IonButton>
         </Container>
         <LoadingSpinner

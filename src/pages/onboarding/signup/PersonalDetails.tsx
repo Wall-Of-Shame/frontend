@@ -135,7 +135,6 @@ const PersonalDetails: React.FC<PersonalDetailsProps> = (
           </IonItem>
         </IonList>
         <IonButton
-          expand='block'
           fill='solid'
           color='secondary'
           shape='round'
@@ -144,7 +143,9 @@ const PersonalDetails: React.FC<PersonalDetailsProps> = (
           disabled={!verifyInputs()}
           onClick={handleSubmit}
         >
-          Next
+          <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
+            Next
+          </IonText>
         </IonButton>
       </Container>
     </IonContent>

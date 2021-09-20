@@ -100,7 +100,9 @@ const AvatarRandomizer: React.FC<AvatarRandomizerProps> = (
           style={{ marginTop: "2rem" }}
           onClick={completionCallback}
         >
-          &nbsp;&nbsp;&nbsp;Get Started&nbsp;&nbsp;&nbsp;
+          <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
+            Get Started
+          </IonText>
         </IonButton>
       </Container>
     </IonContent>
