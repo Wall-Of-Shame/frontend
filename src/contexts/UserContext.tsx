@@ -15,10 +15,10 @@ const UserProvider: React.FunctionComponent = (props) => {
   const { data } = useAuth();
 
   const updateProfile = async (
-    name?: string,
-    username?: string,
-    settings?: Settings,
-    avatar?: Avatar
+    name: string,
+    username: string,
+    settings: Settings,
+    avatar: Avatar
   ): Promise<void> => {
     const data = {
       name,

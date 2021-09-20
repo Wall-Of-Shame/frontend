@@ -100,7 +100,10 @@ const EditProfile: React.FC = () => {
     updateProfile(
       state.displayName,
       state.username,
-      undefined,
+      user?.settings ?? {
+        deadlineReminder: true,
+        invitations: true,
+      },
       state.avatar
     ).then(() => {
       setState({

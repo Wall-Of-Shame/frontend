@@ -1,10 +1,12 @@
 import {
   IonBackButton,
   IonButtons,
-  IonCol,
   IonContent,
   IonGrid,
   IonHeader,
+  IonItem,
+  IonLabel,
+  IonList,
   IonPage,
   IonRow,
   IonText,
@@ -15,27 +17,78 @@ import {
 import "./Settings.scss";
 import { useState } from "react";
 import { arrowBackOutline } from "ionicons/icons";
+import { useUser } from "../../../contexts/UserContext";
+import { ToggleChangeEventDetail } from "@ionic/core";
 
 const Settings: React.FC = () => {
+  const { user, updateProfile } = useUser();
+  const [settings, setSettings] = useState(
+    user?.settings ?? {
+      deadlineReminder: true,
+      invitations: true,
+    }
+  );
+
+  const handleReminderChange = (
+    event: CustomEvent<ToggleChangeEventDetail>
+  ) => {
+    const newSettings = {
+      deadlineReminder: event.detail.checked,
+      invitations: settings.invitations,
+    };
+    setSettings(newSettings);
+    console.log(newSettings);
+    updateProfile(
+      user?.name ?? "",
+      user?.username ?? "",
+      newSettings,
+      user?.avatar ?? {
+        animal: "CAT",
+        color: "PRIMARY",
+        background: "#ffffff",
+      }
+    );
+  };
+
+  const handleInvitationsChange = (
+    event: CustomEvent<ToggleChangeEventDetail>
+  ) => {
+    console.log(event);
+    const newSettings = {
+      deadlineReminder: settings.deadlineReminder,
+      invitations: event.detail.checked,
+    };
+    setSettings(newSettings);
+    updateProfile(
+      user?.name ?? "",
+      user?.username ?? "",
+      newSettings,
+      user?.avatar ?? {
+        animal: "CAT",
+        color: "PRIMARY",
+        background: "#ffffff",
+      }
+    );
+  };
 
   return (
     <IonPage>
-      <IonHeader className="ion-no-border">
+      <IonHeader className='ion-no-border'>
         <IonToolbar>
           <IonTitle
             style={{
-              marginTop: "0.9rem",
+              marginTop: "0.75rem",
               textAlign: "left",
-              fontSize: "1.2rem"
+              fontSize: "1.5rem",
             }}
           >
             Settings
           </IonTitle>
-          <IonButtons slot="start">
+          <IonButtons slot='start'>
             <IonBackButton
-              text=""
+              text=''
               icon={arrowBackOutline}
-              color="dark"
+              color='dark'
               style={{
                 marginTop: "1.5rem",
                 marginLeft: "1rem",
@@ -47,32 +100,31 @@ const Settings: React.FC = () => {
 
       <IonContent fullscreen>
         <IonGrid style={{ paddingTop: "2.5rem" }}>
-          <IonRow className="ion-padding">
-            <IonText style={{ fontWeight: "bold", fontSize: 19 }}>
+          <IonRow className='ion-padding'>
+            <IonText style={{ fontWeight: "bold", fontSize: 32 }}>
               Notifications
             </IonText>
           </IonRow>
-
-          <IonRow className="ion-padding ion-align-items-center">
-            <IonCol size="9">
-              <IonText style={{ fontSize: 17 }}>Deadline reminders</IonText>
-            </IonCol>
-
-            <IonCol size="3">
-              <IonToggle className="toggle"/>
-            </IonCol>
-          </IonRow>
-          
-          <IonRow className="ion-padding-horizontal ion-align-items-center">
-            <IonCol size="9">
-              <IonText style={{ fontSize: 17 }}>Invitations</IonText>
-            </IonCol>
-
-            <IonCol size="3">
-              <IonToggle className="toggle"/>
-            </IonCol>
-          </IonRow>
-
+          <IonList>
+            <IonItem lines='none' style={{ marginTop: "0.5rem" }}>
+              <IonLabel slot='start'>Deadline Reminders</IonLabel>
+              <IonToggle
+                slot='end'
+                className='toggle'
+                checked={settings.deadlineReminder}
+                onIonChange={handleReminderChange}
+              />
+            </IonItem>
+            <IonItem lines='none' style={{ marginTop: "0.5rem" }}>
+              <IonLabel slot='start'>Invitations</IonLabel>
+              <IonToggle
+                slot='end'
+                className='toggle'
+                checked={settings.invitations}
+                onIonChange={handleInvitationsChange}
+              />
+            </IonItem>
+          </IonList>
         </IonGrid>
       </IonContent>
     </IonPage>

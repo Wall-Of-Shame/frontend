@@ -16,7 +16,7 @@ export interface UserData {
   name?: string;
   completedChallengeCount?: number;
   failedChallengeCount?: number;
-  avatar: Partial<Avatar>;
+  avatar: Avatar;
   settings: Settings;
 }
 
