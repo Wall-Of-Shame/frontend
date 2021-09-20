@@ -27,7 +27,8 @@ const App: React.FC = () => {
         />
       }
     >
-      {user.user ? <AuthenticatedApp /> : <UnauthenticatedApp />}
+      {<AuthenticatedApp />}
+      {/* {user.user ? <AuthenticatedApp /> : <UnauthenticatedApp />} */}
     </React.Suspense>
   );
 };
