@@ -14,6 +14,7 @@ import {
   IonLabel,
   IonPage,
   IonRow,
+  IonSearchbar,
   IonSegment,
   IonSegmentButton,
   IonText,
@@ -36,6 +37,7 @@ const Challenges: React.FC = () => {
   const { user } = useUser();
 
   const [tab, setTab] = useState("ongoing");
+  const [searchText, setSearchText] = useState("");
   const [showModal, setShowModal] = useState(false);
   const location = useLocation();
   const history = useHistory();
@@ -85,11 +87,20 @@ const Challenges: React.FC = () => {
               </IonButton>
             </IonButtons>
           </IonToolbar>
+          <IonToolbar style={{ marginTop: "1rem" }}>
+            <IonSearchbar
+              animated
+              debounce={300}
+              value={searchText}
+              onIonChange={(e) => {
+                setSearchText(e.detail.value ?? "");
+              }}
+            />
+          </IonToolbar>
         </IonHeader>
         <IonSegment
           onIonChange={(e) => setTab(e.detail.value ?? "active")}
           value={tab}
-          style={{ marginTop: "1rem" }}
           mode='md'
         >
           <IonSegmentButton value='ongoing'>
@@ -99,15 +110,17 @@ const Challenges: React.FC = () => {
             <IonLabel>Pending</IonLabel>
           </IonSegmentButton>
         </IonSegment>
-        <IonButton
-          expand='block'
-          color='quinary'
-          shape='round'
-          onClick={() => setShowModal(true)}
-          style={{ margin: "1.5rem" }}
-        >
-          Set up profile
-        </IonButton>
+        {(!user?.username || !user?.name) && (
+          <IonButton
+            expand='block'
+            color='quinary'
+            shape='round'
+            onClick={() => setShowModal(true)}
+            style={{ margin: "1.5rem" }}
+          >
+            Set up profile
+          </IonButton>
+        )}
         <IonCard button routerLink={"challenges/1/details"}>
           <IonGrid className='ion-no-padding'>
             <IonRow className='ion-align-items-center'>
