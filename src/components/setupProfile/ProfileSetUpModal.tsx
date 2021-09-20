@@ -32,7 +32,7 @@ export interface ProfileSetUpModalState {
 const ProfileSetUpModal: React.FC<ProfileSetUpModalProps> = (
   props: ProfileSetUpModalProps
 ) => {
-  const { updateProfile } = useUser();
+  const { user, updateProfile } = useUser();
   const { showModal, setShowModal } = props;
   const [pageNumber, setPageNumber] = useState(0);
   const [animationDirection, setAnimationDirection] = useState("left");
@@ -43,15 +43,15 @@ const ProfileSetUpModal: React.FC<ProfileSetUpModalProps> = (
       ...a,
     }),
     {
-      displayName: "",
-      username: "",
+      displayName: user?.name ?? "",
+      username: user?.username ?? "",
       settings: {
         deadlineReminder: true,
         invitations: true,
       },
       avatar: {
         animal: "CAT",
-        color: "BROWN",
+        color: "PRIMARY",
         background: "#cdcdcd",
       },
       isLoading: false,
@@ -66,7 +66,10 @@ const ProfileSetUpModal: React.FC<ProfileSetUpModalProps> = (
   );
 
   const handleProfileUpdate = async () => {
-    console.log("What");
+    setAnimationDirection("left");
+    setPageNumber(1);
+    return;
+    // eslint-disable-next-line no-unreachable
     setState({ isLoading: true });
     try {
       await updateProfile(
@@ -114,7 +117,7 @@ const ProfileSetUpModal: React.FC<ProfileSetUpModalProps> = (
                 },
                 avatar: {
                   animal: "CAT",
-                  color: "BROWN",
+                  color: "PRIMARY",
                   background: "#cdcdcd",
                 },
               });

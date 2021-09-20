@@ -2,6 +2,7 @@ import {
   IonButton,
   IonContent,
   IonFab,
+  IonGrid,
   IonIcon,
   IonRow,
   IonText,
@@ -11,6 +12,7 @@ import Container from "../container";
 import "../../theme/transitions.scss";
 import { ProfileSetUpModalState } from "./ProfileSetUpModal";
 import { arrowBackOutline, dice } from "ionicons/icons";
+import { AvatarAnimal, AvatarColor } from "../../interfaces/models/Users";
 
 interface AvatarRandomizerProps {
   state: ProfileSetUpModalState;
@@ -22,7 +24,26 @@ interface AvatarRandomizerProps {
 const AvatarRandomizer: React.FC<AvatarRandomizerProps> = (
   props: AvatarRandomizerProps
 ) => {
-  const { completionCallback, prevPage } = props;
+  const { state, setState, completionCallback, prevPage } = props;
+  const animals = ["CAT", "DOG", "RABBIT"];
+  const colors = ["PRIMARY", "SECONDARY", "TERTIARY"];
+
+  const handleRandomize = () => {
+    const randomAnimal = animals[
+      Math.floor(Math.random() * animals.length)
+    ] as AvatarAnimal;
+    const randomColor = colors[
+      Math.floor(Math.random() * colors.length)
+    ] as AvatarColor;
+    const randomBackground = Math.floor(Math.random() * 16777215).toString(16);
+    setState({
+      avatar: {
+        animal: randomAnimal,
+        color: randomColor,
+        background: `#${randomBackground}`,
+      },
+    });
+  };
 
   return (
     <IonContent fullscreen>
@@ -51,11 +72,22 @@ const AvatarRandomizer: React.FC<AvatarRandomizerProps> = (
             self-discovery
           </IonText>
         </IonRow>
+        <IonGrid style={{ marginTop: "2rem", marginBottom: "2rem" }}>
+          <IonRow className='ion-justify-content-center'>
+            {state.avatar.animal}
+          </IonRow>
+          <IonRow className='ion-justify-content-center'>
+            {state.avatar.color}
+          </IonRow>
+          <IonRow className='ion-justify-content-center'>
+            {state.avatar.background}
+          </IonRow>
+        </IonGrid>
         <IonButton
           shape='round'
           color='medium'
           fill='outline'
-          style={{ marginTop: "15rem" }}
+          onClick={handleRandomize}
         >
           <IonIcon icon={dice} color='dark' style={{ marginRight: "0.5rem" }} />
           <IonText color='dark'>Gimme another one</IonText>
@@ -68,7 +100,7 @@ const AvatarRandomizer: React.FC<AvatarRandomizerProps> = (
           style={{ marginTop: "2rem" }}
           onClick={completionCallback}
         >
-          &nbsp;&nbsp;Get Started&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;Get Started&nbsp;&nbsp;&nbsp;
         </IonButton>
       </Container>
     </IonContent>

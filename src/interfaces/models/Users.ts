@@ -42,8 +42,8 @@ export interface UserPatch {
 }
 
 export interface Avatar {
-  animal: "CAT" | "DOG" | "RABBIT";
-  color: "BROWN";
+  animal: AvatarAnimal;
+  color: AvatarColor;
   background: string;
 }
 
@@ -51,3 +51,6 @@ export interface Settings {
   deadlineReminder: boolean;
   invitations: boolean;
 }
+
+export type AvatarAnimal = "CAT" | "DOG" | "RABBIT";
+export type AvatarColor = "PRIMARY" | "SECONDARY" | "TERTIARY";
