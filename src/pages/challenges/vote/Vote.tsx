@@ -2,23 +2,14 @@ import {
   IonAvatar,
   IonButton,
   IonButtons,
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardTitle,
   IonCol,
   IonContent,
   IonGrid,
   IonHeader,
   IonIcon,
-  IonLabel,
   IonPage,
   IonRow,
-  IonSearchbar,
-  IonSegment,
-  IonSegmentButton,
   IonText,
-  IonTitle,
   IonToolbar,
 } from "@ionic/react";
 import "./Vote.scss";
@@ -102,7 +93,7 @@ const Vote: React.FC = () => {
         </IonGrid>
 
         <IonGrid>
-          <IonRow className="ion-padding-vertical">
+          <IonRow className="ion-padding-bottom">
             {userCard}
             {userCard}
           </IonRow>
