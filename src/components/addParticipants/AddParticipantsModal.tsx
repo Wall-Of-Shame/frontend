@@ -11,11 +11,18 @@ import {
   IonText,
   IonItemDivider,
   IonItem,
+  IonCol,
+  IonAvatar,
+  IonGrid,
 } from "@ionic/react";
 import "./AddParticipantsModal.scss";
 import LoadingSpinner from "../loadingSpinner";
 import { Avatar, Settings } from "../../interfaces/models/Users";
 import { useState } from "react";
+import yoda from "../../assets/avatar-yoda.png";
+import rey from "../../assets/avatar-rey.png";
+import poe from "../../assets/avatar-poe.png";
+import luke from "../../assets/avatar-luke.png";
 
 interface AddParticipantsModalProps {
   showModal: boolean;
@@ -46,7 +53,153 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <div>hi</div>
+        <IonGrid className="ion-margin-top">
+          <IonText
+            className="ion-margin"
+            style={{ fontSize: 17, fontWeight: 600 }}
+          >
+            Recents
+          </IonText>
+
+          <IonRow className="ion-margin">
+            <IonCol className="ion-align-item-center" size="3">
+              <IonAvatar className="user-avatar">
+                <img src={luke} alt="user1" />
+              </IonAvatar>
+            </IonCol>
+            <IonCol
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+              size="6"
+            >
+              <IonRow style={{ paddingBottom: "0.5rem" }}>
+                <IonText style={{ fontSize: 17, fontWeight: 600 }}>yy</IonText>
+              </IonRow>
+              <IonRow>@rollrollfaraway</IonRow>
+            </IonCol>
+            <IonCol
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              size="3"
+            >
+              <IonButton
+                shape="round"
+                color="secondary"
+                fill="solid"
+                style={{ height: "2.5rem", width: "4.5rem" }}
+              >
+                <IonText
+                  style={{
+                    fontSize: 15,
+                    fontWeight: 600,
+                  }}
+                >
+                  Invite
+                </IonText>
+              </IonButton>
+            </IonCol>
+          </IonRow>
+
+          <IonRow className="ion-margin">
+            <IonCol className="ion-align-item-center" size="3">
+              <IonAvatar className="user-avatar">
+                <img src={poe} alt="user1" />
+              </IonAvatar>
+            </IonCol>
+            <IonCol
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+              size="6"
+            >
+              <IonRow style={{ paddingBottom: "0.5rem" }}>
+                <IonText style={{ fontSize: 17, fontWeight: 600 }}>
+                  Hanming Zhu
+                </IonText>
+              </IonRow>
+              <IonRow>@hansumkia</IonRow>
+            </IonCol>
+            <IonCol
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              size="3"
+            >
+              <IonButton
+                shape="round"
+                color="quinary"
+                fill="solid"
+                style={{ height: "2.5rem", width: "4.5rem" }}
+              >
+                <IonText
+                  style={{
+                    fontSize: 15,
+                    fontWeight: 600,
+                  }}
+                >
+                  Joined
+                </IonText>
+              </IonButton>
+            </IonCol>
+          </IonRow>
+
+          <IonRow className="ion-margin">
+            <IonCol className="ion-align-item-center" size="3">
+              <IonAvatar className="user-avatar">
+                <img src={rey} alt="user1" />
+              </IonAvatar>
+            </IonCol>
+            <IonCol
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+              size="6"
+            >
+              <IonRow style={{ paddingBottom: "0.5rem" }}>
+                <IonText style={{ fontSize: 17, fontWeight: 600 }}>
+                  James Tan
+                </IonText>
+              </IonRow>
+              <IonRow>@iamajamestan</IonRow>
+            </IonCol>
+            <IonCol
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              size="3"
+            >
+              <IonButton
+                shape="round"
+                color="tertiary"
+                fill="solid"
+                style={{ height: "2.5rem", width: "4.5rem" }}
+              >
+                <IonText
+                  style={{
+                    fontSize: 15,
+                    fontWeight: 600,
+                  }}
+                >
+                  Invited
+                </IonText>
+              </IonButton>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
       </IonContent>
       <IonFooter>
         <IonToolbar>
@@ -59,7 +212,10 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
               You can also send the challenge link to a friend
             </IonText>
           </IonRow>
-          <IonRow className="ion-justify-content-center" style={{marginBottom: "0.5rem" }}>
+          <IonRow
+            className="ion-justify-content-center"
+            style={{ marginBottom: "0.5rem" }}
+          >
             <IonButton
               shape="round"
               color="primary"
@@ -97,6 +253,12 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
               </IonText>
             </IonButton>
           </IonRow>
+          <div
+            style={{
+              borderTop: "1px solid #DCDCDC",
+              marginTop: "0.7rem",
+            }}
+          />
           <IonButton
             color="white"
             expand="full"

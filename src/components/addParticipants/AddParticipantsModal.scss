@@ -6,7 +6,15 @@ ion-searchbar {
   .searchbar-input-container {
     input {
       font-size: 19px !important;
+      margin-left: 1rem;
     }
   }
 
 }
+
+.user-avatar {
+  height: 4rem;
+  width: 4rem;
+  margin: 0;
+}
+
