@@ -1,9 +1,10 @@
 import {
-  IonBackButton,
+  IonButton,
   IonButtons,
   IonContent,
   IonGrid,
   IonHeader,
+  IonIcon,
   IonItem,
   IonLabel,
   IonList,
@@ -19,8 +20,10 @@ import { useState } from "react";
 import { arrowBackOutline } from "ionicons/icons";
 import { useUser } from "../../../contexts/UserContext";
 import { ToggleChangeEventDetail } from "@ionic/core";
+import { useHistory } from "react-router";
 
 const Settings: React.FC = () => {
+  const history = useHistory();
   const { user, updateProfile } = useUser();
   const [settings, setSettings] = useState(
     user?.settings ?? {
@@ -37,7 +40,6 @@ const Settings: React.FC = () => {
       invitations: settings.invitations,
     };
     setSettings(newSettings);
-    console.log(newSettings);
     updateProfile(
       user?.name ?? "",
       user?.username ?? "",
@@ -53,7 +55,6 @@ const Settings: React.FC = () => {
   const handleInvitationsChange = (
     event: CustomEvent<ToggleChangeEventDetail>
   ) => {
-    console.log(event);
     const newSettings = {
       deadlineReminder: settings.deadlineReminder,
       invitations: event.detail.checked,
@@ -85,15 +86,16 @@ const Settings: React.FC = () => {
             Settings
           </IonTitle>
           <IonButtons slot='start'>
-            <IonBackButton
-              text=''
-              icon={arrowBackOutline}
-              color='dark'
+            <IonButton
               style={{
                 marginTop: "1.5rem",
-                marginLeft: "1rem",
+                marginRight: "1rem",
               }}
-            />
+              color='dark'
+              onClick={() => history.goBack()}
+            >
+              <IonIcon slot='end' icon={arrowBackOutline} size='large' />
+            </IonButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>

@@ -1,6 +1,5 @@
 import {
   IonAvatar,
-  IonBackButton,
   IonButton,
   IonButtons,
   IonContent,
@@ -19,7 +18,7 @@ import {
 } from "@ionic/react";
 import "./EditProfile.scss";
 import { useReducer } from "react";
-import { close, checkmark, dice } from "ionicons/icons";
+import { checkmark, dice, arrowBackOutline } from "ionicons/icons";
 import yoda from "../../../assets/avatar-yoda.png";
 import {
   Avatar,
@@ -29,6 +28,7 @@ import {
 import { useUser } from "../../../contexts/UserContext";
 import LoadingSpinner from "../../../components/loadingSpinner";
 import Alert from "../../../components/alert";
+import { useHistory } from "react-router";
 
 export interface EditProfileState {
   displayName: string;
@@ -45,6 +45,7 @@ export interface EditProfileState {
 }
 
 const EditProfile: React.FC = () => {
+  const history = useHistory();
   const { user, updateProfile } = useUser();
 
   const animals = ["CAT", "DOG", "RABBIT"];
@@ -137,15 +138,16 @@ const EditProfile: React.FC = () => {
             Edit Profile
           </IonTitle>
           <IonButtons slot='start'>
-            <IonBackButton
-              text=''
-              icon={close}
-              color='dark'
+            <IonButton
               style={{
                 marginTop: "1.5rem",
-                marginLeft: "1rem",
+                marginRight: "1rem",
               }}
-            />
+              color='dark'
+              onClick={() => history.goBack()}
+            >
+              <IonIcon slot='end' icon={arrowBackOutline} size='large' />
+            </IonButton>
           </IonButtons>
           <IonButtons slot='end'>
             <IonButton

@@ -34,13 +34,13 @@ const WallOfShame: React.FC = () => {
 
   useEffect(() => {
     if (
-      location.pathname !== "/challenges" &&
-      location.pathname !== "/wall-of-shame" &&
-      location.pathname !== "/profile"
+      location.pathname === "/challenges" ||
+      location.pathname === "/wall-of-shame" ||
+      location.pathname === "/profile"
     ) {
-      hideTabs();
-    } else {
       showTabs();
+    } else {
+      hideTabs();
     }
   }, [location.pathname]);
 

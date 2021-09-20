@@ -42,13 +42,13 @@ const Challenges: React.FC = () => {
 
   useEffect(() => {
     if (
-      location.pathname !== "/challenges" &&
-      location.pathname !== "/wall-of-shame" &&
-      location.pathname !== "/profile"
+      location.pathname === "/challenges" ||
+      location.pathname === "/wall-of-shame" ||
+      location.pathname === "/profile"
     ) {
-      hideTabs();
-    } else {
       showTabs();
+    } else {
+      hideTabs();
     }
   }, [location.pathname]);
 
@@ -108,7 +108,7 @@ const Challenges: React.FC = () => {
         >
           Set up profile
         </IonButton>
-        <IonCard button routerLink={"challenges/1"}>
+        <IonCard button routerLink={"challenges/1/details"}>
           <IonGrid className='ion-no-padding'>
             <IonRow className='ion-align-items-center'>
               <IonCol size='11'>
@@ -174,7 +174,7 @@ const Challenges: React.FC = () => {
             </IonRow>
           </IonGrid>
         </IonCard>
-        <IonCard button routerLink={"challenges/1"}>
+        <IonCard button routerLink={"challenges/1/details"}>
           <IonGrid className='ion-no-padding'>
             <IonRow className='ion-align-items-center'>
               <IonCol size='11'>
@@ -240,7 +240,7 @@ const Challenges: React.FC = () => {
             </IonRow>
           </IonGrid>
         </IonCard>
-        <IonCard button routerLink={"challenges/1"}>
+        <IonCard button routerLink={"challenges/1/details"}>
           <IonGrid className='ion-no-padding'>
             <IonRow className='ion-align-items-center'>
               <IonCol size='11'>

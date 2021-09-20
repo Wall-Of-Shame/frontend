@@ -1,5 +1,4 @@
 import {
-  IonBackButton,
   IonButton,
   IonButtons,
   IonCol,
@@ -19,25 +18,29 @@ import {
   pencil,
   removeOutline,
 } from "ionicons/icons";
+import { useHistory } from "react-router";
 import "./ChallengeDetails.scss";
 
 interface ChallengeDetailsProps {}
 
 const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
+  const history = useHistory();
+
   return (
     <IonPage>
       <IonHeader className='ion-no-border'>
         <IonToolbar>
           <IonButtons slot='start'>
-            <IonBackButton
-              text=''
-              icon={arrowBackOutline}
-              color='dark'
+            <IonButton
               style={{
                 marginTop: "1.5rem",
-                marginLeft: "1rem",
+                marginRight: "1rem",
               }}
-            />
+              color='dark'
+              onClick={() => history.goBack()}
+            >
+              <IonIcon slot='end' icon={arrowBackOutline} size='large' />
+            </IonButton>
           </IonButtons>
           <IonButtons slot='end'>
             <IonButton

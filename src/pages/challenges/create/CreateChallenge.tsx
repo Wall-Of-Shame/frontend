@@ -1,5 +1,4 @@
 import {
-  IonBackButton,
   IonButton,
   IonButtons,
   IonCol,
@@ -25,6 +24,7 @@ import { addOutline, arrowBackOutline, pencil } from "ionicons/icons";
 import { useReducer, useState } from "react";
 import { addYears, format, formatISO } from "date-fns";
 import "./CreateChallenge.scss";
+import { useHistory } from "react-router";
 
 interface CreateChallengeProps {}
 
@@ -43,6 +43,8 @@ interface CreateChallengeState {
 }
 
 const CreateChallenge: React.FC<CreateChallengeProps> = () => {
+  const history = useHistory();
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [state, setState] = useReducer(
     (s: CreateChallengeState, a: Partial<CreateChallengeState>) => ({
@@ -73,15 +75,16 @@ const CreateChallenge: React.FC<CreateChallengeProps> = () => {
       <IonHeader className='ion-no-border'>
         <IonToolbar>
           <IonButtons slot='start'>
-            <IonBackButton
-              text=''
-              icon={arrowBackOutline}
-              color='dark'
+            <IonButton
               style={{
                 marginTop: "1.5rem",
-                marginLeft: "1rem",
+                marginRight: "1rem",
               }}
-            />
+              color='dark'
+              onClick={() => history.goBack()}
+            >
+              <IonIcon slot='end' icon={arrowBackOutline} size='large' />
+            </IonButton>
           </IonButtons>
           <IonButtons slot='end'>
             <IonButton

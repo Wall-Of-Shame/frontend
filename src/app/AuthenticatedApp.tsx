@@ -7,7 +7,7 @@ import {
   IonTabs,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { Redirect, Route } from "react-router-dom";
+import { Redirect, Route, useLocation } from "react-router-dom";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -38,7 +38,7 @@ import EditProfile from "../pages/profile/edit";
 import Settings from "../pages/profile/settings";
 
 import "./App.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const redirectToChallenges = (): React.ReactNode => (
   <Redirect to={"/challenges"} />
@@ -46,6 +46,17 @@ const redirectToChallenges = (): React.ReactNode => (
 
 const AuthenticatedApp: React.FC = () => {
   const [tab, setTab] = useState("challenges");
+
+  useEffect(() => {
+    const path = window.location.pathname;
+    if (path.indexOf("profile") !== -1) {
+      setTab("profile");
+    } else if (path.indexOf("wall-of-shame") !== -1) {
+      setTab("wall-of-shame");
+    } else {
+      setTab("challenges");
+    }
+  }, []);
 
   return (
     <IonApp>
@@ -55,7 +66,10 @@ const AuthenticatedApp: React.FC = () => {
             <Route exact path='/challenges'>
               <Challenges />
             </Route>
-            <Route exact path='/challenges/:id'>
+            <Route exact path='/challenges/create'>
+              <CreateChallenge />
+            </Route>
+            <Route exact path='/challenges/:id/details'>
               <ChallengeDetails />
             </Route>
             <Route exact path='/challenges/create'>
@@ -78,6 +92,7 @@ const AuthenticatedApp: React.FC = () => {
           <IonTabBar
             slot='bottom'
             className='tabs-nav'
+            hidden
             onIonTabsDidChange={(e) => {
               setTab(e.detail.tab);
             }}
@@ -86,7 +101,7 @@ const AuthenticatedApp: React.FC = () => {
               <IonIcon icon={alarm} />
               {tab === "challenges" && (
                 <div className='indicator'>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <div style={{ marginLeft: "1rem", marginRight: "1rem" }} />
                 </div>
               )}
             </IonTabButton>
@@ -94,7 +109,7 @@ const AuthenticatedApp: React.FC = () => {
               <IonIcon icon={statsChart} />
               {tab === "wall-of-shame" && (
                 <div className='indicator'>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <div style={{ marginLeft: "1rem", marginRight: "1rem" }} />
                 </div>
               )}
             </IonTabButton>
@@ -102,7 +117,7 @@ const AuthenticatedApp: React.FC = () => {
               <IonIcon icon={person} />
               {tab === "profile" && (
                 <div className='indicator'>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <div style={{ marginLeft: "1rem", marginRight: "1rem" }} />
                 </div>
               )}
             </IonTabButton>
