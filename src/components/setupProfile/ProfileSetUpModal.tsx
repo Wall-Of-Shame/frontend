@@ -66,10 +66,6 @@ const ProfileSetUpModal: React.FC<ProfileSetUpModalProps> = (
   );
 
   const handleProfileUpdate = async () => {
-    setAnimationDirection("left");
-    setPageNumber(1);
-    return;
-    // eslint-disable-next-line no-unreachable
     setState({ isLoading: true });
     try {
       await updateProfile(
@@ -123,8 +119,7 @@ const ProfileSetUpModal: React.FC<ProfileSetUpModalProps> = (
               });
               setShowModal(false);
               setTimeout(() => {
-                setAnimationDirection("left");
-                setPageNumber(0);
+                window.location.reload();
               }, 300);
             }}
             prevPage={() => {

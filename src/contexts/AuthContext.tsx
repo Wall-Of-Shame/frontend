@@ -18,6 +18,7 @@ import AuthContextInterface from "../interfaces/contexts/AuthContext";
 import AuthService from "../services/AuthService";
 import { FirebaseError } from "@firebase/util";
 import TokenUtils from "../utils/TokenUtils";
+import { UserData } from "../interfaces/models/Users";
 
 const googleProvider = new GoogleAuthProvider();
 const facebookProvider = new FacebookAuthProvider();

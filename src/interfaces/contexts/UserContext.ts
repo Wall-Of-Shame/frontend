@@ -7,5 +7,5 @@ export default interface UserContextInterface {
     username: string,
     settings: Settings,
     avatar: Avatar
-  ): Promise<void>;
+  ): Promise<UserData | null>;
 }

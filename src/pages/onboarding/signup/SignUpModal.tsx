@@ -77,6 +77,7 @@ const SignUpModal: React.FC<SignUpModalProps> = (props: SignUpModalProps) => {
             nextPage={() => {
               setAnimationDirection("left");
               setShowModal(false);
+              window.location.reload();
             }}
             prevPage={() => {
               setAnimationDirection("right");

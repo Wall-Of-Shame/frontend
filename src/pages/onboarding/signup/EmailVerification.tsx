@@ -34,6 +34,14 @@ const EmailVerification: React.FC<EmailVerificationProps> = (
       console.log(user);
       if (user?.emailVerified) {
         nextPage();
+      } else {
+        setState({
+          isLoading: false,
+          showAlert: true,
+          alertHeader: "Ooooops",
+          alertMessage:
+            "Seems like you have not verified your email 😅, maybe check your inbox again?",
+        });
       }
     });
   };

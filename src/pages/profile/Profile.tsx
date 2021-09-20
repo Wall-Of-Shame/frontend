@@ -37,9 +37,11 @@ import { useHistory, useLocation } from "react-router";
 import { useAuth } from "../../contexts/AuthContext";
 import { hideTabs, showTabs } from "../../utils/TabsUtils";
 import "./Profile.scss";
+import { useUser } from "../../contexts/UserContext";
 
 const Profile: React.FC = () => {
   const { logout } = useAuth();
+  const { user } = useUser();
   const location = useLocation();
   const history = useHistory();
   const [popoverState, setShowPopover] = useState({
@@ -149,12 +151,12 @@ const Profile: React.FC = () => {
       <IonContent fullscreen>
         <IonGrid>
           <IonRow className='ion-align-items-center'>
-            <IonCol size='5'>
+            <IonCol size='4'>
               <IonAvatar className='user-avatar'>
                 <img src={yoda} alt='user2' />
               </IonAvatar>
             </IonCol>
-            <IonCol size='7'>
+            <IonCol size='8'>
               <IonRow>
                 <IonText
                   style={{
@@ -163,12 +165,12 @@ const Profile: React.FC = () => {
                     paddingBottom: "0.5rem",
                   }}
                 >
-                  John Tan
+                  {user?.name ?? "Display name not set"}
                 </IonText>
               </IonRow>
               <IonRow>
                 <IonText style={{ fontSize: "1.2rem", fontWeight: 600 }}>
-                  @johntan
+                  {`@${user?.username ?? "Username not set"}`}
                 </IonText>
               </IonRow>
             </IonCol>
@@ -190,12 +192,13 @@ const Profile: React.FC = () => {
                         fontWeight: 600,
                       }}
                     >
-                      20
+                      {user?.completedChallengeCount ?? 0}
                     </IonText>
                   </IonRow>
                   <IonRow className='ion-justify-content-center'>
                     <IonText style={{ fontSize: "1.1rem", fontWeight: 500 }}>
-                      Challenges Completed
+                      Challenge{user?.completedChallengeCount !== 1 && "s"}{" "}
+                      Completed
                     </IonText>
                   </IonRow>
                 </IonCardContent>
@@ -214,12 +217,12 @@ const Profile: React.FC = () => {
                         fontWeight: 600,
                       }}
                     >
-                      4
+                      {user?.failedChallengeCount ?? 0}
                     </IonText>
                   </IonRow>
                   <IonRow className='ion-justify-content-center'>
                     <IonText style={{ fontSize: "1.1rem", fontWeight: 500 }}>
-                      Shameful Failures
+                      Shameful Failure{user?.failedChallengeCount !== 1 && "s"}{" "}
                     </IonText>
                   </IonRow>
                 </IonCardContent>

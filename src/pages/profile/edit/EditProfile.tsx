@@ -95,7 +95,7 @@ const EditProfile: React.FC = () => {
     return state.displayName.length > 0 && state.username.length > 0;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setState({ isLoading: true });
     updateProfile(
       state.displayName,
@@ -105,11 +105,22 @@ const EditProfile: React.FC = () => {
         invitations: true,
       },
       state.avatar
-    ).then(() => {
-      setState({
-        isLoading: false,
+    )
+      .then(() => {
+        setState({
+          isLoading: false,
+        });
+        window.location.href = "profile";
+      })
+      .catch((error) => {
+        setState({
+          isLoading: false,
+          showAlert: true,
+          alertHeader: "Ooooops",
+          alertMessage:
+            "Our server is taking a break, come back later please :)",
+        });
       });
-    });
   };
 
   return (
@@ -191,9 +202,9 @@ const EditProfile: React.FC = () => {
                 type='text'
                 value={state.displayName}
                 required
-                // onIonChange={(event: CustomEvent) => {
-                //   setState({ displayName: event.detail.value });
-                // }}
+                onIonChange={(event: CustomEvent) => {
+                  setState({ displayName: event.detail.value });
+                }}
               />
             </IonItem>
             <IonItem lines='full'>
@@ -205,9 +216,9 @@ const EditProfile: React.FC = () => {
                 type='text'
                 value={state.username}
                 required
-                // onIonChange={(event: CustomEvent) => {
-                //   setState({ username: event.detail.value });
-                // }}
+                onIonChange={(event: CustomEvent) => {
+                  setState({ username: event.detail.value });
+                }}
               />
             </IonItem>
           </IonList>
