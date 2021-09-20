@@ -9,6 +9,7 @@ import {
   IonFooter,
   IonRow,
   IonText,
+  IonItemDivider,
 } from "@ionic/react";
 import "./AddParticipantsModal.scss";
 import LoadingSpinner from "../loadingSpinner";
@@ -47,7 +48,35 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
       </IonContent>
       <IonFooter>
         <IonToolbar>
-          <IonRow className="ion-justify-content-center ion-margin">
+          <IonRow className="ion-margin">
+            <IonText
+              style={{
+                fontSize: 15,
+              }}
+            >
+              You can also send the challenge link to a friend
+            </IonText>
+          </IonRow>
+          <IonRow className="ion-justify-content-center" style={{marginBottom: "0.5rem" }}>
+            <IonButton
+              shape="round"
+              color="primary"
+              fill="outline"
+              style={{ height: "3.2rem" }}
+              className="link-button"
+            >
+              <IonText
+                style={{
+                  marginLeft: "1rem",
+                  marginRight: "1rem",
+                  fontSize: 17,
+                }}
+              >
+                https://wallofshame.com/Ffdsa242
+              </IonText>
+            </IonButton>
+          </IonRow>
+          <IonRow className="ion-justify-content-center">
             <IonButton
               shape="round"
               color="secondary"
@@ -59,6 +88,7 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
                   marginLeft: "2rem",
                   marginRight: "2rem",
                   fontSize: 19,
+                  fontWeight: 600,
                 }}
               >
                 Share link

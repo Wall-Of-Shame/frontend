@@ -1,15 +1,8 @@
-.modal-container {
-  // max-height: 500px;
-}
-
 .toolbar {
-  --border-width: 0px;
-  border-width: 0px;
-  --opacity: 0px;
-  --padding-top: 0px;
+
   height: 200px;
 }
 
-.footer {
-  height: 10rem;
+.link-button {
+  --background-activated-opacity: 30%;
 }
