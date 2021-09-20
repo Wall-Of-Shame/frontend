@@ -94,7 +94,6 @@ const ProfileSetUpModal: React.FC<ProfileSetUpModalProps> = (
           <ProfileSetUp
             state={state}
             setState={setState}
-            setShowModal={setShowModal}
             completionCallback={handleProfileUpdate}
           />
         );

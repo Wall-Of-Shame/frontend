@@ -1,8 +1,6 @@
 import {
   IonButton,
   IonContent,
-  IonFab,
-  IonIcon,
   IonInput,
   IonItem,
   IonLabel,
@@ -14,19 +12,17 @@ import "./ProfileSetUpModal.scss";
 import Container from "../container";
 import "../../theme/transitions.scss";
 import { ProfileSetUpModalState } from "./ProfileSetUpModal";
-import { closeOutline } from "ionicons/icons";
 
 interface ProfileSetUpProps {
   state: ProfileSetUpModalState;
   setState: React.Dispatch<Partial<ProfileSetUpModalState>>;
-  setShowModal: (showModal: boolean) => void;
   completionCallback: () => void;
 }
 
 const ProfileSetUp: React.FC<ProfileSetUpProps> = (
   props: ProfileSetUpProps
 ) => {
-  const { state, setState, setShowModal, completionCallback } = props;
+  const { state, setState, completionCallback } = props;
 
   const verifyInputs = (): boolean => {
     // API call to check for uniqueness of username
@@ -35,17 +31,6 @@ const ProfileSetUp: React.FC<ProfileSetUpProps> = (
 
   return (
     <IonContent fullscreen>
-      <IonFab
-        horizontal='start'
-        vertical='top'
-        style={{ marginTop: "1rem", marginLeft: "0.5rem" }}
-      >
-        <IonIcon
-          icon={closeOutline}
-          size='large'
-          onClick={() => setShowModal(false)}
-        />
-      </IonFab>
       <Container>
         <IonRow slot='start' className='ion-text-start'>
           <IonText
