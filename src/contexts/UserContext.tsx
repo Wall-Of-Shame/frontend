@@ -2,8 +2,7 @@ import React from "react";
 
 import UserContextInterface from "../interfaces/contexts/UserContext";
 import { Avatar, Settings, UserData } from "../interfaces/models/Users";
-import APIService from "../services/APIService";
-import AuthService from "../services/AuthService";
+import UserService from "../services/UserService";
 
 import { useAuth } from "./AuthContext";
 
@@ -21,19 +20,7 @@ const UserProvider: React.FunctionComponent = (props) => {
     settings: Settings,
     avatar: Avatar
   ): Promise<UserData | null> => {
-    const data = {
-      name,
-      username,
-      settings,
-      avatar,
-    };
-    try {
-      const response = await APIService.patch("self", data);
-      console.log(response);
-      return await AuthService.getUser();
-    } catch (error) {
-      return Promise.reject(error);
-    }
+    return await UserService.updateProfile(name, username, settings, avatar);
   };
 
   return (

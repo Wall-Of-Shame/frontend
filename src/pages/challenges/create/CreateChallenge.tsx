@@ -23,10 +23,10 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { addOutline, arrowBackOutline, pencil } from "ionicons/icons";
-import { useReducer } from "react";
+import { useState, useReducer } from "react";
 import { addYears, format, formatISO } from "date-fns";
 import "./CreateChallenge.scss";
-import AddParticipantsModal from "../../../components/addParticipants/AddParticipantsModal"
+import AddParticipantsModal from "../../../components/addParticipants/AddParticipantsModal";
 import { useHistory } from "react-router";
 import yoda from "../../../assets/avatar-yoda.png";
 import rey from "../../../assets/avatar-rey.png";
@@ -247,34 +247,37 @@ const CreateChallenge: React.FC<CreateChallengeProps> = () => {
               </IonRow>
             </IonCol>
           </IonRow>
-          <IonRow className='ion-align-items-center'>
+          <IonRow className='ion-align-items-center ion-padding'>
             <IonAvatar
               className='user-avatar'
-              style={{ marginRight: "0.25rem" }}
+              style={{ marginRight: "0.5rem" }}
             >
               <img src={luke} alt='user1' />
             </IonAvatar>
             <IonAvatar
               className='user-avatar'
-              style={{ marginRight: "0.25rem" }}
+              style={{ marginRight: "0.5rem" }}
             >
               <img src={yoda} alt='user2' />
             </IonAvatar>
             <IonAvatar
               className='user-avatar'
-              style={{ marginRight: "0.25rem" }}
+              style={{ marginRight: "0.5rem" }}
             >
               <img src={poe} alt='user3' />
             </IonAvatar>
             <IonAvatar
               className='user-avatar'
-              style={{ marginRight: "0.25rem" }}
+              style={{ marginRight: "0.5rem" }}
             >
               <img src={rey} alt='user4' />
             </IonAvatar>
           </IonRow>
         </IonGrid>
-        <AddParticipantsModal showModal={showModal} setShowModal={setShowModal} />
+        <AddParticipantsModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+        />
       </IonContent>
       <IonFooter>
         <IonRow className='ion-justify-content-center ion-margin'>
