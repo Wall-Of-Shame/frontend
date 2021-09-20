@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import Container from "../../components/container/Container";
 import "./OnboardingSlides.scss";
 import { useAuth } from "../../contexts/AuthContext";
+import { OnboardingState } from "./Onboarding";
 
 interface OnboardingSlidesProps {
   initSwiper: (this: any) => Promise<void>;
@@ -21,15 +22,18 @@ interface OnboardingSlidesProps {
   setShowLoginModal: (showModal: boolean) => void;
   swipeNext: () => void;
   swiperCallback: () => void;
+  state: OnboardingState;
+  setState: React.Dispatch<Partial<OnboardingState>>;
 }
 
 const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
   initSwiper,
-
   setShowSignUpModal,
   setShowLoginModal,
   swipeNext,
   swiperCallback,
+  state,
+  setState,
 }) => {
   const { continueWithGoogle, continueWithFacebook } = useAuth();
 
@@ -161,9 +165,19 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
               color='quaternary'
               style={{ margin: "1rem" }}
               onClick={async () => {
-                continueWithGoogle().then(() => {
-                  window.location.reload();
-                });
+                continueWithGoogle()
+                  .then(() => {
+                    window.location.reload();
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                    setState({
+                      showAlert: true,
+                      alertHeader: "Ooooops",
+                      alertMessage:
+                        "Our server is taking a break, come back later please :)",
+                    });
+                  });
               }}
             >
               <IonIcon src={logoGoogle} />
@@ -176,9 +190,19 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
               color='tertiary'
               style={{ margin: "1rem" }}
               onClick={async () => {
-                continueWithFacebook().then(() => {
-                  window.location.reload();
-                });
+                continueWithFacebook()
+                  .then(() => {
+                    window.location.reload();
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                    setState({
+                      showAlert: true,
+                      alertHeader: "Ooooops",
+                      alertMessage:
+                        "Our server is taking a break, come back later please :)",
+                    });
+                  });
               }}
             >
               <IonIcon src={logoFacebook} />
