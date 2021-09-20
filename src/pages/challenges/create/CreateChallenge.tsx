@@ -26,6 +26,7 @@ import { addOutline, arrowBackOutline, pencil } from "ionicons/icons";
 import { useReducer } from "react";
 import { addYears, format, formatISO } from "date-fns";
 import "./CreateChallenge.scss";
+import AddParticipantsModal from "../../../components/addParticipants/AddParticipantsModal"
 import { useHistory } from "react-router";
 import yoda from "../../../assets/avatar-yoda.png";
 import rey from "../../../assets/avatar-rey.png";
@@ -51,6 +52,7 @@ interface CreateChallengeState {
 
 const CreateChallenge: React.FC<CreateChallengeProps> = () => {
   const history = useHistory();
+  const [showModal, setShowModal] = useState(false);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [state, setState] = useReducer(
@@ -240,6 +242,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = () => {
                 <IonIcon
                   icon={addOutline}
                   style={{ fontSize: "1.5rem", padding: "0.25rem" }}
+                  onClick={() => setShowModal(true)}
                 />
               </IonRow>
             </IonCol>
@@ -271,6 +274,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = () => {
             </IonAvatar>
           </IonRow>
         </IonGrid>
+        <AddParticipantsModal showModal={showModal} setShowModal={setShowModal} />
       </IonContent>
       <IonFooter>
         <IonRow className='ion-justify-content-center ion-margin'>
