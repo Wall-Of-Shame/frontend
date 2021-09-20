@@ -18,16 +18,13 @@ import {
   pencil,
   removeOutline,
 } from "ionicons/icons";
-import { useHistory, useLocation } from "react-router";
-import "./ChallengeDetails.scss";
+import { useHistory } from "react-router";
+import "./OwnerChallengeDetails.scss";
 
-interface ChallengeDetailsProps {}
+interface OwnerChallengeDetailsProps {}
 
-const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
+const OwnerChallengeDetails: React.FC<OwnerChallengeDetailsProps> = () => {
   const history = useHistory();
-  const location = useLocation();
-
-  console.log(location.state);
 
   return (
     <IonPage>
@@ -122,4 +119,4 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
   );
 };
 
-export default ChallengeDetails;
+export default OwnerChallengeDetails;

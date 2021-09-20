@@ -121,7 +121,14 @@ const Challenges: React.FC = () => {
             Set up profile
           </IonButton>
         )}
-        <IonCard button routerLink={"challenges/1/details"}>
+        <IonCard
+          button
+          onClick={() => {
+            history.push("challenges/1/details", {
+              title: "Watch CS3216 Lectures",
+            });
+          }}
+        >
           <IonGrid className='ion-no-padding'>
             <IonRow className='ion-align-items-center'>
               <IonCol size='11'>

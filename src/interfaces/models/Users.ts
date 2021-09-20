@@ -1,11 +1,14 @@
 // Partial response schema for the `GET /users` route.
 // Full response is Array<UserList>
+// Partial response schema for the `GET /users` route.
+// Full response is Array<UserList>
 export interface UserList {
   userId: string;
   name: string;
   username: string;
   completedChallengeCount: number;
   failedChallengeCount: number;
+  avatar: Avatar;
 }
 
 // Return schema for the `GET /self` route.
@@ -17,7 +20,10 @@ export interface UserData {
   completedChallengeCount?: number;
   failedChallengeCount?: number;
   avatar: Avatar;
-  settings: Settings;
+  settings: {
+    deadlineReminder: boolean;
+    invitations: boolean;
+  };
 }
 
 // Partial return schema for the `GET /self/friends` route.
@@ -34,7 +40,7 @@ export interface UserFriends {
 export interface UserPatch {
   name: string;
   username: string;
-  avatar: Partial<Avatar>;
+  avatar: Avatar;
   settings: {
     deadlineReminder?: boolean;
     invitations?: boolean;

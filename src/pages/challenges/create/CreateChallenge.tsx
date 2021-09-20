@@ -23,7 +23,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { addOutline, arrowBackOutline, pencil } from "ionicons/icons";
-import { useReducer, useState } from "react";
+import { useReducer } from "react";
 import { addYears, format, formatISO } from "date-fns";
 import "./CreateChallenge.scss";
 import { useHistory } from "react-router";
@@ -38,6 +38,7 @@ interface CreateChallengeState {
   title: string;
   description: string;
   punishmentType: "last" | "fail";
+  endTime: string;
   isLoading: boolean;
   showAlert: boolean;
   alertHeader: string;
@@ -61,6 +62,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = () => {
       title: "",
       description: "",
       punishmentType: "fail",
+      endTime: Date.now().toString(),
       isLoading: false,
       showAlert: false,
       alertHeader: "",
@@ -70,10 +72,6 @@ const CreateChallenge: React.FC<CreateChallengeProps> = () => {
       cancelHandler: () => {},
       okHandler: undefined,
     }
-  );
-
-  const [selectedDate, setSelectedDate] = useState<string>(
-    Date.now().toString()
   );
 
   return (
@@ -129,10 +127,13 @@ const CreateChallenge: React.FC<CreateChallengeProps> = () => {
               }}
             >
               <IonInput
-                value={""}
+                value={state.title}
                 debounce={300}
                 placeholder='Enter title'
                 style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}
+                onIonChange={(event) => {
+                  setState({ title: event.detail.value ?? "" });
+                }}
               />
             </div>
           </IonRow>
@@ -160,11 +161,14 @@ const CreateChallenge: React.FC<CreateChallengeProps> = () => {
               }}
             >
               <IonTextarea
-                value={""}
+                value={state.description}
                 debounce={300}
                 rows={4}
                 placeholder='Enter challenge description'
                 style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}
+                onIonChange={(event) => {
+                  setState({ description: event.detail.value ?? "" });
+                }}
               />
             </div>
           </IonRow>
@@ -216,9 +220,9 @@ const CreateChallenge: React.FC<CreateChallengeProps> = () => {
                 displayFormat='D MMM YYYY HH:mm'
                 min={formatISO(Date.now()).slice(0, -6)}
                 max={formatISO(addYears(Date.now(), 10)).slice(0, -6)}
-                value={selectedDate}
+                value={state.endTime}
                 placeholder={format(Date.now(), "d MMM yyyy HH:mm")}
-                onIonChange={(e) => setSelectedDate(e.detail.value!)}
+                onIonChange={(e) => setState({ endTime: e.detail.value! })}
               ></IonDatetime>
             </IonItem>
           </IonList>
