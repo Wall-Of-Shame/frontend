@@ -10,6 +10,7 @@ import {
   IonRow,
   IonText,
   IonItemDivider,
+  IonItem,
 } from "@ionic/react";
 import "./AddParticipantsModal.scss";
 import LoadingSpinner from "../loadingSpinner";
@@ -37,9 +38,10 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
           <IonSearchbar
             value={searchText}
             onIonChange={(e) => setSearchText(e.detail.value!)}
-            placeholder="Filter Schedules"
+            placeholder="Search for a name or username"
             showCancelButton="never"
             className="ion-margin-top"
+            color="white"
           ></IonSearchbar>
         </IonToolbar>
       </IonHeader>

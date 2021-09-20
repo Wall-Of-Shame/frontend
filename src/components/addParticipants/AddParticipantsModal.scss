@@ -1,8 +1,12 @@
-.toolbar {
-
-  height: 200px;
-}
-
 .link-button {
   --background-activated-opacity: 30%;
+}
+
+ion-searchbar {
+  .searchbar-input-container {
+    input {
+      font-size: 19px !important;
+    }
+  }
+
 }
