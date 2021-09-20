@@ -1,0 +1,16 @@
+.footer {
+  border-top: 1px solid #adadad;
+  background-color: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  .footer {
+    border-top: 1px solid #e6e6e6;
+  }
+}
+
+.user-avatar {
+  height: 3rem;
+  width: 3rem;
+  margin: 1rem;
+}

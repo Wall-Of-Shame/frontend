@@ -1,9 +1,11 @@
 import {
+  IonAvatar,
   IonButton,
   IonButtons,
   IonCol,
   IonContent,
   IonDatetime,
+  IonFooter,
   IonGrid,
   IonHeader,
   IonIcon,
@@ -25,6 +27,10 @@ import { useReducer, useState } from "react";
 import { addYears, format, formatISO } from "date-fns";
 import "./CreateChallenge.scss";
 import { useHistory } from "react-router";
+import yoda from "../../../assets/avatar-yoda.png";
+import rey from "../../../assets/avatar-rey.png";
+import poe from "../../../assets/avatar-poe.png";
+import luke from "../../../assets/avatar-luke.png";
 
 interface CreateChallengeProps {}
 
@@ -219,13 +225,13 @@ const CreateChallenge: React.FC<CreateChallengeProps> = () => {
         </IonGrid>
         <IonItemDivider style={{ marginBottom: "0.25rem" }} />
         <IonGrid>
-          <IonRow className='ion-padding-horizontal ion-padding-bottom ion-align-items-center'>
-            <IonCol size='6'>
+          <IonRow className='ion-padding-horizontal ion-align-items-center'>
+            <IonCol size='10'>
               <IonText style={{ fontWeight: "bold", fontSize: "1.25rem" }}>
                 8 participants
               </IonText>
             </IonCol>
-            <IonCol size='6'>
+            <IonCol size='2'>
               <IonRow className='ion-justify-content-end'>
                 <IonIcon
                   icon={addOutline}
@@ -234,8 +240,43 @@ const CreateChallenge: React.FC<CreateChallengeProps> = () => {
               </IonRow>
             </IonCol>
           </IonRow>
+          <IonRow className='ion-align-items-center'>
+            <IonAvatar
+              className='user-avatar'
+              style={{ marginRight: "0.25rem" }}
+            >
+              <img src={luke} alt='user1' />
+            </IonAvatar>
+            <IonAvatar
+              className='user-avatar'
+              style={{ marginRight: "0.25rem" }}
+            >
+              <img src={yoda} alt='user2' />
+            </IonAvatar>
+            <IonAvatar
+              className='user-avatar'
+              style={{ marginRight: "0.25rem" }}
+            >
+              <img src={poe} alt='user3' />
+            </IonAvatar>
+            <IonAvatar
+              className='user-avatar'
+              style={{ marginRight: "0.25rem" }}
+            >
+              <img src={rey} alt='user4' />
+            </IonAvatar>
+          </IonRow>
         </IonGrid>
       </IonContent>
+      <IonFooter>
+        <IonRow className='ion-justify-content-center ion-margin'>
+          <IonButton shape='round' color='secondary' fill='solid'>
+            <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
+              Let's geddittt
+            </IonText>
+          </IonButton>
+        </IonRow>
+      </IonFooter>
     </IonPage>
   );
 };

@@ -16,8 +16,6 @@ const login = async (token: string): Promise<void> => {
   };
   try {
     const response = await APIService.post("auth", data);
-    console.log(response);
-    console.log("WTF");
     await TokenUtils.storeToken(response);
     store.dispatch(setUser(response.data.user));
   } catch (error: any) {
@@ -35,10 +33,7 @@ const getUser = async (): Promise<UserData | null> => {
   try {
     const response = await APIService.get("self");
     if (response.status === 200) {
-      console.log("Damn");
-      console.log(response);
       const user = response.data;
-      console.log(user);
       store.dispatch(setUser(user));
       return user;
     }
