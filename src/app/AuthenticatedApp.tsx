@@ -66,14 +66,8 @@ const AuthenticatedApp: React.FC = () => {
             <Route exact path='/challenges'>
               <Challenges />
             </Route>
-            <Route exact path='/challenges/create'>
-              <CreateChallenge />
-            </Route>
             <Route exact path='/challenges/:id/details'>
               <ChallengeDetails />
-            </Route>
-            <Route exact path='/challenges/create'>
-              <CreateChallenge />
             </Route>
             <Route exact path='/wall-of-shame'>
               <WallOfShame />

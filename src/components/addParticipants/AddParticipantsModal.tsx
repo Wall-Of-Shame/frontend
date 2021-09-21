@@ -204,78 +204,40 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
       </IonContent>
       <IonFooter>
         <IonToolbar>
-          <IonRow className='ion-margin'>
-            <IonText
-              style={{
-                fontSize: 15,
-              }}
-            >
-              You can also send the challenge link to a friend
-            </IonText>
-          </IonRow>
-          <IonRow
-            className='ion-justify-content-center'
-            style={{ marginBottom: "0.5rem" }}
-          >
+          <IonRow className='ion-justify-content-around'>
             <IonButton
+              color='danger'
               shape='round'
-              color='primary'
-              fill='outline'
-              style={{ height: "3.2rem" }}
-              className='link-button'
+              onClick={() => setShowModal(false)}
+              style={{ color: "black" }}
             >
               <IonText
                 style={{
                   marginLeft: "1rem",
                   marginRight: "1rem",
-                  fontSize: 17,
+                  fontSize: 19,
                 }}
               >
-                https://wallofshame.com/Ffdsa242
+                Cancel
               </IonText>
             </IonButton>
-          </IonRow>
-          <IonRow className='ion-justify-content-center'>
             <IonButton
-              shape='round'
               color='secondary'
-              fill='solid'
-              style={{ height: "3.2rem" }}
+              shape='round'
+              onClick={() => setShowModal(false)}
+              style={{ color: "black" }}
             >
               <IonText
                 style={{
-                  marginLeft: "2rem",
-                  marginRight: "2rem",
+                  marginLeft: "1rem",
+                  marginRight: "1rem",
                   fontSize: 19,
-                  fontWeight: 600,
                 }}
               >
-                Share link
+                Confirm
               </IonText>
             </IonButton>
           </IonRow>
-          <div
-            style={{
-              borderTop: "1px solid #DCDCDC",
-              marginTop: "0.7rem",
-            }}
-          />
-          <IonButton
-            color='white'
-            expand='full'
-            onClick={() => setShowModal(false)}
-            style={{ color: "black" }}
-          >
-            <IonText
-              style={{
-                marginLeft: "2rem",
-                marginRight: "2rem",
-                fontSize: 19,
-              }}
-            >
-              Cancel
-            </IonText>
-          </IonButton>
         </IonToolbar>
       </IonFooter>
     </IonModal>

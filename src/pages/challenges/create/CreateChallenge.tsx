@@ -32,13 +32,21 @@ import yoda from "../../../assets/avatar-yoda.png";
 import rey from "../../../assets/avatar-rey.png";
 import poe from "../../../assets/avatar-poe.png";
 import luke from "../../../assets/avatar-luke.png";
+import {
+  ChallengePost,
+  ChallengeType,
+} from "../../../interfaces/models/Challenges";
+import { useChallenge } from "../../../contexts/ChallengeContext";
 
-interface CreateChallengeProps {}
+interface CreateChallengeProps {
+  completionCallback: () => void;
+  cancelCallback: () => void;
+}
 
 interface CreateChallengeState {
   title: string;
   description: string;
-  punishmentType: "last" | "fail";
+  punishmentType: ChallengeType;
   endTime: string;
   isLoading: boolean;
   showAlert: boolean;
@@ -50,8 +58,12 @@ interface CreateChallengeState {
   okHandler?: () => void;
 }
 
-const CreateChallenge: React.FC<CreateChallengeProps> = () => {
+const CreateChallenge: React.FC<CreateChallengeProps> = (
+  props: CreateChallengeProps
+) => {
   const history = useHistory();
+  const { createChallenge } = useChallenge();
+  const { completionCallback, cancelCallback } = props;
   const [showModal, setShowModal] = useState(false);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -63,8 +75,8 @@ const CreateChallenge: React.FC<CreateChallengeProps> = () => {
     {
       title: "",
       description: "",
-      punishmentType: "fail",
-      endTime: Date.now().toString(),
+      punishmentType: "NOT_COMPLETED",
+      endTime: formatISO(Date.now()),
       isLoading: false,
       showAlert: false,
       alertHeader: "",
@@ -75,6 +87,25 @@ const CreateChallenge: React.FC<CreateChallengeProps> = () => {
       okHandler: undefined,
     }
   );
+
+  const handleSubmit = async () => {
+    const data: ChallengePost = {
+      title: state.title,
+      description: state.description,
+      endAt: state.endTime,
+      type: state.punishmentType,
+      participants: [],
+    };
+    setState({ isLoading: true });
+    await createChallenge(data)
+      .then(() => {
+        completionCallback();
+      })
+      .catch((error) => {
+        console.log(error);
+        setState({ isLoading: false });
+      });
+  };
 
   return (
     <IonPage>
@@ -87,7 +118,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = () => {
                 marginRight: "1rem",
               }}
               color='dark'
-              onClick={() => history.goBack()}
+              onClick={cancelCallback}
             >
               <IonIcon slot='end' icon={arrowBackOutline} size='large' />
             </IonButton>
@@ -192,7 +223,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = () => {
                 </IonCol>
                 <IonCol size='2'>
                   <IonRow className='ion-justify-content-end'>
-                    <IonRadio value='fail' mode='md' color='quinary' />
+                    <IonRadio value='NOT_COMPLETED' mode='md' color='quinary' />
                   </IonRow>
                 </IonCol>
               </IonRow>
@@ -202,7 +233,11 @@ const CreateChallenge: React.FC<CreateChallengeProps> = () => {
                 </IonCol>
                 <IonCol size='2'>
                   <IonRow className='ion-justify-content-end'>
-                    <IonRadio value='last' mode='md' color='quinary' />
+                    <IonRadio
+                      value='LAST_TO_COMPLETE'
+                      mode='md'
+                      color='quinary'
+                    />
                   </IonRow>
                 </IonCol>
               </IonRow>
@@ -281,7 +316,12 @@ const CreateChallenge: React.FC<CreateChallengeProps> = () => {
       </IonContent>
       <IonFooter>
         <IonRow className='ion-justify-content-center ion-margin'>
-          <IonButton shape='round' color='secondary' fill='solid'>
+          <IonButton
+            shape='round'
+            color='secondary'
+            fill='solid'
+            onClick={handleSubmit}
+          >
             <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
               Let's geddittt
             </IonText>
