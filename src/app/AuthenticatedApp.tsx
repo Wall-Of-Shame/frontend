@@ -33,6 +33,7 @@ import Challenges from "../pages/challenges";
 import Profile from "../pages/profile";
 import WallOfShame from "../pages/wallOfShame";
 import ChallengeDetails from "../pages/challenges/details";
+import Vote from "../pages/challenges/vote"
 import CreateChallenge from "../pages/challenges/create";
 import EditProfile from "../pages/profile/edit";
 import Settings from "../pages/profile/settings";
@@ -57,6 +58,9 @@ const AuthenticatedApp: React.FC = () => {
             </Route>
             <Route exact path='/challenges/:id/details'>
               <ChallengeDetails />
+            </Route>
+            <Route exact path='/challenges/:id/vote'>
+              <Vote />
             </Route>
             <Route exact path='/wall-of-shame'>
               <WallOfShame />
