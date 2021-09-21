@@ -15,8 +15,6 @@ import {
   IonIcon,
   IonLabel,
   IonPage,
-  IonRefresher,
-  IonRefresherContent,
   IonRow,
   IonSearchbar,
   IonSegment,
@@ -25,19 +23,10 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import yoda from "../../assets/avatar-yoda.png";
-import rey from "../../assets/avatar-rey.png";
-import poe from "../../assets/avatar-poe.png";
 import luke from "../../assets/avatar-luke.png";
 import "./Challenges.scss";
 import { useEffect, useReducer, useState } from "react";
-import {
-  chevronForward,
-  addOutline,
-  refreshCircle,
-  refreshCircleOutline,
-  refreshOutline,
-} from "ionicons/icons";
+import { chevronForward, addOutline, refreshOutline } from "ionicons/icons";
 import { hideTabs, showTabs } from "../../utils/TabsUtils";
 import { useHistory, useLocation } from "react-router";
 import SetUpProfileModal from "../../components/setupProfile/ProfileSetUpModal";
@@ -47,12 +36,10 @@ import { useSelector } from "react-redux";
 import { ChallengeData } from "../../interfaces/models/Challenges";
 import { RootState } from "../../reducers/RootReducer";
 import { ChallengeDux } from "../../reducers/ChallengeDux";
-import CreateChallenge from "./create";
 import LoadingSpinner from "../../components/loadingSpinner";
 import Alert from "../../components/alert";
 import { formatDuration, intervalToDuration } from "date-fns";
 import parseISO from "date-fns/parseISO";
-import { RefresherEventDetail } from "@ionic/core";
 
 interface ChallengesState {
   isLoading: boolean;
