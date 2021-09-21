@@ -7,3 +7,13 @@ export const isValidEmail = (email: string): boolean => {
 export const isValidPassword = (password: string): boolean => {
   return password.length > 7 && password.length < 73;
 };
+
+export const trimDisplayName = (name: string): string => {
+  if (name.length < 11) {
+    return name;
+  } else {
+    const substring = name.substring(0, 7);
+    const trimmed = substring.trimEnd();
+    return trimmed + "...";
+  }
+};

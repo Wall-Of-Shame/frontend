@@ -22,7 +22,7 @@ import {
   IonTextarea,
   IonToolbar,
 } from "@ionic/react";
-import { addOutline, arrowBackOutline, pencil } from "ionicons/icons";
+import { arrowBackOutline, pencil } from "ionicons/icons";
 import { useState, useReducer } from "react";
 import {
   addHours,
@@ -33,7 +33,7 @@ import {
   isBefore,
   parseISO,
 } from "date-fns";
-import "./CreateChallenge.scss";
+import "./EditChallenge.scss";
 import AddParticipantsModal from "../../../components/participants/AddParticipantsModal";
 import { useHistory } from "react-router";
 import yoda from "../../../assets/avatar-yoda.png";
@@ -41,21 +41,32 @@ import rey from "../../../assets/avatar-rey.png";
 import poe from "../../../assets/avatar-poe.png";
 import luke from "../../../assets/avatar-luke.png";
 import {
+  ChallengeData,
   ChallengePost,
   ChallengeType,
+  UserMini,
 } from "../../../interfaces/models/Challenges";
 import { useChallenge } from "../../../contexts/ChallengeContext";
 import { UserList } from "../../../interfaces/models/Users";
 import { trimDisplayName } from "../../../utils/ProfileUtils";
+import EditParticipantsModal from "../../../components/participants/EditParticipantsModal";
+import { useUser } from "../../../contexts/UserContext";
 
-interface CreateChallengeProps {}
+interface EditChallengeProps {
+  challenge: ChallengeData;
+  backAction: () => void;
+}
 
-interface CreateChallengeState {
+interface EditChallengeState {
   title: string;
   description: string;
   punishmentType: ChallengeType;
   endTime: string;
-  invitedUsers: UserList[];
+  participants: {
+    accepted: UserMini[];
+    pending: UserMini[];
+  };
+  invitedUsers: UserMini[];
   isLoading: boolean;
   showAlert: boolean;
   alertHeader: string;
@@ -66,25 +77,31 @@ interface CreateChallengeState {
   okHandler?: () => void;
 }
 
-const CreateChallenge: React.FC<CreateChallengeProps> = (
-  props: CreateChallengeProps
+const EditChallenge: React.FC<EditChallengeProps> = (
+  props: EditChallengeProps
 ) => {
   const history = useHistory();
-  const { createChallenge } = useChallenge();
+  const { user } = useUser();
+  const { challenge, backAction } = props;
+  const { updateChallenge } = useChallenge();
   const [showModal, setShowModal] = useState(false);
   const [hasError, setHasError] = useState(false);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [state, setState] = useReducer(
-    (s: CreateChallengeState, a: Partial<CreateChallengeState>) => ({
+    (s: EditChallengeState, a: Partial<EditChallengeState>) => ({
       ...s,
       ...a,
     }),
     {
-      title: "",
-      description: "",
-      punishmentType: "NOT_COMPLETED",
-      endTime: formatISO(addHours(Date.now(), 1)),
-      invitedUsers: [],
+      title: challenge.title,
+      description: challenge.description ?? "",
+      punishmentType: challenge.type,
+      endTime: challenge.endAt,
+      participants: challenge.participants,
+      invitedUsers: challenge.participants.accepted.concat(
+        challenge.participants.pending
+      ),
       isLoading: false,
       showAlert: false,
       alertHeader: "",
@@ -107,19 +124,20 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
       setHasError(true);
       return;
     }
+    const updatedParticipants: string[] = state.invitedUsers.map(
+      (u) => u.userId
+    );
     const data: ChallengePost = {
       title: state.title,
       description: state.description,
       endAt: state.endTime,
       type: state.punishmentType,
-      participants: state.invitedUsers.map((u) => {
-        return u.userId;
-      }),
+      participants: updatedParticipants,
     };
     setState({ isLoading: true });
-    await createChallenge(data)
+    await updateChallenge(data)
       .then(() => {
-        window.location.href = "challenges";
+        window.location.href = `challenges/${challenge.challengeId}/details`;
       })
       .catch((error) => {
         console.log(error);
@@ -138,9 +156,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
                 marginRight: "1rem",
               }}
               color='dark'
-              onClick={() => {
-                history.goBack();
-              }}
+              onClick={backAction}
             >
               <IonIcon slot='end' icon={arrowBackOutline} size='large' />
             </IonButton>
@@ -152,7 +168,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
         <IonGrid style={{ marginTop: "0.5rem" }}>
           <IonRow className='ion-padding'>
             <IonText style={{ fontWeight: "bold", fontSize: "1.5rem" }}>
-              Create a new challenge
+              Edit challenge
             </IonText>
           </IonRow>
         </IonGrid>
@@ -177,7 +193,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
                 value={state.title}
                 debounce={300}
                 placeholder='Enter title*'
-                style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}
+                style={{ marginLeft: "0.5rem", marginRight: "5rem" }}
                 onIonChange={(event) => {
                   setState({ title: event.detail.value ?? "" });
                 }}
@@ -292,11 +308,19 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
         </IonGrid>
         <IonItemDivider style={{ marginBottom: "0.25rem" }} />
         <IonGrid>
-          <IonRow className='ion-padding-horizontal ion-align-items-center'>
+          <IonRow
+            className='ion-align-items-center'
+            style={{
+              marginBottom: "0.5rem",
+              marginLeft: "0.5rem",
+              marginRight: "0.5rem",
+            }}
+          >
             <IonCol size='10'>
               <IonText style={{ fontWeight: "bold", fontSize: "1.25rem" }}>
-                {state.invitedUsers.length} participant
-                {state.invitedUsers.length !== 1 ? "s" : ""}
+                {challenge.participants.accepted.length +
+                  challenge.participants.pending.length}{" "}
+                participants
               </IonText>
             </IonCol>
             <IonCol size='2'>
@@ -309,8 +333,62 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
               </IonRow>
             </IonCol>
           </IonRow>
-          <IonRow className='ion-align-items-center ion-padding'>
-            {state.invitedUsers.map((u) => {
+          <IonRow
+            className='ion-align-items-center'
+            style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}
+          >
+            <IonCol>
+              <IonText>
+                {challenge.participants.accepted.length} participant
+                {challenge.participants.accepted.length !== 1
+                  ? "s are "
+                  : " is "}
+                ready to start the challenge
+              </IonText>
+            </IonCol>
+          </IonRow>
+          <IonRow className='ion-align-items-center'>
+            {challenge.participants.accepted.map((u) => {
+              return (
+                <div key={u.userId} style={{ margin: "0.5rem" }}>
+                  <IonRow className='ion-justify-content-center'>
+                    <IonAvatar className='user-avatar'>
+                      <img src={luke} alt='user1' />
+                    </IonAvatar>
+                  </IonRow>
+                  <IonRow
+                    className='ion-justify-content-center'
+                    style={{ marginTop: "0.25rem" }}
+                  >
+                    <IonText style={{ fontSize: "0.7rem" }}>
+                      {u.userId === user?.userId
+                        ? "You"
+                        : trimDisplayName(u.name)}
+                    </IonText>
+                  </IonRow>
+                </div>
+              );
+            })}
+          </IonRow>
+          <IonRow
+            className='ion-align-items-center'
+            style={{
+              marginLeft: "0.5rem",
+              marginRight: "0.5rem",
+            }}
+          >
+            <IonCol>
+              <IonText>
+                {challenge.participants.pending.length} burden
+                {challenge.participants.pending.length !== 1
+                  ? "s are "
+                  : " is "}
+                still questioning life
+              </IonText>
+            </IonCol>
+          </IonRow>
+          <IonRow className='ion-align-items-center'>
+            {challenge.participants.pending.map((u) => {
               return (
                 <div key={u.userId} style={{ margin: "0.5rem" }}>
                   <IonRow className='ion-justify-content-center'>
@@ -331,8 +409,9 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
             })}
           </IonRow>
         </IonGrid>
-        <AddParticipantsModal
-          users={state.invitedUsers}
+        <EditParticipantsModal
+          accepted={state.participants.accepted}
+          pending={state.participants.pending}
           showModal={showModal}
           setShowModal={setShowModal}
           completionCallback={(invitedUsers) => {
@@ -359,4 +438,4 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
   );
 };
 
-export default CreateChallenge;
+export default EditChallenge;

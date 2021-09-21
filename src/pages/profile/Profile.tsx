@@ -153,8 +153,8 @@ const Profile: React.FC = () => {
         <IonGrid>
           <IonRow className='ion-align-items-center'>
             <IonCol size='4'>
-              <IonRow className='ion-justify-content-center'>
-                <IonAvatar className='user-avatar'>
+              <IonRow className='ion-justify-content-center ion-no-padding'>
+                <IonAvatar id='profile-avatar'>
                   <img src={yoda} alt='user2' />
                 </IonAvatar>
               </IonRow>
@@ -166,13 +166,20 @@ const Profile: React.FC = () => {
                     fontSize: "1.5rem",
                     fontWeight: 600,
                     paddingBottom: "0.5rem",
+                    marginRight: "0.5rem",
                   }}
                 >
                   {user?.name ?? "Display name not set"}
                 </IonText>
               </IonRow>
               <IonRow>
-                <IonText style={{ fontSize: "1.2rem", fontWeight: 600 }}>
+                <IonText
+                  style={{
+                    fontSize: "1.2rem",
+                    fontWeight: 600,
+                    marginRight: "0.5rem",
+                  }}
+                >
                   {`@${user?.username ?? "Username not set"}`}
                 </IonText>
               </IonRow>
