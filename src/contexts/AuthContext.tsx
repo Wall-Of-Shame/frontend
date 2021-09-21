@@ -90,8 +90,7 @@ const AuthProvider: React.FunctionComponent = (props) => {
       const result = await signInWithPopup(auth, googleProvider);
       const credential = GoogleAuthProvider.credentialFromResult(result)!;
       const token = await result.user.getIdToken();
-      console.log(token);
-      AuthService.login(token);
+      await AuthService.login(token);
       await AuthService.getUser();
     } catch (error: any) {
       console.log(error);
@@ -111,7 +110,7 @@ const AuthProvider: React.FunctionComponent = (props) => {
       const result = await signInWithPopup(auth, facebookProvider);
       const credential = FacebookAuthProvider.credentialFromResult(result)!;
       const token = await result.user.getIdToken();
-      AuthService.login(token);
+      await AuthService.login(token);
       await AuthService.getUser();
     } catch (error: any) {
       console.log(error);
@@ -135,8 +134,6 @@ const AuthProvider: React.FunctionComponent = (props) => {
       );
       const user = userCredential.user;
       const token = await user.getIdToken();
-      console.log("Token");
-      console.log(token);
       await AuthService.login(token);
       await AuthService.getUser().then(() => {
         reload();

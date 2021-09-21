@@ -15,8 +15,6 @@ import {
   IonIcon,
   IonLabel,
   IonPage,
-  IonRefresher,
-  IonRefresherContent,
   IonRow,
   IonSearchbar,
   IonSegment,
@@ -25,19 +23,10 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import yoda from "../../assets/avatar-yoda.png";
-import rey from "../../assets/avatar-rey.png";
-import poe from "../../assets/avatar-poe.png";
 import luke from "../../assets/avatar-luke.png";
 import "./Challenges.scss";
 import { useEffect, useReducer, useState } from "react";
-import {
-  chevronForward,
-  addOutline,
-  refreshCircle,
-  refreshCircleOutline,
-  refreshOutline,
-} from "ionicons/icons";
+import { chevronForward, addOutline, refreshOutline } from "ionicons/icons";
 import { hideTabs, showTabs } from "../../utils/TabsUtils";
 import { useHistory, useLocation } from "react-router";
 import SetUpProfileModal from "../../components/setupProfile/ProfileSetUpModal";
@@ -47,12 +36,10 @@ import { useSelector } from "react-redux";
 import { ChallengeData } from "../../interfaces/models/Challenges";
 import { RootState } from "../../reducers/RootReducer";
 import { ChallengeDux } from "../../reducers/ChallengeDux";
-import CreateChallenge from "./create";
 import LoadingSpinner from "../../components/loadingSpinner";
 import Alert from "../../components/alert";
 import { formatDuration, intervalToDuration } from "date-fns";
 import parseISO from "date-fns/parseISO";
-import { RefresherEventDetail } from "@ionic/core";
 
 interface ChallengesState {
   isLoading: boolean;
@@ -136,80 +123,10 @@ const Challenges: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    setTimeout(() => {
-      if (!user?.username || !user?.name) {
-        setShowModal(true);
-      }
-    }, 1000);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return (
-    <IonPage>
-      <IonHeader className='ion-no-border'>
-        <IonToolbar>
-          <IonTitle>Challenges</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen>
-        <IonHeader collapse='condense' className='ion-no-border'>
-          <IonToolbar>
-            <IonTitle size='large'>Challenges</IonTitle>
-            <IonButtons slot='end'>
-              <IonButton
-                style={{
-                  marginRight: "1rem",
-                }}
-                color='dark'
-                routerLink='challenges/create'
-              >
-                <IonIcon slot='end' icon={addOutline} />
-              </IonButton>
-            </IonButtons>
-          </IonToolbar>
-          <IonToolbar className='challenges-search'>
-            <IonSearchbar
-              value={searchText}
-              onIonChange={(e) => setSearchText(e.detail.value!)}
-              className='ion-margin-top'
-            />
-          </IonToolbar>
-        </IonHeader>
-
-        <IonSegment
-          onIonChange={(e) => setTab(e.detail.value ?? "active")}
-          value={tab}
-          mode='md'
-        >
-          <IonSegmentButton value='ongoing'>
-            <IonLabel>Ongoing</IonLabel>
-          </IonSegmentButton>
-          <IonSegmentButton value='pendingStart'>
-            <IonLabel>Pending</IonLabel>
-          </IonSegmentButton>
-          <IonSegmentButton value='pendingResponse'>
-            <IonLabel>Invitations</IonLabel>
-          </IonSegmentButton>
-        </IonSegment>
-
-        {(!user?.username || !user?.name) && (
-          <IonButton
-            expand='block'
-            color='quinary'
-            shape='round'
-            onClick={() => setShowModal(true)}
-            style={{ margin: "1.5rem" }}
-          >
-            Set up profile
-          </IonButton>
-        )}
-        {tab === "ongoing" ? (
+  const renderChallenges = () => {
+    switch (tab) {
+      case "ongoing":
+        return (
           <>
             {ongoing?.map((c) => {
               return (
@@ -296,7 +213,9 @@ const Challenges: React.FC = () => {
               );
             })}
           </>
-        ) : tab === "pendingStart" ? (
+        );
+      case "pendingStart":
+        return (
           <>
             {pendingStart?.map((c) => {
               return (
@@ -327,12 +246,12 @@ const Challenges: React.FC = () => {
                                 marginBottom: "0.25rem",
                               }}
                             >
-                              Waiting for the host to start
+                              Waiting for the challenge to start
                             </IonText>
                           </IonRow>
                           <IonRow>
                             <IonText style={{ fontSize: "0.8rem" }}>
-                              {c.participantCount} participants
+                              {c.participantCount} participants have accepted
                             </IonText>
                           </IonRow>
                           <IonRow
@@ -365,7 +284,9 @@ const Challenges: React.FC = () => {
               );
             })}
           </>
-        ) : (
+        );
+      case "pendingResponse":
+        return (
           <>
             {pendingResponse?.map((c) => {
               return (
@@ -434,9 +355,86 @@ const Challenges: React.FC = () => {
               );
             })}
           </>
+        );
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (!user?.username || !user?.name) {
+        setShowModal(true);
+      }
+    }, 1000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <IonPage>
+      <IonHeader className='ion-no-border'>
+        <IonToolbar>
+          <IonTitle>Challenges</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent fullscreen>
+        <IonHeader collapse='condense' className='ion-no-border'>
+          <IonToolbar>
+            <IonTitle size='large'>Challenges</IonTitle>
+            <IonButtons slot='end'>
+              <IonButton
+                style={{
+                  marginRight: "1rem",
+                }}
+                color='dark'
+                routerLink='challenges/create'
+              >
+                <IonIcon slot='end' icon={addOutline} />
+              </IonButton>
+            </IonButtons>
+          </IonToolbar>
+          <IonToolbar className='challenges-search'>
+            <IonSearchbar
+              value={searchText}
+              onIonChange={(e) => setSearchText(e.detail.value!)}
+              className='ion-margin-top'
+            />
+          </IonToolbar>
+        </IonHeader>
+
+        <IonSegment
+          onIonChange={(e) => setTab(e.detail.value ?? "active")}
+          value={tab}
+          mode='md'
+        >
+          <IonSegmentButton value='ongoing'>
+            <IonLabel>Ongoing</IonLabel>
+          </IonSegmentButton>
+          <IonSegmentButton value='pendingStart'>
+            <IonLabel>Pending</IonLabel>
+          </IonSegmentButton>
+          <IonSegmentButton value='pendingResponse'>
+            <IonLabel>Invitations</IonLabel>
+          </IonSegmentButton>
+        </IonSegment>
+
+        {(!user?.username || !user?.name) && (
+          <IonButton
+            expand='block'
+            color='quinary'
+            shape='round'
+            onClick={() => setShowModal(true)}
+            style={{ margin: "1.5rem" }}
+          >
+            Set up profile
+          </IonButton>
         )}
+        {renderChallenges()}
         <IonFab vertical='bottom' horizontal='end' slot='fixed'>
-          <IonFabButton color='senary'>
+          <IonFabButton color='senary' onClick={fetchData}>
             <IonIcon icon={refreshOutline} />
           </IonFabButton>
         </IonFab>

@@ -34,9 +34,12 @@ const createChallenge = async (data: ChallengePost): Promise<void> => {
   }
 };
 
-const updateChallenge = async (data: ChallengePost): Promise<void> => {
+const updateChallenge = async (
+  challengeId: string,
+  data: ChallengePost
+): Promise<void> => {
   try {
-    await APIService.patch("challenges", data);
+    await APIService.patch(`challenges/${challengeId}`, data);
   } catch (error) {
     return Promise.reject(error);
   }

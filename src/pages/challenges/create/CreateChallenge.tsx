@@ -47,6 +47,7 @@ import {
 import { useChallenge } from "../../../contexts/ChallengeContext";
 import { UserList } from "../../../interfaces/models/Users";
 import { trimDisplayName } from "../../../utils/ProfileUtils";
+import { useUser } from "../../../contexts/UserContext";
 
 interface CreateChallengeProps {}
 
@@ -54,7 +55,8 @@ interface CreateChallengeState {
   title: string;
   description: string;
   punishmentType: ChallengeType;
-  endTime: string;
+  startAt: string;
+  endAt: string;
   invitedUsers: UserList[];
   isLoading: boolean;
   showAlert: boolean;
@@ -70,6 +72,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
   props: CreateChallengeProps
 ) => {
   const history = useHistory();
+  const { user } = useUser();
   const { createChallenge } = useChallenge();
   const [showModal, setShowModal] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -83,7 +86,8 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
       title: "",
       description: "",
       punishmentType: "NOT_COMPLETED",
-      endTime: formatISO(addHours(Date.now(), 1)),
+      startAt: formatISO(addHours(Date.now(), 1)),
+      endAt: formatISO(addHours(Date.now(), 2)),
       invitedUsers: [],
       isLoading: false,
       showAlert: false,
@@ -101,7 +105,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
       !(
         state.title.length > 0 &&
         state.description.length > 0 &&
-        isAfter(parseISO(state.endTime), Date.now())
+        isAfter(parseISO(state.endAt), Date.now())
       )
     ) {
       setHasError(true);
@@ -110,7 +114,8 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
     const data: ChallengePost = {
       title: state.title,
       description: state.description,
-      endAt: state.endTime,
+      startAt: state.startAt,
+      endAt: state.endAt,
       type: state.punishmentType,
       participants: state.invitedUsers.map((u) => {
         return u.userId;
@@ -175,8 +180,9 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
             >
               <IonInput
                 value={state.title}
-                debounce={300}
+                debounce={100}
                 placeholder='Enter title*'
+                maxlength={50}
                 style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}
                 onIonChange={(event) => {
                   setState({ title: event.detail.value ?? "" });
@@ -189,7 +195,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
             style={{ marginTop: "0.5rem" }}
           >
             <IonText style={{ fontSize: "14px", color: "#adadad" }}>
-              {"0/30"}
+              {`${state.title.length}/50`}
             </IonText>
           </IonRow>
         </IonGrid>
@@ -204,7 +210,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
               What do they need to do?
             </IonText>
           </IonRow>
-          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
+          <IonRow className='ion-padding-horizontal'>
             <div
               style={{
                 border: "solid 1px #adadad",
@@ -214,8 +220,9 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
             >
               <IonTextarea
                 value={state.description}
-                debounce={300}
+                debounce={100}
                 rows={4}
+                maxlength={200}
                 placeholder='Enter challenge description*'
                 style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}
                 onIonChange={(event) => {
@@ -223,6 +230,14 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
                 }}
               />
             </div>
+          </IonRow>
+          <IonRow
+            className='ion-padding-horizontal ion-justify-content-end'
+            style={{ marginTop: "0.5rem" }}
+          >
+            <IonText style={{ fontSize: "14px", color: "#adadad" }}>
+              {`${state.description.length}/200`}
+            </IonText>
           </IonRow>
         </IonGrid>
         <IonGrid>
@@ -268,7 +283,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
             <IonText
               style={{ fontWeight: "bold" }}
               color={
-                hasError && isBefore(parseISO(state.endTime), Date.now())
+                hasError && isBefore(parseISO(state.endAt), Date.now())
                   ? "danger"
                   : "primary"
               }
@@ -278,25 +293,56 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
           </IonRow>
           <IonList>
             <IonItem lines='none'>
-              <IonLabel>End time</IonLabel>
+              <IonLabel>Start at*</IonLabel>
               <IonDatetime
                 displayFormat='D MMM YYYY HH:mm'
                 min={formatISO(Date.now()).slice(0, -6)}
                 max={formatISO(addYears(Date.now(), 10)).slice(0, -6)}
-                value={state.endTime}
+                value={state.startAt}
                 placeholder={format(Date.now(), "d MMM yyyy HH:mm")}
-                onIonChange={(e) => setState({ endTime: e.detail.value! })}
+                onIonChange={(e) => setState({ startAt: e.detail.value! })}
+              ></IonDatetime>
+            </IonItem>
+            <IonItem lines='none'>
+              <IonLabel>End at*</IonLabel>
+              <IonDatetime
+                displayFormat='D MMM YYYY HH:mm'
+                min={formatISO(Date.now()).slice(0, -6)}
+                max={formatISO(addYears(Date.now(), 10)).slice(0, -6)}
+                value={state.endAt}
+                placeholder={format(Date.now(), "d MMM yyyy HH:mm")}
+                onIonChange={(e) => setState({ endAt: e.detail.value! })}
               ></IonDatetime>
             </IonItem>
           </IonList>
+          {hasError && isAfter(parseISO(state.startAt), parseISO(state.endAt)) && (
+            <IonRow
+              className='ion-padding-horizontal'
+              style={{ marginTop: "0.5rem", marginBottom: "1rem" }}
+            >
+              <IonText color='danger'>
+                The end time cannot be before start time
+              </IonText>
+            </IonRow>
+          )}
+          {hasError && isAfter(Date.now(), parseISO(state.startAt)) && (
+            <IonRow
+              className='ion-padding-horizontal'
+              style={{ marginTop: "0.5rem", marginBottom: "1rem" }}
+            >
+              <IonText color='danger'>
+                The start time cannot be in the past
+              </IonText>
+            </IonRow>
+          )}
         </IonGrid>
         <IonItemDivider style={{ marginBottom: "0.25rem" }} />
         <IonGrid>
           <IonRow className='ion-padding-horizontal ion-align-items-center'>
             <IonCol size='10'>
               <IonText style={{ fontWeight: "bold", fontSize: "1.25rem" }}>
-                {state.invitedUsers.length} participant
-                {state.invitedUsers.length !== 1 ? "s" : ""}
+                {state.invitedUsers.length + 1} participant
+                {state.invitedUsers.length + 1 !== 1 ? "s" : ""}
               </IonText>
             </IonCol>
             <IonCol size='2'>
@@ -310,6 +356,19 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
             </IonCol>
           </IonRow>
           <IonRow className='ion-align-items-center ion-padding'>
+            <div key={user?.userId ?? "owner"} style={{ margin: "0.5rem" }}>
+              <IonRow className='ion-justify-content-center'>
+                <IonAvatar className='user-avatar'>
+                  <img src={luke} alt='user1' />
+                </IonAvatar>
+              </IonRow>
+              <IonRow
+                className='ion-justify-content-center'
+                style={{ marginTop: "0.25rem" }}
+              >
+                <IonText style={{ fontSize: "0.7rem" }}>You</IonText>
+              </IonRow>
+            </div>
             {state.invitedUsers.map((u) => {
               return (
                 <div key={u.userId} style={{ margin: "0.5rem" }}>

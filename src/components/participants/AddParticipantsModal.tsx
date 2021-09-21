@@ -34,7 +34,7 @@ interface AddParticipantsModalProps {
 
 const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
   const { users, showModal, setShowModal, completionCallback } = props;
-  const { searchUser } = useUser();
+  const { user, searchUser } = useUser();
   const [searchText, setSearchText] = useState("");
   const [matchedUsers, setMatchedUsers] = useState<UserList[]>([]);
   const [invitedUsers, setInvitedUsers] = useState<UserList[]>(users);
@@ -121,32 +121,55 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
                   </IonRow>
                   <IonRow>{`@${u.username}`}</IonRow>
                 </IonCol>
-                <IonCol
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                  size='3'
-                >
-                  <IonButton
-                    shape='round'
-                    color={
-                      invitedUsers.indexOf(u) !== -1 ? "quinary" : "quaternary"
-                    }
-                    fill='solid'
-                    style={{ height: "2.5rem", width: "4.5rem" }}
-                    onClick={() => handleInvite(u)}
+                {u.userId === user?.userId ? (
+                  <IonCol
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                    size='3'
                   >
-                    <IonIcon
-                      icon={
+                    <IonButton
+                      shape='round'
+                      color='tertiary'
+                      disabled
+                      fill='solid'
+                      style={{ height: "2.5rem", width: "4.5rem" }}
+                    >
+                      You
+                    </IonButton>
+                  </IonCol>
+                ) : (
+                  <IonCol
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                    size='3'
+                  >
+                    <IonButton
+                      shape='round'
+                      color={
                         invitedUsers.indexOf(u) !== -1
-                          ? removeOutline
-                          : addOutline
+                          ? "quinary"
+                          : "quaternary"
                       }
-                    />
-                  </IonButton>
-                </IonCol>
+                      fill='solid'
+                      style={{ height: "2.5rem", width: "4.5rem" }}
+                      onClick={() => handleInvite(u)}
+                    >
+                      <IonIcon
+                        icon={
+                          invitedUsers.indexOf(u) !== -1
+                            ? removeOutline
+                            : addOutline
+                        }
+                      />
+                    </IonButton>
+                  </IonCol>
+                )}
               </IonRow>
             );
           })}

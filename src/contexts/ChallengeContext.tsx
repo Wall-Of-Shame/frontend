@@ -65,9 +65,12 @@ const ChallengeProvider: React.FC = (props) => {
     }
   };
 
-  const updateChallenge = async (data: ChallengePost): Promise<void> => {
+  const updateChallenge = async (
+    id: string,
+    data: ChallengePost
+  ): Promise<void> => {
     try {
-      await ChallengeService.updateChallenge(data);
+      await ChallengeService.updateChallenge(id, data);
     } catch (error) {
       return Promise.reject(error);
     }

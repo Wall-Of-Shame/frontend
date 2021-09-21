@@ -61,7 +61,8 @@ interface EditChallengeState {
   title: string;
   description: string;
   punishmentType: ChallengeType;
-  endTime: string;
+  startAt: string;
+  endAt: string;
   participants: {
     accepted: UserMini[];
     pending: UserMini[];
@@ -97,7 +98,8 @@ const EditChallenge: React.FC<EditChallengeProps> = (
       title: challenge.title,
       description: challenge.description ?? "",
       punishmentType: challenge.type,
-      endTime: challenge.endAt,
+      startAt: challenge.startAt ?? formatISO(Date.now()),
+      endAt: challenge.endAt,
       participants: challenge.participants,
       invitedUsers: challenge.participants.accepted.concat(
         challenge.participants.pending
@@ -114,13 +116,18 @@ const EditChallenge: React.FC<EditChallengeProps> = (
   );
 
   const handleSubmit = async () => {
+    const startAtTime = parseISO(state.startAt);
+    const endAtTime = parseISO(state.endAt);
+    console.log(startAtTime);
+    console.log(endAtTime);
+    console.log(isAfter(startAtTime, endAtTime));
     if (
-      !(
-        state.title.length > 0 &&
-        state.description.length > 0 &&
-        isAfter(parseISO(state.endTime), Date.now())
-      )
+      state.title.length <= 0 ||
+      state.description.length <= 0 ||
+      isAfter(startAtTime, endAtTime) ||
+      isAfter(Date.now(), startAtTime)
     ) {
+      console.log("object");
       setHasError(true);
       return;
     }
@@ -130,13 +137,15 @@ const EditChallenge: React.FC<EditChallengeProps> = (
     const data: ChallengePost = {
       title: state.title,
       description: state.description,
-      endAt: state.endTime,
+      startAt: state.startAt,
+      endAt: state.endAt,
       type: state.punishmentType,
       participants: updatedParticipants,
     };
     setState({ isLoading: true });
-    await updateChallenge(data)
+    await updateChallenge(challenge.challengeId, data)
       .then(() => {
+        setState({ isLoading: false });
         window.location.href = `challenges/${challenge.challengeId}/details`;
       })
       .catch((error) => {
@@ -284,7 +293,7 @@ const EditChallenge: React.FC<EditChallengeProps> = (
             <IonText
               style={{ fontWeight: "bold" }}
               color={
-                hasError && isBefore(parseISO(state.endTime), Date.now())
+                hasError && isBefore(parseISO(state.endAt), Date.now())
                   ? "danger"
                   : "primary"
               }
@@ -294,17 +303,48 @@ const EditChallenge: React.FC<EditChallengeProps> = (
           </IonRow>
           <IonList>
             <IonItem lines='none'>
-              <IonLabel>End time</IonLabel>
+              <IonLabel>Start at*</IonLabel>
               <IonDatetime
                 displayFormat='D MMM YYYY HH:mm'
                 min={formatISO(Date.now()).slice(0, -6)}
                 max={formatISO(addYears(Date.now(), 10)).slice(0, -6)}
-                value={state.endTime}
+                value={state.startAt}
                 placeholder={format(Date.now(), "d MMM yyyy HH:mm")}
-                onIonChange={(e) => setState({ endTime: e.detail.value! })}
+                onIonChange={(e) => setState({ startAt: e.detail.value! })}
+              ></IonDatetime>
+            </IonItem>
+            <IonItem lines='none'>
+              <IonLabel>End at*</IonLabel>
+              <IonDatetime
+                displayFormat='D MMM YYYY HH:mm'
+                min={formatISO(Date.now()).slice(0, -6)}
+                max={formatISO(addYears(Date.now(), 10)).slice(0, -6)}
+                value={state.endAt}
+                placeholder={format(Date.now(), "d MMM yyyy HH:mm")}
+                onIonChange={(e) => setState({ endAt: e.detail.value! })}
               ></IonDatetime>
             </IonItem>
           </IonList>
+          {hasError && isAfter(parseISO(state.startAt), parseISO(state.endAt)) && (
+            <IonRow
+              className='ion-padding-horizontal'
+              style={{ marginTop: "0.5rem", marginBottom: "1rem" }}
+            >
+              <IonText color='danger'>
+                The end time cannot be before start time
+              </IonText>
+            </IonRow>
+          )}
+          {hasError && isAfter(Date.now(), parseISO(state.startAt)) && (
+            <IonRow
+              className='ion-padding-horizontal'
+              style={{ marginTop: "0.5rem", marginBottom: "1rem" }}
+            >
+              <IonText color='danger'>
+                The start time cannot be in the past
+              </IonText>
+            </IonRow>
+          )}
         </IonGrid>
         <IonItemDivider style={{ marginBottom: "0.25rem" }} />
         <IonGrid>
@@ -429,7 +469,7 @@ const EditChallenge: React.FC<EditChallengeProps> = (
             onClick={handleSubmit}
           >
             <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
-              Let's geddittt
+              Confirm changes
             </IonText>
           </IonButton>
         </IonRow>
