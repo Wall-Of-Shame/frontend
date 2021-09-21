@@ -39,26 +39,12 @@ import EditProfile from "../pages/profile/edit";
 import Settings from "../pages/profile/settings";
 
 import "./App.scss";
-import { useEffect, useState } from "react";
 
 const redirectToChallenges = (): React.ReactNode => (
   <Redirect to={"/challenges"} />
 );
 
 const AuthenticatedApp: React.FC = () => {
-  const [tab, setTab] = useState("challenges");
-
-  useEffect(() => {
-    const path = window.location.pathname;
-    if (path.indexOf("profile") !== -1) {
-      setTab("profile");
-    } else if (path.indexOf("wall-of-shame") !== -1) {
-      setTab("wall-of-shame");
-    } else {
-      setTab("challenges");
-    }
-  }, []);
-
   return (
     <IonApp>
       <IonReactRouter>
@@ -76,9 +62,6 @@ const AuthenticatedApp: React.FC = () => {
             <Route exact path='/challenges/:id/vote'>
               <Vote />
             </Route>
-            <Route exact path='/challenges/create'>
-              <CreateChallenge />
-            </Route>
             <Route exact path='/wall-of-shame'>
               <WallOfShame />
             </Route>
@@ -93,37 +76,15 @@ const AuthenticatedApp: React.FC = () => {
             </Route>
             <Route render={redirectToChallenges} />
           </IonRouterOutlet>
-          <IonTabBar
-            slot='bottom'
-            className='tabs-nav'
-            hidden
-            onIonTabsDidChange={(e) => {
-              setTab(e.detail.tab);
-            }}
-          >
+          <IonTabBar slot='bottom' className='tabs-nav' hidden>
             <IonTabButton tab='challenges' href='/challenges'>
               <IonIcon icon={alarm} />
-              {tab === "challenges" && (
-                <div className='indicator'>
-                  <div style={{ marginLeft: "1rem", marginRight: "1rem" }} />
-                </div>
-              )}
             </IonTabButton>
             <IonTabButton tab='wall-of-shame' href='/wall-of-shame'>
               <IonIcon icon={statsChart} />
-              {tab === "wall-of-shame" && (
-                <div className='indicator'>
-                  <div style={{ marginLeft: "1rem", marginRight: "1rem" }} />
-                </div>
-              )}
             </IonTabButton>
             <IonTabButton tab='profile' href='/profile'>
               <IonIcon icon={person} />
-              {tab === "profile" && (
-                <div className='indicator'>
-                  <div style={{ marginLeft: "1rem", marginRight: "1rem" }} />
-                </div>
-              )}
             </IonTabButton>
           </IonTabBar>
         </IonTabs>

@@ -33,6 +33,13 @@ import { useHistory, useLocation } from "react-router";
 import SetUpProfileModal from "../../components/setupProfile/ProfileSetUpModal";
 import { useUser } from "../../contexts/UserContext";
 import { useChallenge } from "../../contexts/ChallengeContext";
+import { useSelector } from "react-redux";
+import { ChallengeData } from "../../interfaces/models/Challenges";
+import { RootState } from "../../reducers/RootReducer";
+import { ChallengeDux } from "../../reducers/ChallengeDux";
+import CreateChallenge from "./create";
+import LoadingSpinner from "../../components/loadingSpinner";
+import Alert from "../../components/alert";
 
 interface ChallengesState {
   isLoading: boolean;
@@ -50,10 +57,19 @@ const Challenges: React.FC = () => {
   const location = useLocation();
   const history = useHistory();
   const { getAllChallenges } = useChallenge();
+  const selectChallenges = (state: RootState): ChallengeDux => state.challenges;
 
   const [tab, setTab] = useState("ongoing");
   const [searchText, setSearchText] = useState("");
   const [showModal, setShowModal] = useState(false);
+
+  const [ongoingChallenges, setOngoingChallenges] = useState<ChallengeData[]>(
+    useSelector(selectChallenges).ongoingChallenges
+  );
+
+  const [pendingChallenges, setPendingChallenges] = useState<ChallengeData[]>(
+    useSelector(selectChallenges).pendingChallenges
+  );
 
   const [state, setState] = useReducer(
     (s: ChallengesState, a: Partial<ChallengesState>) => ({
@@ -84,21 +100,25 @@ const Challenges: React.FC = () => {
     }
   }, [location.pathname]);
 
+  const fetchData = async () => {
+    setState({ isLoading: true });
+    try {
+      const allChallenges = await getAllChallenges();
+      console.log(allChallenges);
+      setState({ isLoading: false });
+      setOngoingChallenges(allChallenges.ongoing);
+      setPendingChallenges(allChallenges.pending);
+    } catch (error) {
+      setState({
+        isLoading: false,
+        alertHeader: "Something went wrong",
+        alertMessage: "Please reload and try again later.",
+        showAlert: true,
+      });
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const allChallenges = await getAllChallenges();
-        console.log(allChallenges);
-        setState({ isLoading: false });
-      } catch (error) {
-        setState({
-          isLoading: false,
-          alertHeader: "Something went wrong",
-          alertMessage: "Please reload and try again later.",
-          showAlert: true,
-        });
-      }
-    };
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -129,7 +149,7 @@ const Challenges: React.FC = () => {
                   marginRight: "1rem",
                 }}
                 color='dark'
-                onClick={() => history.push("/challenges/create")}
+                routerLink='challenges/create'
               >
                 <IonIcon slot='end' icon={addOutline} />
               </IonButton>
@@ -138,9 +158,7 @@ const Challenges: React.FC = () => {
           <IonToolbar className='challenges-search'>
             <IonSearchbar
               value={searchText}
-              animated
               onIonChange={(e) => setSearchText(e.detail.value!)}
-              placeholder='Search'
               className='ion-margin-top'
             />
           </IonToolbar>
@@ -170,212 +188,178 @@ const Challenges: React.FC = () => {
             Set up profile
           </IonButton>
         )}
-        <IonCard
-          button
-          onClick={() => {
-            history.push("challenges/1/details", {
-              title: "Watch CS3216 Lectures",
+        {tab === "ongoing" ? (
+          <>
+            {ongoingChallenges.map((c) => {
+              return (
+                <IonCard
+                  button
+                  key={c.challengeId}
+                  onClick={() => {
+                    history.push(`challenges/${c.challengeId}/details`, c);
+                  }}
+                >
+                  <IonGrid className='ion-no-padding'>
+                    <IonRow className='ion-align-items-center'>
+                      <IonCol size='11'>
+                        <IonCardHeader
+                          className='ion-no-padding ion-padding-top ion-padding-horizontal'
+                          style={{ paddingBottom: "0.75rem" }}
+                        >
+                          <IonCardTitle style={{ fontSize: "1.2rem" }}>
+                            {c.title}
+                          </IonCardTitle>
+                        </IonCardHeader>
+                        <IonCardContent>
+                          <IonRow>
+                            <IonText
+                              style={{
+                                fontSize: "0.8rem",
+                                fontWeight: "bold",
+                                marginBottom: "0.25rem",
+                              }}
+                            >
+                              Ends in: 1 day 4 hours
+                            </IonText>
+                          </IonRow>
+                          <IonRow>
+                            <IonText style={{ fontSize: "0.8rem" }}>
+                              {c.participantCount} participants
+                            </IonText>
+                          </IonRow>
+                          <IonRow
+                            style={{ paddingTop: "0.5rem" }}
+                            className='ion-align-items-center'
+                          >
+                            {c.participants.accepted.map((p) => {
+                              return (
+                                <IonAvatar
+                                  className='avatar'
+                                  key={p.userId}
+                                  style={{ marginRight: "0.25rem" }}
+                                >
+                                  <img src={luke} alt='user1' />
+                                </IonAvatar>
+                              );
+                            })}
+                          </IonRow>
+                        </IonCardContent>
+                      </IonCol>
+                      <IonCol size='1'>
+                        <IonIcon
+                          icon={chevronForward}
+                          style={{ fontSize: "24px" }}
+                        />
+                      </IonCol>
+                    </IonRow>
+                  </IonGrid>
+                </IonCard>
+              );
+            })}
+          </>
+        ) : (
+          <>
+            {pendingChallenges.map((c) => {
+              return (
+                <IonCard
+                  button
+                  key={c.challengeId}
+                  onClick={() => {
+                    history.push(`challenges/${c.challengeId}/details`);
+                  }}
+                >
+                  <IonGrid className='ion-no-padding'>
+                    <IonRow className='ion-align-items-center'>
+                      <IonCol size='11'>
+                        <IonCardHeader
+                          className='ion-no-padding ion-padding-top ion-padding-horizontal'
+                          style={{ paddingBottom: "0.75rem" }}
+                        >
+                          <IonCardTitle style={{ fontSize: "1.2rem" }}>
+                            {c.title}
+                          </IonCardTitle>
+                        </IonCardHeader>
+                        <IonCardContent>
+                          <IonRow>
+                            <IonText
+                              style={{
+                                fontSize: "0.8rem",
+                                fontWeight: "bold",
+                                marginBottom: "0.25rem",
+                              }}
+                            >
+                              Ends in: 1 day 4 hours
+                            </IonText>
+                          </IonRow>
+                          <IonRow>
+                            <IonText style={{ fontSize: "0.8rem" }}>
+                              {c.participantCount} participants
+                            </IonText>
+                          </IonRow>
+                          <IonRow
+                            style={{ paddingTop: "0.5rem" }}
+                            className='ion-align-items-center'
+                          >
+                            <IonAvatar
+                              className='avatar'
+                              style={{ marginRight: "0.25rem" }}
+                            >
+                              <img src={luke} alt='user1' />
+                            </IonAvatar>
+                            <IonAvatar
+                              className='avatar'
+                              style={{ marginRight: "0.25rem" }}
+                            >
+                              <img src={yoda} alt='user2' />
+                            </IonAvatar>
+                            <IonAvatar
+                              className='avatar'
+                              style={{ marginRight: "0.25rem" }}
+                            >
+                              <img src={poe} alt='user3' />
+                            </IonAvatar>
+                            <IonAvatar
+                              className='avatar'
+                              style={{ marginRight: "0.25rem" }}
+                            >
+                              <img src={rey} alt='user4' />
+                            </IonAvatar>
+                          </IonRow>
+                        </IonCardContent>
+                      </IonCol>
+                      <IonCol size='1'>
+                        <IonIcon
+                          icon={chevronForward}
+                          style={{ fontSize: "24px" }}
+                        />
+                      </IonCol>
+                    </IonRow>
+                  </IonGrid>
+                </IonCard>
+              );
+            })}
+          </>
+        )}
+        <SetUpProfileModal showModal={showModal} setShowModal={setShowModal} />
+        <LoadingSpinner
+          loading={state.isLoading}
+          message={"Loading"}
+          closeLoading={() => {}}
+        />
+        <Alert
+          showAlert={state.showAlert}
+          closeAlert={(): void => {
+            setState({
+              showAlert: false,
             });
           }}
-        >
-          <IonGrid className='ion-no-padding'>
-            <IonRow className='ion-align-items-center'>
-              <IonCol size='11'>
-                <IonCardHeader
-                  className='ion-no-padding ion-padding-top ion-padding-horizontal'
-                  style={{ paddingBottom: "0.75rem" }}
-                >
-                  <IonCardTitle style={{ fontSize: "1.2rem" }}>
-                    Watch CS3216 Lecture
-                  </IonCardTitle>
-                </IonCardHeader>
-                <IonCardContent>
-                  <IonRow>
-                    <IonText
-                      style={{
-                        fontSize: "0.8rem",
-                        fontWeight: "bold",
-                        marginBottom: "0.25rem",
-                      }}
-                    >
-                      Ends in: 1 day 4 hours
-                    </IonText>
-                  </IonRow>
-                  <IonRow>
-                    <IonText style={{ fontSize: "0.8rem" }}>
-                      4 participants
-                    </IonText>
-                  </IonRow>
-                  <IonRow
-                    style={{ paddingTop: "0.5rem" }}
-                    className='ion-align-items-center'
-                  >
-                    <IonAvatar
-                      className='avatar'
-                      style={{ marginRight: "0.25rem" }}
-                    >
-                      <img src={luke} alt='user1' />
-                    </IonAvatar>
-                    <IonAvatar
-                      className='avatar'
-                      style={{ marginRight: "0.25rem" }}
-                    >
-                      <img src={yoda} alt='user2' />
-                    </IonAvatar>
-                    <IonAvatar
-                      className='avatar'
-                      style={{ marginRight: "0.25rem" }}
-                    >
-                      <img src={poe} alt='user3' />
-                    </IonAvatar>
-                    <IonAvatar
-                      className='avatar'
-                      style={{ marginRight: "0.25rem" }}
-                    >
-                      <img src={rey} alt='user4' />
-                    </IonAvatar>
-                  </IonRow>
-                </IonCardContent>
-              </IonCol>
-              <IonCol size='1'>
-                <IonIcon icon={chevronForward} style={{ fontSize: "24px" }} />
-              </IonCol>
-            </IonRow>
-          </IonGrid>
-        </IonCard>
-        <IonCard button routerLink={"challenges/1/details"}>
-          <IonGrid className='ion-no-padding'>
-            <IonRow className='ion-align-items-center'>
-              <IonCol size='11'>
-                <IonCardHeader
-                  className='ion-no-padding ion-padding-top ion-padding-horizontal'
-                  style={{ paddingBottom: "0.75rem" }}
-                >
-                  <IonCardTitle style={{ fontSize: "1.2rem" }}>
-                    Watch CS3216 Lecture
-                  </IonCardTitle>
-                </IonCardHeader>
-                <IonCardContent>
-                  <IonRow>
-                    <IonText
-                      style={{
-                        fontSize: "0.8rem",
-                        fontWeight: "bold",
-                        marginBottom: "0.25rem",
-                      }}
-                    >
-                      Ends in: 1 day 4 hours
-                    </IonText>
-                  </IonRow>
-                  <IonRow>
-                    <IonText style={{ fontSize: "0.8rem" }}>
-                      4 participants
-                    </IonText>
-                  </IonRow>
-                  <IonRow
-                    style={{ paddingTop: "0.5rem" }}
-                    className='ion-align-items-center'
-                  >
-                    <IonAvatar
-                      className='avatar'
-                      style={{ marginRight: "0.25rem" }}
-                    >
-                      <img src={luke} alt='user1' />
-                    </IonAvatar>
-                    <IonAvatar
-                      className='avatar'
-                      style={{ marginRight: "0.25rem" }}
-                    >
-                      <img src={yoda} alt='user2' />
-                    </IonAvatar>
-                    <IonAvatar
-                      className='avatar'
-                      style={{ marginRight: "0.25rem" }}
-                    >
-                      <img src={poe} alt='user3' />
-                    </IonAvatar>
-                    <IonAvatar
-                      className='avatar'
-                      style={{ marginRight: "0.25rem" }}
-                    >
-                      <img src={rey} alt='user4' />
-                    </IonAvatar>
-                  </IonRow>
-                </IonCardContent>
-              </IonCol>
-              <IonCol size='1'>
-                <IonIcon icon={chevronForward} style={{ fontSize: "24px" }} />
-              </IonCol>
-            </IonRow>
-          </IonGrid>
-        </IonCard>
-        <IonCard button routerLink={"challenges/1/details"}>
-          <IonGrid className='ion-no-padding'>
-            <IonRow className='ion-align-items-center'>
-              <IonCol size='11'>
-                <IonCardHeader
-                  className='ion-no-padding ion-padding-top ion-padding-horizontal'
-                  style={{ paddingBottom: "0.75rem" }}
-                >
-                  <IonCardTitle style={{ fontSize: "1.2rem" }}>
-                    Watch CS3216 Lecture
-                  </IonCardTitle>
-                </IonCardHeader>
-                <IonCardContent>
-                  <IonRow>
-                    <IonText
-                      style={{
-                        fontSize: "0.8rem",
-                        fontWeight: "bold",
-                        marginBottom: "0.25rem",
-                      }}
-                    >
-                      Ends in: 1 day 4 hours
-                    </IonText>
-                  </IonRow>
-                  <IonRow>
-                    <IonText style={{ fontSize: "0.8rem" }}>
-                      4 participants
-                    </IonText>
-                  </IonRow>
-                  <IonRow
-                    style={{ paddingTop: "0.5rem" }}
-                    className='ion-align-items-center'
-                  >
-                    <IonAvatar
-                      className='avatar'
-                      style={{ marginRight: "0.25rem" }}
-                    >
-                      <img src={luke} alt='user1' />
-                    </IonAvatar>
-                    <IonAvatar
-                      className='avatar'
-                      style={{ marginRight: "0.25rem" }}
-                    >
-                      <img src={yoda} alt='user2' />
-                    </IonAvatar>
-                    <IonAvatar
-                      className='avatar'
-                      style={{ marginRight: "0.25rem" }}
-                    >
-                      <img src={poe} alt='user3' />
-                    </IonAvatar>
-                    <IonAvatar
-                      className='avatar'
-                      style={{ marginRight: "0.25rem" }}
-                    >
-                      <img src={rey} alt='user4' />
-                    </IonAvatar>
-                  </IonRow>
-                </IonCardContent>
-              </IonCol>
-              <IonCol size='1'>
-                <IonIcon icon={chevronForward} style={{ fontSize: "24px" }} />
-              </IonCol>
-            </IonRow>
-          </IonGrid>
-        </IonCard>
-        <SetUpProfileModal showModal={showModal} setShowModal={setShowModal} />
+          alertHeader={state.alertHeader}
+          alertMessage={state.alertMessage}
+          hasConfirm={state.hasConfirm}
+          confirmHandler={state.confirmHandler}
+          cancelHandler={state.cancelHandler}
+          okHandler={state.okHandler}
+        />
       </IonContent>
     </IonPage>
   );

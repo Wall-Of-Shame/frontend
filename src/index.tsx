@@ -15,13 +15,13 @@ setupConfig({
 });
 
 ReactDOM.render(
-  <AppProviders>
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
+  <Provider store={store}>
+    <PersistGate persistor={persistor}>
+      <AppProviders>
         <App />
-      </PersistGate>
-    </Provider>
-  </AppProviders>,
+      </AppProviders>
+    </PersistGate>
+  </Provider>,
   document.getElementById("root")
 );
 
