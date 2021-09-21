@@ -33,7 +33,7 @@ import Challenges from "../pages/challenges";
 import Profile from "../pages/profile";
 import WallOfShame from "../pages/wallOfShame";
 import ChallengeDetails from "../pages/challenges/details";
-import Vote from "../pages/challenges/vote"
+import Vote from "../pages/challenges/vote";
 import CreateChallenge from "../pages/challenges/create";
 import EditProfile from "../pages/profile/edit";
 import Settings from "../pages/profile/settings";
@@ -76,7 +76,7 @@ const AuthenticatedApp: React.FC = () => {
             </Route>
             <Route render={redirectToChallenges} />
           </IonRouterOutlet>
-          <IonTabBar slot='bottom' className='tabs-nav' hidden>
+          <IonTabBar slot='bottom' className='tabs-nav'>
             <IonTabButton tab='challenges' href='/challenges'>
               <IonIcon icon={alarm} />
             </IonTabButton>

@@ -22,13 +22,16 @@ import { Redirect, useHistory, useLocation } from "react-router";
 import { useChallenge } from "../../../contexts/ChallengeContext";
 import { ChallengeData } from "../../../interfaces/models/Challenges";
 import "./ChallengeDetails.scss";
-import { format, parseISO } from "date-fns";
+import { format, isSameSecond, parseISO } from "date-fns";
 import { useUser } from "../../../contexts/UserContext";
 import EditChallenge from "../edit";
 import { trimDisplayName } from "../../../utils/ProfileUtils";
 import LoadingSpinner from "../../../components/loadingSpinner";
 import Alert from "../../../components/alert";
 import isAfter from "date-fns/isAfter";
+import { intervalToDuration } from "date-fns/esm";
+import useInterval from "../../../hooks/useInterval";
+import internal from "stream";
 
 interface ChallengeDetailsProps {}
 
@@ -54,6 +57,10 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
   const [challenge, setChallenge] = useState<ChallengeData>(
     location.state as ChallengeData
   );
+
+  const [countdown, setCountdown] = useState<Duration | null>(null);
+
+  const [didFinish, setDidFinish] = useState(false);
 
   const [state, setState] = useReducer(
     (s: ChallengeDetailsState, a: Partial<ChallengeDetailsState>) => ({
@@ -106,13 +113,56 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     } catch (error) {}
   };
 
+  const handleReject = async () => {
+    setState({ isLoading: true });
+    try {
+      await rejectChallenge(challenge.challengeId);
+      setState({ isLoading: false });
+      window.location.replace("challenges");
+    } catch (error) {
+      setState({
+        isLoading: false,
+        showAlert: true,
+        alertHeader: "Ooooops",
+        alertMessage: "Our server is taking a break, come back later please :)",
+      });
+    }
+  };
+
+  useInterval(() => {
+    if (didFinish) {
+      return;
+    }
+    const endAtTime = parseISO(challenge.endAt);
+    const duration = intervalToDuration({
+      start: Date.now(),
+      end: endAtTime,
+    });
+    if (isAfter(Date.now(), endAtTime)) {
+      setDidFinish(true);
+      const zeroDuration = intervalToDuration({
+        start: Date.now(),
+        end: Date.now(),
+      });
+      setCountdown(zeroDuration);
+    } else {
+      setCountdown(duration);
+    }
+  }, 1000);
+
   useEffect(() => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const renderHeader = () => {
-    if (isAfter(Date.now(), parseISO(challenge.startAt!))) {
+    if (isAfter(Date.now(), parseISO(challenge.endAt!))) {
+      return (
+        <IonRow className='ion-padding'>
+          <IonText>The challenge has ended</IonText>
+        </IonRow>
+      );
+    } else if (isAfter(Date.now(), parseISO(challenge.startAt!))) {
       return (
         <IonRow className='ion-padding'>
           <IonText>Your challenge is</IonText>
@@ -129,9 +179,11 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
         (p) => p.userId === user?.userId
       ) === -1
     ) {
-      <IonRow className='ion-padding'>
-        <IonText>You have been invited to</IonText>
-      </IonRow>;
+      return (
+        <IonRow className='ion-padding'>
+          <IonText>You have been invited to</IonText>
+        </IonRow>
+      );
     } else {
       return <></>;
     }
@@ -168,36 +220,61 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
         (p) => p.userId === user?.userId
       ) === -1
     ) {
-      <IonRow className='ion-justify-content-around ion-margin'>
-        <IonCol>
-          <IonButton shape='round' color='danger' expand='block' fill='solid'>
-            <IonText>Nope</IonText>
-          </IonButton>
-        </IonCol>
-        <IonCol>
-          <IonButton
-            shape='round'
-            color='secondary'
-            fill='solid'
-            expand='block'
-            style={{ marginBottom: "0.5rem" }}
-            onClick={() => {
-              setState({
-                showAlert: true,
-                alertHeader: "Are you sure?",
-                alertMessage:
-                  "Once accepted, you will need to complete the challenge or get thrown onto the Wall of Shame 🙈",
-                hasConfirm: true,
-                confirmHandler: handleAccept,
-              });
-            }}
-          >
-            <IonText>I'm ready!</IonText>
-          </IonButton>
-        </IonCol>
-      </IonRow>;
+      return (
+        <IonRow className='ion-justify-content-around ion-margin'>
+          <IonCol>
+            <IonButton
+              shape='round'
+              color='danger'
+              expand='block'
+              fill='solid'
+              onClick={() => {
+                setState({
+                  showAlert: true,
+                  alertHeader: "Are you sure?",
+                  alertMessage:
+                    "Once rejected, you will no longer be able to access this challenge 😱",
+                  hasConfirm: true,
+                  confirmHandler: handleReject,
+                });
+              }}
+            >
+              <IonText>Nope</IonText>
+            </IonButton>
+          </IonCol>
+          <IonCol>
+            <IonButton
+              shape='round'
+              color='secondary'
+              fill='solid'
+              expand='block'
+              style={{ marginBottom: "0.5rem" }}
+              onClick={() => {
+                setState({
+                  showAlert: true,
+                  alertHeader: "Are you sure?",
+                  alertMessage:
+                    "Once accepted, you will need to complete the challenge or get thrown onto the Wall of Shame 🙈",
+                  hasConfirm: true,
+                  confirmHandler: handleAccept,
+                });
+              }}
+            >
+              <IonText>I'm ready!</IonText>
+            </IonButton>
+          </IonCol>
+        </IonRow>
+      );
     } else {
-      return <></>;
+      return (
+        <IonRow className='ion-justify-content-center ion-margin'>
+          <IonButton shape='round' color='secondary' disabled>
+            <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
+              Waiting for the challenge to start
+            </IonText>
+          </IonButton>
+        </IonRow>
+      );
     }
   };
 
@@ -226,7 +303,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
               }}
               color='dark'
               onClick={() => {
-                window.location.href = "challenges";
+                history.goBack();
               }}
             >
               <IonIcon slot='end' icon={arrowBackOutline} size='large' />
@@ -311,6 +388,54 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
             </IonText>
           </IonRow>
         </IonGrid>
+        {isAfter(Date.now(), parseISO(challenge.startAt!)) && (
+          <IonGrid style={{ marginBottom: "0.5rem" }}>
+            <IonRow className='ion-padding-horizontal'>
+              <IonCol size='3'>
+                <IonRow className='ion-justify-content-center'>
+                  <IonText style={{ fontWeight: "800", fontSize: "2rem" }}>
+                    {countdown?.days ?? "0"}
+                  </IonText>
+                </IonRow>
+              </IonCol>
+              <IonCol size='3'>
+                <IonRow className='ion-justify-content-center'>
+                  <IonText style={{ fontWeight: "800", fontSize: "2rem" }}>
+                    {countdown?.hours ?? "0"}
+                  </IonText>
+                </IonRow>
+              </IonCol>
+              <IonCol size='3'>
+                <IonRow className='ion-justify-content-center'>
+                  <IonText style={{ fontWeight: "800", fontSize: "2rem" }}>
+                    {countdown?.minutes ?? "0"}
+                  </IonText>
+                </IonRow>
+              </IonCol>
+              <IonCol size='3'>
+                <IonRow className='ion-justify-content-center'>
+                  <IonText style={{ fontWeight: "800", fontSize: "2rem" }}>
+                    {countdown?.seconds ?? "0"}
+                  </IonText>
+                </IonRow>
+              </IonCol>
+            </IonRow>
+            <IonRow className='ion-padding-horizontal ion-padding-bottom'>
+              <IonCol size='3'>
+                <IonRow className='ion-justify-content-center'>Days</IonRow>
+              </IonCol>
+              <IonCol size='3'>
+                <IonRow className='ion-justify-content-center'>Hours</IonRow>
+              </IonCol>
+              <IonCol size='3'>
+                <IonRow className='ion-justify-content-center'>Minutes</IonRow>
+              </IonCol>
+              <IonCol size='3'>
+                <IonRow className='ion-justify-content-center'>Seconds</IonRow>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        )}
         <IonItemDivider style={{ marginBottom: "0.25rem" }} />
         <IonGrid>
           <IonRow

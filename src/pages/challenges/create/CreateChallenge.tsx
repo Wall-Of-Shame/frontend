@@ -144,7 +144,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
               }}
               color='dark'
               onClick={() => {
-                history.goBack();
+                window.location.href = "challenges";
               }}
             >
               <IonIcon slot='end' icon={arrowBackOutline} size='large' />
