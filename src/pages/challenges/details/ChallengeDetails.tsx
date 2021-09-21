@@ -12,22 +12,56 @@ import {
   IonText,
   IonToolbar,
 } from "@ionic/react";
+import { useState } from "react";
 import {
   addOutline,
   arrowBackOutline,
   pencil,
   removeOutline,
 } from "ionicons/icons";
-import { useHistory, useLocation } from "react-router";
+import { useEffect } from "react";
+import { Redirect, useHistory, useLocation } from "react-router";
+import { useChallenge } from "../../../contexts/ChallengeContext";
+import { ChallengeData } from "../../../interfaces/models/Challenges";
 import "./ChallengeDetails.scss";
+import { format, parseISO } from "date-fns";
+import { useUser } from "../../../contexts/UserContext";
 
 interface ChallengeDetailsProps {}
 
 const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
   const history = useHistory();
   const location = useLocation();
+  const { user } = useUser()!;
+  const { getChallenge } = useChallenge();
 
-  console.log(location.state);
+  const [challenge, setChallenge] = useState<ChallengeData>(
+    location.state as ChallengeData
+  );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const locationState = location.state as ChallengeData;
+        if (!locationState) {
+          return;
+        }
+        const challenge = await getChallenge(locationState.challengeId);
+        console.log(challenge);
+        if (challenge) {
+          setChallenge(challenge);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (!(location.state as ChallengeData)) {
+    return <Redirect to={"challenges"} />;
+  }
 
   return (
     <IonPage>
@@ -62,11 +96,15 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
       <IonContent fullscreen>
         <IonGrid>
           <IonRow className='ion-padding'>
-            <IonText>You have created a challenge to</IonText>
+            <IonText>
+              {challenge.owner.userId === user?.userId
+                ? "You have created a challenge to"
+                : "You have been invited to"}
+            </IonText>
           </IonRow>
           <IonRow className='ion-padding-horizontal ion-padding-bottom'>
             <IonText style={{ fontWeight: "bold", fontSize: "1.5rem" }}>
-              Watch all CS1010 lectures ahhahahahah
+              {challenge.title}
             </IonText>
           </IonRow>
         </IonGrid>
@@ -74,14 +112,11 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
         <IonGrid>
           <IonRow className='ion-padding-horizontal ion-padding-bottom'>
             <IonText style={{ fontWeight: "bold" }}>
-              What do I need to do?
+              What do we need to do?
             </IonText>
           </IonRow>
           <IonRow className='ion-padding-horizontal ion-padding-bottom'>
-            <IonText>
-              Finish ALL CS1010 LECTURES from week 1 to week 11 hahahahahah
-              we’re so dead hahaahhahh
-            </IonText>
+            <IonText>{challenge.description}</IonText>
           </IonRow>
         </IonGrid>
         <div className='separator' />
@@ -92,7 +127,9 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
             </IonText>
           </IonRow>
           <IonRow className='ion-padding-horizontal ion-padding-bottom'>
-            <IonText>Fri, 12 September, 11:50 pm</IonText>
+            <IonText>
+              {format(parseISO(challenge.endAt), "EEEE, dd MMM yyyy, HH:mm")}
+            </IonText>
           </IonRow>
         </IonGrid>
         <IonItemDivider style={{ marginBottom: "0.25rem" }} />

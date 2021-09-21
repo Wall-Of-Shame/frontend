@@ -20,21 +20,21 @@ const challenges = createSlice({
     setOngoingChallenges: (
       state,
       action: PayloadAction<{
-        courses: ChallengeData[];
+        challenges: ChallengeData[];
         lastRetrieved: Date | number;
       }>
     ): void => {
-      state.ongoingChallenges = action.payload.courses;
+      state.ongoingChallenges = action.payload.challenges;
       state.lastRetrieved = action.payload.lastRetrieved;
     },
     setPendingChallenges: (
       state,
       action: PayloadAction<{
-        courses: ChallengeData[];
+        challenges: ChallengeData[];
         lastRetrieved: Date | number;
       }>
     ): void => {
-      state.pendingChallenges = action.payload.courses;
+      state.pendingChallenges = action.payload.challenges;
       state.lastRetrieved = action.payload.lastRetrieved;
     },
     clearChallenges: (state): void => {
@@ -47,3 +47,5 @@ const challenges = createSlice({
 
 export const { setOngoingChallenges, setPendingChallenges, clearChallenges } =
   challenges.actions;
+
+export default challenges.reducer;

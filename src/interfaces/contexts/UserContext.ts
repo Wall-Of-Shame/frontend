@@ -1,4 +1,4 @@
-import { Avatar, Settings, UserData } from "../models/Users";
+import { Avatar, Settings, UserData, UserList } from "../models/Users";
 
 export default interface UserContextInterface {
   user: UserData | null;
@@ -8,4 +8,5 @@ export default interface UserContextInterface {
     settings: Settings,
     avatar: Avatar
   ): Promise<UserData | null>;
+  searchUser(searchText: string): Promise<UserList[]>;
 }

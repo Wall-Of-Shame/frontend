@@ -1,10 +1,15 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import ChallengeContextInterface from "../interfaces/contexts/ChallengeContext";
 import {
   ChallengeData,
   ChallengeList,
   ChallengePost,
 } from "../interfaces/models/Challenges";
+import {
+  setOngoingChallenges,
+  setPendingChallenges,
+} from "../reducers/ChallengeDux";
 import ChallengeService from "../services/ChallengeService";
 
 const ChallengeContext = React.createContext<
@@ -12,10 +17,23 @@ const ChallengeContext = React.createContext<
 >(undefined);
 
 const ChallengeProvider: React.FC = (props) => {
+  const dispatch = useDispatch();
+
   const getAllChallenges = async (): Promise<ChallengeList> => {
     try {
       const response = await ChallengeService.getChallenges();
-      console.log(response);
+      dispatch(
+        setOngoingChallenges({
+          challenges: response.ongoing,
+          lastRetrieved: Date.now(),
+        })
+      );
+      dispatch(
+        setPendingChallenges({
+          challenges: response.pending,
+          lastRetrieved: Date.now(),
+        })
+      );
       return response;
     } catch (error) {
       return Promise.reject(error);
@@ -24,14 +42,17 @@ const ChallengeProvider: React.FC = (props) => {
 
   const getChallenge = async (id: string): Promise<ChallengeData | null> => {
     try {
-      return null;
+      const response = await ChallengeService.getChallenge(id);
+      console.log(response);
+      return response;
     } catch (error) {
       return Promise.reject(error);
     }
   };
+
   const createChallenge = async (data: ChallengePost): Promise<void> => {
     try {
-      return;
+      await ChallengeService.createChallenge(data);
     } catch (error) {
       return Promise.reject(error);
     }
