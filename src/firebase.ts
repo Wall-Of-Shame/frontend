@@ -12,7 +12,7 @@ const firebaseConfig = {
   projectId: "cs3216-2021-a3-wall-of-shame",
   storageBucket: "cs3216-2021-a3-wall-of-shame.appspot.com",
   messagingSenderId: "942998076854",
-  appId: "1:942998076854:web:98b0297a47cb1c0f911517"
+  appId: "1:942998076854:web:98b0297a47cb1c0f911517",
 };
 
 // Initialize Firebase

@@ -34,5 +34,45 @@ const createChallenge = async (data: ChallengePost): Promise<void> => {
   }
 };
 
+const updateChallenge = async (data: ChallengePost): Promise<void> => {
+  try {
+    await APIService.patch("challenges", data);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+const acceptChallenge = async (challengeId: string): Promise<void> => {
+  try {
+    await APIService.post(`challenges/${challengeId}/accept`);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+const rejectChallenge = async (challengeId: string): Promise<void> => {
+  try {
+    await APIService.post(`challenges/${challengeId}/reject`);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+const completeChallenge = async (challengeId: string): Promise<void> => {
+  try {
+    await APIService.post(`challenges/${challengeId}/complete`);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getChallenges, getChallenge, createChallenge };
+export default {
+  getChallenges,
+  getChallenge,
+  createChallenge,
+  updateChallenge,
+  acceptChallenge,
+  rejectChallenge,
+  completeChallenge,
+};
