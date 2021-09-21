@@ -2,6 +2,7 @@
 import { getAuth } from "@firebase/auth";
 import { getMessaging, getToken } from "@firebase/messaging";
 import { initializeApp } from "firebase/app";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -29,15 +30,14 @@ getToken(messaging, {
   .then((currentToken) => {
     if (currentToken) {
       // Send the token to your server and update the UI if necessary
-      // ...
       console.log('here is token')
       console.log(currentToken);
+      // TODO: Store token
     } else {
       // Show permission request UI
       console.log(
         "No registration token available. Request permission to generate one."
       );
-      // ...
     }
   })
   .catch((err) => {

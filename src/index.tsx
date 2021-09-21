@@ -9,6 +9,12 @@ import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 import AppProviders from "./contexts/AppProviders";
 import { setupConfig } from "@ionic/react";
+import { getMessaging, onMessage } from "firebase/messaging";
+
+const messaging = getMessaging();
+onMessage(messaging, (payload) => {
+  console.log('Message received. ', payload);
+});
 
 setupConfig({
   swipeBackEnabled: false,
