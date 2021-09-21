@@ -42,7 +42,6 @@ import LoadingSpinner from "../../components/loadingSpinner";
 import Alert from "../../components/alert";
 
 interface ChallengesState {
-  isCreateMode: boolean;
   isLoading: boolean;
   showAlert: boolean;
   alertHeader: string;
@@ -78,7 +77,6 @@ const Challenges: React.FC = () => {
       ...a,
     }),
     {
-      isCreateMode: false,
       isLoading: false,
       showAlert: false,
       alertHeader: "",
@@ -134,18 +132,6 @@ const Challenges: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (state.isCreateMode) {
-    return (
-      <CreateChallenge
-        completionCallback={async () => {
-          setState({ isCreateMode: false });
-          await fetchData();
-        }}
-        cancelCallback={() => setState({ isCreateMode: false })}
-      />
-    );
-  }
-
   return (
     <IonPage>
       <IonHeader className='ion-no-border'>
@@ -163,7 +149,7 @@ const Challenges: React.FC = () => {
                   marginRight: "1rem",
                 }}
                 color='dark'
-                onClick={() => setState({ isCreateMode: true })}
+                routerLink='challenges/create'
               >
                 <IonIcon slot='end' icon={addOutline} />
               </IonButton>

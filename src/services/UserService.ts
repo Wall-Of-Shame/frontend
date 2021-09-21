@@ -1,4 +1,9 @@
-import { Avatar, Settings, UserData } from "../interfaces/models/Users";
+import {
+  Avatar,
+  Settings,
+  UserData,
+  UserList,
+} from "../interfaces/models/Users";
 import APIService from "../services/APIService";
 import AuthService from "./AuthService";
 
@@ -23,5 +28,17 @@ const updateProfile = async (
   }
 };
 
+const searchUser = async (searchText: string): Promise<UserList[]> => {
+  try {
+    const response = await APIService.get(
+      `users/?operation=search&query=${searchText}`
+    );
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { updateProfile };
+export default { updateProfile, searchUser };

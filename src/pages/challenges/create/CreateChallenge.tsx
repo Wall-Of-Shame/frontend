@@ -24,7 +24,15 @@ import {
 } from "@ionic/react";
 import { addOutline, arrowBackOutline, pencil } from "ionicons/icons";
 import { useState, useReducer } from "react";
-import { addYears, format, formatISO } from "date-fns";
+import {
+  addHours,
+  addYears,
+  format,
+  formatISO,
+  isAfter,
+  isBefore,
+  parseISO,
+} from "date-fns";
 import "./CreateChallenge.scss";
 import AddParticipantsModal from "../../../components/addParticipants/AddParticipantsModal";
 import { useHistory } from "react-router";
@@ -37,17 +45,16 @@ import {
   ChallengeType,
 } from "../../../interfaces/models/Challenges";
 import { useChallenge } from "../../../contexts/ChallengeContext";
+import { UserList } from "../../../interfaces/models/Users";
 
-interface CreateChallengeProps {
-  completionCallback: () => void;
-  cancelCallback: () => void;
-}
+interface CreateChallengeProps {}
 
 interface CreateChallengeState {
   title: string;
   description: string;
   punishmentType: ChallengeType;
   endTime: string;
+  invitedUsers: UserList[];
   isLoading: boolean;
   showAlert: boolean;
   alertHeader: string;
@@ -63,8 +70,8 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
 ) => {
   const history = useHistory();
   const { createChallenge } = useChallenge();
-  const { completionCallback, cancelCallback } = props;
   const [showModal, setShowModal] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [state, setState] = useReducer(
@@ -76,7 +83,8 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
       title: "",
       description: "",
       punishmentType: "NOT_COMPLETED",
-      endTime: formatISO(Date.now()),
+      endTime: formatISO(addHours(Date.now(), 1)),
+      invitedUsers: [],
       isLoading: false,
       showAlert: false,
       alertHeader: "",
@@ -89,6 +97,16 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
   );
 
   const handleSubmit = async () => {
+    if (
+      !(
+        state.title.length > 0 &&
+        state.description.length > 0 &&
+        isAfter(parseISO(state.endTime), Date.now())
+      )
+    ) {
+      setHasError(true);
+      return;
+    }
     const data: ChallengePost = {
       title: state.title,
       description: state.description,
@@ -99,7 +117,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
     setState({ isLoading: true });
     await createChallenge(data)
       .then(() => {
-        completionCallback();
+        window.location.href = "challenges";
       })
       .catch((error) => {
         console.log(error);
@@ -118,7 +136,9 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
                 marginRight: "1rem",
               }}
               color='dark'
-              onClick={cancelCallback}
+              onClick={() => {
+                history.goBack();
+              }}
             >
               <IonIcon slot='end' icon={arrowBackOutline} size='large' />
             </IonButton>
@@ -147,7 +167,10 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
         </IonGrid>
         <IonGrid>
           <IonRow className='ion-padding-horizontal ion-padding-bottom'>
-            <IonText style={{ fontWeight: "bold" }}>
+            <IonText
+              style={{ fontWeight: "bold" }}
+              color={hasError && state.title.length <= 0 ? "danger" : "primary"}
+            >
               What's the challenge called?
             </IonText>
           </IonRow>
@@ -162,7 +185,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
               <IonInput
                 value={state.title}
                 debounce={300}
-                placeholder='Enter title'
+                placeholder='Enter title*'
                 style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}
                 onIonChange={(event) => {
                   setState({ title: event.detail.value ?? "" });
@@ -181,7 +204,12 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
         </IonGrid>
         <IonGrid>
           <IonRow className='ion-padding-horizontal ion-padding-bottom'>
-            <IonText style={{ fontWeight: "bold" }}>
+            <IonText
+              style={{ fontWeight: "bold" }}
+              color={
+                hasError && state.description.length <= 0 ? "danger" : "primary"
+              }
+            >
               What do they need to do?
             </IonText>
           </IonRow>
@@ -197,7 +225,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
                 value={state.description}
                 debounce={300}
                 rows={4}
-                placeholder='Enter challenge description'
+                placeholder='Enter challenge description*'
                 style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}
                 onIonChange={(event) => {
                   setState({ description: event.detail.value ?? "" });
@@ -246,7 +274,14 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
         </IonGrid>
         <IonGrid>
           <IonRow className='ion-padding-horizontal ion-padding-bottom'>
-            <IonText style={{ fontWeight: "bold" }}>
+            <IonText
+              style={{ fontWeight: "bold" }}
+              color={
+                hasError && isBefore(parseISO(state.endTime), Date.now())
+                  ? "danger"
+                  : "primary"
+              }
+            >
               When does the challenge end?
             </IonText>
           </IonRow>
@@ -283,35 +318,27 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
             </IonCol>
           </IonRow>
           <IonRow className='ion-align-items-center ion-padding'>
-            <IonAvatar
-              className='user-avatar'
-              style={{ marginRight: "0.5rem" }}
-            >
-              <img src={luke} alt='user1' />
-            </IonAvatar>
-            <IonAvatar
-              className='user-avatar'
-              style={{ marginRight: "0.5rem" }}
-            >
-              <img src={yoda} alt='user2' />
-            </IonAvatar>
-            <IonAvatar
-              className='user-avatar'
-              style={{ marginRight: "0.5rem" }}
-            >
-              <img src={poe} alt='user3' />
-            </IonAvatar>
-            <IonAvatar
-              className='user-avatar'
-              style={{ marginRight: "0.5rem" }}
-            >
-              <img src={rey} alt='user4' />
-            </IonAvatar>
+            {state.invitedUsers.map((u) => {
+              return (
+                <IonAvatar
+                  className='user-avatar'
+                  key={u.userId}
+                  style={{ marginRight: "0.5rem" }}
+                >
+                  <img src={luke} alt='user1' />
+                </IonAvatar>
+              );
+            })}
           </IonRow>
         </IonGrid>
         <AddParticipantsModal
+          users={state.invitedUsers}
           showModal={showModal}
           setShowModal={setShowModal}
+          completionCallback={(invitedUsers) => {
+            setState({ invitedUsers: invitedUsers });
+            setShowModal(false);
+          }}
         />
       </IonContent>
       <IonFooter>

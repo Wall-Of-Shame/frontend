@@ -153,9 +153,11 @@ const Profile: React.FC = () => {
         <IonGrid>
           <IonRow className='ion-align-items-center'>
             <IonCol size='4'>
-              <IonAvatar className='user-avatar'>
-                <img src={yoda} alt='user2' />
-              </IonAvatar>
+              <IonRow className='ion-justify-content-center'>
+                <IonAvatar className='user-avatar'>
+                  <img src={yoda} alt='user2' />
+                </IonAvatar>
+              </IonRow>
             </IonCol>
             <IonCol size='8'>
               <IonRow>
