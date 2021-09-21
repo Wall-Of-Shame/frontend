@@ -106,6 +106,22 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     } catch (error) {}
   };
 
+  const handleReject = async () => {
+    setState({ isLoading: true });
+    try {
+      await rejectChallenge(challenge.challengeId);
+      setState({ isLoading: false });
+      window.location.replace("challenges");
+    } catch (error) {
+      setState({
+        isLoading: false,
+        showAlert: true,
+        alertHeader: "Ooooops",
+        alertMessage: "Our server is taking a break, come back later please :)",
+      });
+    }
+  };
+
   useEffect(() => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -168,36 +184,61 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
         (p) => p.userId === user?.userId
       ) === -1
     ) {
-      <IonRow className='ion-justify-content-around ion-margin'>
-        <IonCol>
-          <IonButton shape='round' color='danger' expand='block' fill='solid'>
-            <IonText>Nope</IonText>
-          </IonButton>
-        </IonCol>
-        <IonCol>
-          <IonButton
-            shape='round'
-            color='secondary'
-            fill='solid'
-            expand='block'
-            style={{ marginBottom: "0.5rem" }}
-            onClick={() => {
-              setState({
-                showAlert: true,
-                alertHeader: "Are you sure?",
-                alertMessage:
-                  "Once accepted, you will need to complete the challenge or get thrown onto the Wall of Shame 🙈",
-                hasConfirm: true,
-                confirmHandler: handleAccept,
-              });
-            }}
-          >
-            <IonText>I'm ready!</IonText>
-          </IonButton>
-        </IonCol>
-      </IonRow>;
+      return (
+        <IonRow className='ion-justify-content-around ion-margin'>
+          <IonCol>
+            <IonButton
+              shape='round'
+              color='danger'
+              expand='block'
+              fill='solid'
+              onClick={() => {
+                setState({
+                  showAlert: true,
+                  alertHeader: "Are you sure?",
+                  alertMessage:
+                    "Once rejected, you will no longer be able to access this challenge 😱",
+                  hasConfirm: true,
+                  confirmHandler: handleReject,
+                });
+              }}
+            >
+              <IonText>Nope</IonText>
+            </IonButton>
+          </IonCol>
+          <IonCol>
+            <IonButton
+              shape='round'
+              color='secondary'
+              fill='solid'
+              expand='block'
+              style={{ marginBottom: "0.5rem" }}
+              onClick={() => {
+                setState({
+                  showAlert: true,
+                  alertHeader: "Are you sure?",
+                  alertMessage:
+                    "Once accepted, you will need to complete the challenge or get thrown onto the Wall of Shame 🙈",
+                  hasConfirm: true,
+                  confirmHandler: handleAccept,
+                });
+              }}
+            >
+              <IonText>I'm ready!</IonText>
+            </IonButton>
+          </IonCol>
+        </IonRow>
+      );
     } else {
-      return <></>;
+      return (
+        <IonRow className='ion-justify-content-center ion-margin'>
+          <IonButton shape='round' color='secondary' disabled>
+            <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
+              Waiting for the challenge to start
+            </IonText>
+          </IonButton>
+        </IonRow>
+      );
     }
   };
 
@@ -226,7 +267,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
               }}
               color='dark'
               onClick={() => {
-                window.location.href = "challenges";
+                history.goBack();
               }}
             >
               <IonIcon slot='end' icon={arrowBackOutline} size='large' />
