@@ -23,21 +23,21 @@ import { medal } from "ionicons/icons";
 import { database } from "../../firebase";
 import {
   ref,
-  onChildAdded,
   onValue,
   query,
   orderByKey,
   limitToLast,
 } from "firebase/database";
 import { Shame } from "../../interfaces/models/Challenges";
-import { format, parseISO } from "date-fns";
-import useInterval from "../../hooks/useInterval";
+import { differenceInSeconds, format, parseISO } from "date-fns";
 
 const WallOfShame: React.FC = () => {
   const [tab, setTab] = useState("live");
   const location = useLocation();
 
   const [shames, setShames] = useState<Shame[]>([]);
+  const [lastUpdated, setLastUpdated] = useState(Date.now());
+  const [hasSynced, setHasSynced] = useState(false);
 
   const topShamesRef = query(
     ref(database, "shames"),
@@ -45,26 +45,22 @@ const WallOfShame: React.FC = () => {
     limitToLast(50)
   );
 
-  useInterval(() => {
-    onValue(
-      topShamesRef,
-      (snapshot) => {
-        const object = snapshot.val();
-        if (object) {
-          const parsedValues = Object.values(object) as Shame[];
-          if (parsedValues) {
-            setShames(parsedValues.reverse());
-          }
-        }
-      },
-      {
-        onlyOnce: true,
-      }
-    );
-  }, 1000);
+  onValue(topShamesRef, (snapshot) => {
+    const object = snapshot.val();
 
-  onChildAdded(topShamesRef, (snapshot) => {
-    console.log(snapshot.val());
+    const newTime = Date.now();
+    // Debounce the events
+    if (differenceInSeconds(lastUpdated, newTime) < 2 && hasSynced) {
+      return;
+    }
+    setLastUpdated(newTime);
+    if (object) {
+      const parsedValues = Object.values(object) as Shame[];
+      if (parsedValues) {
+        setShames(parsedValues.reverse());
+        setHasSynced(true);
+      }
+    }
   });
 
   useEffect(() => {

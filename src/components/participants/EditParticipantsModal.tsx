@@ -29,8 +29,7 @@ interface EditParticipantsModalProps {
 }
 
 const EditParticipantsModal: React.FC<EditParticipantsModalProps> = (props) => {
-  const { accepted, pending, showModal, setShowModal, completionCallback } =
-    props;
+  const { pending, showModal, setShowModal, completionCallback } = props;
   const { searchUser } = useUser();
   const [searchText, setSearchText] = useState("");
   const [matchedUsers, setMatchedUsers] = useState<UserMini[]>([]);

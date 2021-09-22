@@ -22,6 +22,8 @@ import Alert from "../../../components/alert";
 interface VoteModalProps {
   showModal: boolean;
   setShowModal: (showModal: boolean) => void;
+  challengeId: string;
+  hasReleasedResults: boolean;
   participantsCount: number;
   participantsCompleted: UserMini[];
 }
@@ -40,7 +42,7 @@ interface VoteModalState {
 
 const VoteModal: React.FC<VoteModalProps> = (props: VoteModalProps) => {
   const { user } = useUser();
-  const { showModal, setShowModal, participantsCompleted, participantsCount } =
+  const { showModal, setShowModal, hasReleasedResults, participantsCompleted } =
     props;
 
   const [state, setState] = useReducer(
@@ -101,24 +103,26 @@ const VoteModal: React.FC<VoteModalProps> = (props: VoteModalProps) => {
       <IonRow style={{ marginBottom: "0.75rem" }}>
         <IonText>2 votes</IonText>
       </IonRow>
-      <IonRow>
-        <IonButton
-          shape='round'
-          color='secondary'
-          fill='solid'
-          style={{ height: "2.5rem", width: "4.5rem" }}
-          onClick={() => handleVote(u.userId)}
-        >
-          <IonText
-            style={{
-              fontSize: 15,
-              fontWeight: 600,
-            }}
+      {!hasReleasedResults && (
+        <IonRow>
+          <IonButton
+            shape='round'
+            color='secondary'
+            fill='solid'
+            style={{ height: "2.5rem", width: "4.5rem" }}
+            onClick={() => handleVote(u.userId)}
           >
-            {u.userId === user?.userId ? "You" : "Vote"}
-          </IonText>
-        </IonButton>
-      </IonRow>
+            <IonText
+              style={{
+                fontSize: 15,
+                fontWeight: 600,
+              }}
+            >
+              {u.userId === user?.userId ? "You" : "Vote"}
+            </IonText>
+          </IonButton>
+        </IonRow>
+      )}
     </IonCol>
   );
 
@@ -139,14 +143,15 @@ const VoteModal: React.FC<VoteModalProps> = (props: VoteModalProps) => {
         <IonGrid style={{ marginTop: "3.5rem" }}>
           <IonRow className='ion-padding'>
             <IonText style={{ fontWeight: "bold", fontSize: "1.5rem" }}>
-              Vote to banish a cheater to the wall
+              {hasReleasedResults
+                ? "Here are the voting results"
+                : "Vote to banish a cheater to the wall"}
             </IonText>
           </IonRow>
           <IonRow className='ion-padding-horizontal ion-padding-top'>
             <IonText style={{ fontSize: 17 }}>
-              <strong>{participantsCount - 1}</strong>{" "}
-              {participantsCount - 1 === 1 ? "person has " : "people have "}
-              to vote for a successful shaming 😊
+              Rule: At least <strong>50%</strong> of the participants have to
+              vote for a successful shaming 😊
             </IonText>
           </IonRow>
         </IonGrid>

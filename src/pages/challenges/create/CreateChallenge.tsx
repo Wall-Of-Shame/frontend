@@ -15,8 +15,6 @@ import {
   IonLabel,
   IonList,
   IonPage,
-  IonRadio,
-  IonRadioGroup,
   IonRow,
   IonText,
   IonTextarea,
@@ -45,6 +43,8 @@ import { UserList } from "../../../interfaces/models/Users";
 import { trimDisplayName } from "../../../utils/ProfileUtils";
 import { useUser } from "../../../contexts/UserContext";
 import { hideTabs } from "../../../utils/TabsUtils";
+import LoadingSpinner from "../../../components/loadingSpinner";
+import Alert from "../../../components/alert";
 
 interface CreateChallengeProps {}
 
@@ -118,15 +118,14 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
         return u.userId;
       }),
     };
-    await createChallenge(data)
-      .then(() => {
-        setState({ isLoading: false });
-        window.location.href = "challenges";
-      })
-      .catch((error) => {
-        console.log(error);
-        setState({ isLoading: false });
-      });
+    try {
+      await createChallenge(data);
+      setState({ isLoading: false });
+      window.location.href = "challenges";
+    } catch (error) {
+      console.log(error);
+      setState({ isLoading: false });
+    }
   };
 
   useEffect(() => {
@@ -247,36 +246,11 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
               Who gets thrown onto the wall?
             </IonText>
           </IonRow>
-          <IonRow className='ion-padding-bottom ion-padding-horizontal'>
-            <IonRadioGroup
-              value={state.punishmentType}
-              style={{ width: "100%" }}
-            >
-              <IonRow style={{ marginTop: "0.75rem" }}>
-                <IonCol size='10'>
-                  <IonLabel>Anyone who doesn't finish in time</IonLabel>
-                </IonCol>
-                <IonCol size='2'>
-                  <IonRow className='ion-justify-content-end'>
-                    <IonRadio value='NOT_COMPLETED' mode='md' color='quinary' />
-                  </IonRow>
-                </IonCol>
-              </IonRow>
-              <IonRow style={{ marginTop: "0.75rem" }}>
-                <IonCol size='10'>
-                  <IonLabel>Last person to complete</IonLabel>
-                </IonCol>
-                <IonCol size='2'>
-                  <IonRow className='ion-justify-content-end'>
-                    <IonRadio
-                      value='LAST_TO_COMPLETE'
-                      mode='md'
-                      color='quinary'
-                    />
-                  </IonRow>
-                </IonCol>
-              </IonRow>
-            </IonRadioGroup>
+          <IonRow
+            className='ion-padding-bottom ion-padding-horizontal'
+            style={{ marginTop: "0.5rem" }}
+          >
+            <IonText>Anyone who doesn't finish in time</IonText>
           </IonRow>
         </IonGrid>
         <IonGrid>
@@ -387,6 +361,25 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
             setState({ invitedUsers: invitedUsers });
             setShowModal(false);
           }}
+        />
+        <LoadingSpinner
+          loading={state.isLoading}
+          message={"Loading"}
+          closeLoading={() => {}}
+        />
+        <Alert
+          showAlert={state.showAlert}
+          closeAlert={(): void => {
+            setState({
+              showAlert: false,
+            });
+          }}
+          alertHeader={state.alertHeader}
+          alertMessage={state.alertMessage}
+          hasConfirm={state.hasConfirm}
+          confirmHandler={state.confirmHandler}
+          cancelHandler={state.cancelHandler}
+          okHandler={state.okHandler}
         />
       </IonContent>
       <IonFooter>

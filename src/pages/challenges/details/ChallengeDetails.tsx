@@ -63,8 +63,13 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
   const history = useHistory();
   const location = useLocation();
   const { user } = useUser()!;
-  const { getChallenge, acceptChallenge, rejectChallenge, completeChallenge } =
-    useChallenge();
+  const {
+    getChallenge,
+    acceptChallenge,
+    rejectChallenge,
+    completeChallenge,
+    releaseResults,
+  } = useChallenge();
 
   const [challenge, setChallenge] = useState<ChallengeData | null>(
     location.state as ChallengeData
@@ -222,6 +227,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     }
     setState({ isLoading: true });
     try {
+      await releaseResults(challenge.challengeId, []);
       const updatedChallenge = await getChallenge(challenge.challengeId);
       if (updatedChallenge) {
         setChallenge(updatedChallenge);
@@ -333,19 +339,21 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
                         : trimDisplayName(u.name)}
                     </IonLabel>
 
-                    <IonButton
-                      slot='end'
-                      shape='round'
-                      color='tertiary'
-                      onClick={() => {
-                        setState({
-                          userUnderViewing: u,
-                          showViewProofModal: true,
-                        });
-                      }}
-                    >
-                      &nbsp;View proof&nbsp;
-                    </IonButton>
+                    {u.evidenceLink !== undefined && u.evidenceLink !== "" && (
+                      <IonButton
+                        slot='end'
+                        shape='round'
+                        color='tertiary'
+                        onClick={() => {
+                          setState({
+                            userUnderViewing: u,
+                            showViewProofModal: true,
+                          });
+                        }}
+                      >
+                        &nbsp;View proof&nbsp;
+                      </IonButton>
+                    )}
                   </IonItem>
                 );
               })}
@@ -360,14 +368,25 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
               }}
             >
               <IonCol>
-                <IonText>
-                  {challenge.participants.accepted.notCompleted.length}{" "}
-                  participant
-                  {challenge.participants.accepted.notCompleted.length !== 1
-                    ? "s have "
-                    : " has "}
-                  failed to complete the challenge on time :')
-                </IonText>
+                {challenge.hasReleasedResult ? (
+                  <IonText>
+                    {challenge.participants.accepted.notCompleted.length}{" "}
+                    participant
+                    {challenge.participants.accepted.notCompleted.length !== 1
+                      ? "s have "
+                      : " has "}
+                    been banished to the Wall of Shame :')
+                  </IonText>
+                ) : (
+                  <IonText>
+                    {challenge.participants.accepted.notCompleted.length}{" "}
+                    participant
+                    {challenge.participants.accepted.notCompleted.length !== 1
+                      ? "s have "
+                      : " has "}
+                    failed to complete the challenge on time :')
+                  </IonText>
+                )}
               </IonCol>
             </IonRow>
           )}
@@ -437,19 +456,21 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
                         ? "You"
                         : trimDisplayName(u.name)}
                     </IonLabel>
-                    <IonButton
-                      slot='end'
-                      shape='round'
-                      color='tertiary'
-                      onClick={() => {
-                        setState({
-                          userUnderViewing: u,
-                          showViewProofModal: true,
-                        });
-                      }}
-                    >
-                      &nbsp;View proof&nbsp;
-                    </IonButton>
+                    {u.evidenceLink !== undefined && u.evidenceLink !== "" && (
+                      <IonButton
+                        slot='end'
+                        shape='round'
+                        color='tertiary'
+                        onClick={() => {
+                          setState({
+                            userUnderViewing: u,
+                            showViewProofModal: true,
+                          });
+                        }}
+                      >
+                        &nbsp;View proof&nbsp;
+                      </IonButton>
+                    )}
                   </IonItem>
                 );
               })}
@@ -629,6 +650,23 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     if (challenge === null) {
       return <Redirect to={"challenges"} />;
     }
+    if (challenge.hasReleasedResult) {
+      return (
+        <IonRow className='ion-margin ion-justify-content-center'>
+          <IonButton
+            shape='round'
+            color='secondary'
+            expand='block'
+            fill='solid'
+            onClick={() => setState({ showVoteModal: true })}
+          >
+            <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
+              View voting results
+            </IonText>
+          </IonButton>
+        </IonRow>
+      );
+    }
     if (isAfter(Date.now(), parseISO(challenge.endAt!))) {
       return (
         <>
@@ -657,7 +695,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
                       hasConfirm: true,
                       alertHeader: "Are you sure?",
                       alertMessage:
-                        "This will confirm the results of the challenge and banish those who failed the challenge to the Wall of Shame :') Note that the voting results need to be confirmed separatedly :)",
+                        "This will confirm the challenge and voting results and banish those who failed the challenge or cheated to the Wall of Shame :')",
                       confirmHandler: handleConfirmResults,
                     });
                   }}
@@ -683,7 +721,8 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           )}
         </>
       );
-    } else if (
+    }
+    if (
       challenge.participants.accepted.completed.findIndex(
         (p) => p.userId === user?.userId
       ) !== -1
@@ -711,7 +750,9 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           </IonButton>
         </IonRow>
       );
-    } else if (isAfter(Date.now(), parseISO(challenge.startAt!))) {
+    }
+
+    if (isAfter(Date.now(), parseISO(challenge.startAt!))) {
       return (
         <IonRow className='ion-justify-content-around ion-margin'>
           <IonButton
@@ -727,7 +768,9 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           </IonButton>
         </IonRow>
       );
-    } else if (user?.userId === challenge.owner.userId) {
+    }
+
+    if (user?.userId === challenge.owner.userId) {
       return (
         <IonRow className='ion-justify-content-center ion-margin'>
           <IonButton shape='round' color='secondary' disabled>
@@ -737,7 +780,9 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           </IonButton>
         </IonRow>
       );
-    } else if (
+    }
+
+    if (
       challenge.participants.pending.findIndex(
         (p) => p.userId === user?.userId
       ) !== -1
@@ -788,6 +833,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
         </IonRow>
       );
     }
+
     return (
       <IonRow className='ion-justify-content-center ion-margin'>
         <IonButton shape='round' color='secondary' disabled>
@@ -973,6 +1019,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           userData={challenge.participants.accepted.completed.find(
             (p) => p.userId === user?.userId
           )}
+          uploadCallback={(data) => setChallenge(data)}
           showModal={state.showUploadProofModal}
           setShowModal={(showModal) =>
             setState({ showUploadProofModal: showModal })
@@ -988,6 +1035,8 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
         <VoteModal
           showModal={state.showVoteModal}
           setShowModal={(showModal) => setState({ showVoteModal: showModal })}
+          challengeId={challenge.challengeId}
+          hasReleasedResults={challenge.hasReleasedResult}
           participantsCompleted={challenge.participants.accepted.completed}
           participantsCount={
             challenge.participants.accepted.completed.length +
