@@ -23,7 +23,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { arrowBackOutline, pencil } from "ionicons/icons";
-import { useState, useReducer } from "react";
+import { useState, useReducer, useEffect } from "react";
 import {
   addHours,
   addYears,
@@ -44,6 +44,7 @@ import { useChallenge } from "../../../contexts/ChallengeContext";
 import { UserList } from "../../../interfaces/models/Users";
 import { trimDisplayName } from "../../../utils/ProfileUtils";
 import { useUser } from "../../../contexts/UserContext";
+import { hideTabs } from "../../../utils/TabsUtils";
 
 interface CreateChallengeProps {}
 
@@ -106,6 +107,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
       setHasError(true);
       return;
     }
+    setState({ isLoading: true });
     const data: ChallengePost = {
       title: state.title,
       description: state.description,
@@ -116,9 +118,9 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
         return u.userId;
       }),
     };
-    setState({ isLoading: true });
     await createChallenge(data)
       .then(() => {
+        setState({ isLoading: false });
         window.location.href = "challenges";
       })
       .catch((error) => {
@@ -126,6 +128,10 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
         setState({ isLoading: false });
       });
   };
+
+  useEffect(() => {
+    hideTabs();
+  }, []);
 
   return (
     <IonPage>
