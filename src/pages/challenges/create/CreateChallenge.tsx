@@ -35,7 +35,6 @@ import {
 } from "date-fns";
 import "./CreateChallenge.scss";
 import AddParticipantsModal from "../../../components/participants/AddParticipantsModal";
-import { useHistory } from "react-router";
 import luke from "../../../assets/avatar-luke.png";
 import {
   ChallengePost,

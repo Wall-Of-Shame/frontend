@@ -123,6 +123,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
       setState({
         isLoading: false,
         showAlert: true,
+        hasConfirm: false,
         alertHeader: "Woohoo",
         alertMessage: "You have accepted the challenge. ",
       });
@@ -130,6 +131,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
       setState({
         isLoading: false,
         showAlert: true,
+        hasConfirm: false,
         alertHeader: "Ooooops",
         alertMessage: "Our server is taking a break, come back later please :)",
       });
@@ -149,6 +151,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
       setState({
         isLoading: false,
         showAlert: true,
+        hasConfirm: false,
         alertHeader: "Ooooops",
         alertMessage: "Our server is taking a break, come back later please :)",
       });
@@ -169,6 +172,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
       setState({
         isLoading: false,
         showAlert: true,
+        hasConfirm: false,
         alertHeader: "Woohoo",
         alertMessage:
           "You have completed the challenge. Now chill and watch the rest suffer :)",
@@ -177,6 +181,32 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
       setState({
         isLoading: false,
         showAlert: true,
+        hasConfirm: false,
+        alertHeader: "Ooooops",
+        alertMessage: "Our server is taking a break, come back later please :)",
+      });
+    }
+  };
+
+  const handleConfirmResults = async () => {
+    if (challenge === null) {
+      return;
+    }
+    setState({ isLoading: true });
+    try {
+      setState({
+        isLoading: false,
+        showAlert: true,
+        hasConfirm: false,
+        alertHeader: "Woohoo",
+        alertMessage:
+          "You have completed the challenge. Now chill and watch the rest suffer :)",
+      });
+    } catch (error) {
+      setState({
+        isLoading: false,
+        showAlert: true,
+        hasConfirm: false,
         alertHeader: "Ooooops",
         alertMessage: "Our server is taking a break, come back later please :)",
       });
@@ -460,7 +490,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           </IonRow>
         )}
         {challenge.participants.accepted.notCompleted.length > 0 && (
-          <IonList>
+          <IonList className='ion-margin-vertical'>
             {challenge.participants.accepted.notCompleted.map((u) => {
               return (
                 <IonItem key={u.userId} lines='none'>
@@ -497,7 +527,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           </IonRow>
         )}
         {challenge.participants.pending.length > 0 && (
-          <IonList>
+          <IonList className='ion-margin-vertical'>
             {challenge.participants.pending.map((u) => {
               return (
                 <IonItem key={u.userId} lines='none'>
@@ -509,7 +539,6 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
                       ? "You"
                       : trimDisplayName(u.name)}
                   </IonLabel>
-                  <IonButton slot='end'>View proof</IonButton>
                 </IonItem>
               );
             })}
@@ -562,19 +591,57 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     }
     if (isAfter(Date.now(), parseISO(challenge.endAt!))) {
       return (
-        <IonRow className='ion-margin ion-justify-content-center'>
-          <IonButton
-            shape='round'
-            color='secondary'
-            expand='block'
-            fill='solid'
-            onClick={() => setState({ showVoteModal: true })}
-          >
-            <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
-              Vote
-            </IonText>
-          </IonButton>
-        </IonRow>
+        <>
+          {user?.userId === challenge.owner.userId ? (
+            <IonRow className='ion-margin ion-justify-content-around'>
+              <IonCol size='6'>
+                <IonButton
+                  shape='round'
+                  color='secondary'
+                  expand='block'
+                  fill='solid'
+                  onClick={() => setState({ showVoteModal: true })}
+                >
+                  <IonText>Vote</IonText>
+                </IonButton>
+              </IonCol>
+              <IonCol size='6'>
+                <IonButton
+                  shape='round'
+                  color='senary'
+                  expand='block'
+                  fill='solid'
+                  onClick={() => {
+                    setState({
+                      showAlert: true,
+                      hasConfirm: true,
+                      alertHeader: "Are you sure?",
+                      alertMessage:
+                        "This will confirm the results of the challenge and banish those who failed the challenge to the Wall of Shame :') Note that the voting results need to be confirmed separatedly :)",
+                      confirmHandler: handleConfirmResults,
+                    });
+                  }}
+                >
+                  <IonText>Confirm Results</IonText>
+                </IonButton>
+              </IonCol>
+            </IonRow>
+          ) : (
+            <IonRow className='ion-margin ion-justify-content-center'>
+              <IonButton
+                shape='round'
+                color='secondary'
+                expand='block'
+                fill='solid'
+                onClick={() => setState({ showVoteModal: true })}
+              >
+                <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
+                  Vote
+                </IonText>
+              </IonButton>
+            </IonRow>
+          )}
+        </>
       );
     } else if (
       challenge.participants.accepted.completed.findIndex(
@@ -750,6 +817,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
                       setState({
                         isLoading: false,
                         showAlert: true,
+                        hasConfirm: false,
                         alertHeader: "Notice",
                         alertMessage:
                           "One or more participants have accepted the challenge, this challenge cannot be edited anymore :)",

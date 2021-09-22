@@ -72,7 +72,7 @@ const AuthenticatedApp: React.FC = () => {
             </Route>
             <Route render={redirectToChallenges} />
           </IonRouterOutlet>
-          <IonTabBar slot='bottom' className='tabs-nav' hidden>
+          <IonTabBar slot='bottom' className='tabs-nav'>
             <IonTabButton tab='challenges' href='/challenges'>
               <IonIcon icon={alarm} />
             </IonTabButton>
