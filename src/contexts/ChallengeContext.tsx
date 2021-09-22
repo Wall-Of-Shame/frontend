@@ -100,6 +100,15 @@ const ChallengeProvider: React.FC = (props) => {
     }
   };
 
+  const uploadProof = async (id: string, data: any): Promise<string | null> => {
+    try {
+      const url = await ChallengeService.uploadProof(id, data);
+      return url;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
+
   return (
     <ChallengeContext.Provider
       value={{
@@ -110,6 +119,7 @@ const ChallengeProvider: React.FC = (props) => {
         acceptChallenge,
         rejectChallenge,
         completeChallenge,
+        uploadProof,
       }}
       {...props}
     />

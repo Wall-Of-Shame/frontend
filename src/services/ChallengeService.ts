@@ -3,9 +3,7 @@ import {
   ChallengeList,
   ChallengePost,
 } from "../interfaces/models/Challenges";
-import { Avatar, Settings, UserData } from "../interfaces/models/Users";
 import APIService from "../services/APIService";
-import AuthService from "./AuthService";
 
 const getChallenges = async (): Promise<ChallengeList> => {
   try {
@@ -69,6 +67,24 @@ const completeChallenge = async (challengeId: string): Promise<void> => {
   }
 };
 
+const uploadProof = async (
+  challengeId: string,
+  data: any
+): Promise<string | null> => {
+  try {
+    const response = await APIService.post(
+      `challenges/${challengeId}/proofs`,
+      data,
+      {
+        headers: { "Content-Type": "application/media" },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   getChallenges,
@@ -78,4 +94,5 @@ export default {
   acceptChallenge,
   rejectChallenge,
   completeChallenge,
+  uploadProof,
 };

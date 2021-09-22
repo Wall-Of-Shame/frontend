@@ -12,4 +12,5 @@ export default interface ChallengeContextInterface {
   acceptChallenge(id: string): Promise<void>;
   rejectChallenge(id: string): Promise<void>;
   completeChallenge(id: string): Promise<void>;
+  uploadProof(id: string, data: any): Promise<string | null>;
 }

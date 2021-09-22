@@ -35,11 +35,15 @@ import isAfter from "date-fns/isAfter";
 import { intervalToDuration } from "date-fns/esm";
 import useInterval from "../../../hooks/useInterval";
 import internal from "stream";
+import UploadProofModal from "../proof";
+import VoteModal from "../vote";
 
 interface ChallengeDetailsProps {}
 
 interface ChallengeDetailsState {
   editMode: boolean;
+  showUploadProofModal: boolean;
+  showVoteModal: boolean;
   isLoading: boolean;
   showAlert: boolean;
   alertHeader: string;
@@ -72,6 +76,8 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     }),
     {
       editMode: false,
+      showUploadProofModal: false,
+      showVoteModal: false,
       isLoading: false,
       showAlert: false,
       alertHeader: "",
@@ -517,6 +523,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
               color='tertiary'
               expand='block'
               fill='solid'
+              onClick={() => setState({ showUploadProofModal: true })}
             >
               Upload Proof
             </IonButton>
@@ -527,7 +534,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
               color='secondary'
               expand='block'
               fill='solid'
-              onClick={() => history.push(`vote`, challenge)}
+              onClick={() => setState({ showVoteModal: true })}
             >
               Vote
             </IonButton>
@@ -765,28 +772,28 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
               <IonCol size='3'>
                 <IonRow className='ion-justify-content-center'>
                   <IonText style={{ fontWeight: "800", fontSize: "2rem" }}>
-                    {countdown?.days ?? "0"}
+                    {countdown?.days ?? "-"}
                   </IonText>
                 </IonRow>
               </IonCol>
               <IonCol size='3'>
                 <IonRow className='ion-justify-content-center'>
                   <IonText style={{ fontWeight: "800", fontSize: "2rem" }}>
-                    {countdown?.hours ?? "0"}
+                    {countdown?.hours ?? "-"}
                   </IonText>
                 </IonRow>
               </IonCol>
               <IonCol size='3'>
                 <IonRow className='ion-justify-content-center'>
                   <IonText style={{ fontWeight: "800", fontSize: "2rem" }}>
-                    {countdown?.minutes ?? "0"}
+                    {countdown?.minutes ?? "-"}
                   </IonText>
                 </IonRow>
               </IonCol>
               <IonCol size='3'>
                 <IonRow className='ion-justify-content-center'>
                   <IonText style={{ fontWeight: "800", fontSize: "2rem" }}>
-                    {countdown?.seconds ?? "0"}
+                    {countdown?.seconds ?? "-"}
                   </IonText>
                 </IonRow>
               </IonCol>
@@ -809,6 +816,22 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
         )}
         <IonItemDivider style={{ marginBottom: "0.25rem" }} />
         {renderParticipants()}
+        <UploadProofModal
+          challenge={challenge}
+          showModal={state.showUploadProofModal}
+          setShowModal={(showModal) =>
+            setState({ showUploadProofModal: showModal })
+          }
+        />
+        <VoteModal
+          showModal={state.showVoteModal}
+          setShowModal={(showModal) => setState({ showVoteModal: showModal })}
+          participantsCompleted={challenge.participants.accepted.completed}
+          participantsCount={
+            challenge.participants.accepted.completed.length +
+            challenge.participants.accepted.notCompleted.length
+          }
+        />
         <LoadingSpinner
           loading={state.isLoading}
           message={"Loading"}

@@ -11,20 +11,24 @@ import {
   IonItem,
   IonLabel,
 } from "@ionic/react";
-import { arrowBackOutline } from "ionicons/icons";
+import { arrowBackOutline, cloudUploadOutline } from "ionicons/icons";
 import Container from "../../../components/container";
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
 import LoadingSpinner from "../../../components/loadingSpinner";
 import Alert from "../../../components/alert";
-import { isValidEmail } from "../../../utils/ProfileUtils";
+import ImageUploader from "react-images-upload";
+import "./UploadProofModal.scss";
+import { useChallenge } from "../../../contexts/ChallengeContext";
+import { ChallengeData } from "../../../interfaces/models/Challenges";
 
-interface LoginModalProps {
+interface UploadProofModalProps {
+  challenge: ChallengeData;
   showModal: boolean;
   setShowModal: (showModal: boolean) => void;
 }
 
-export interface LoginModalState {
+export interface UploadProofModalState {
   email: string;
   password: string;
   hasError: boolean;
@@ -38,12 +42,14 @@ export interface LoginModalState {
   okHandler?: () => void;
 }
 
-const LoginModal: React.FC<LoginModalProps> = (props: LoginModalProps) => {
-  const { showModal, setShowModal } = props;
-  const { login } = useAuth();
+const UploadProofModal: React.FC<UploadProofModalProps> = (
+  props: UploadProofModalProps
+) => {
+  const { challenge, showModal, setShowModal } = props;
+  const { uploadProof } = useChallenge();
 
   const [state, setState] = useReducer(
-    (s: LoginModalState, a: Partial<LoginModalState>) => ({
+    (s: UploadProofModalState, a: Partial<UploadProofModalState>) => ({
       ...s,
       ...a,
     }),
@@ -62,23 +68,32 @@ const LoginModal: React.FC<LoginModalProps> = (props: LoginModalProps) => {
     }
   );
 
-  const handleLogin = async () => {
-    // API call to login and refresh app
+  const [image, setImage] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+
+  const onDrop = async (files: File[], pictures: string[]) => {
+    if (pictures && pictures.length > 0 && files && files.length > 0) {
+      const splitted = pictures[0].split(";");
+      setImage(splitted[1].slice(5));
+      setFile(files[0]);
+    } else {
+      setImage("");
+    }
+  };
+
+  const handleSubmit = async () => {
     setState({ isLoading: true });
-    login(state.email, state.password)
-      .then(() => {
-        setState({ isLoading: false });
-        window.location.reload();
-      })
-      .catch((error) => {
-        setState({
-          isLoading: false,
-          showAlert: true,
-          alertHeader: "Ooooops",
-          alertMessage:
-            "Our server does not recognise your email or password, try again?",
-        });
+    try {
+      const url = await uploadProof(challenge.challengeId, file);
+      console.log(url);
+    } catch {
+      setState({
+        isLoading: false,
+        showAlert: true,
+        alertHeader: "Error processing the image you uploaded",
+        alertMessage: "Please refresh and try again later",
       });
+    }
   };
 
   return (
@@ -88,7 +103,11 @@ const LoginModal: React.FC<LoginModalProps> = (props: LoginModalProps) => {
       backdropDismiss={false}
     >
       <IonContent fullscreen>
-        <IonFab horizontal='start' vertical='top' style={{ marginTop: "1rem" }}>
+        <IonFab
+          horizontal='start'
+          vertical='top'
+          style={{ marginTop: "1rem", marginLeft: "1rem" }}
+        >
           <IonIcon
             icon={arrowBackOutline}
             size='large'
@@ -104,58 +123,36 @@ const LoginModal: React.FC<LoginModalProps> = (props: LoginModalProps) => {
                 marginLeft: "1rem",
               }}
             >
-              Log in
+              My proof
             </IonText>
           </IonRow>
-          <IonList className='ion-padding-vertical'>
-            <IonItem lines='full'>
-              <IonLabel
-                color={
-                  state.email !== "" && !isValidEmail(state.email)
-                    ? "danger"
-                    : "primary"
-                }
-                position='floating'
-              >
-                Email*
-              </IonLabel>
-              <IonInput
-                name='name'
-                type='email'
-                value={state.email}
-                autocapitalize='on'
-                required
-                onIonChange={(event: CustomEvent) => {
-                  setState({ email: event.detail.value });
-                }}
-              />
-            </IonItem>
-            <IonItem lines='full'>
-              <IonLabel color='primary' position='floating'>
-                Password*
-              </IonLabel>
-              <IonInput
-                name='name'
-                type='password'
-                value={state.password}
-                required
-                onIonChange={(event: CustomEvent) => {
-                  setState({ password: event.detail.value });
-                }}
-              />
-            </IonItem>
-          </IonList>
+          <ImageUploader
+            withIcon={false}
+            buttonText='&nbsp;&nbsp;&nbsp;Select Image&nbsp;&nbsp;&nbsp;'
+            buttonStyles={image ? { display: "none" } : undefined}
+            onChange={onDrop}
+            withPreview={true}
+            singleImage={true}
+            label={"Selected: " + image ?? "None"}
+            labelStyles={{
+              textAlign: "center",
+              paddingBottom: "16px",
+              fontSize: "16px",
+            }}
+            imgExtension={[".jpg", ".png", ".gif", "jpeg"]}
+            maxFileSize={Infinity}
+          />
           <IonButton
             fill='solid'
             shape='round'
             color='secondary'
             className='ion-padding-horizontal'
             style={{ marginTop: "2rem" }}
-            onClick={handleLogin}
-            disabled={state.email === "" || state.password === ""}
+            disabled={file === null}
+            onClick={handleSubmit}
           >
             <IonText style={{ marginLeft: "1.5rem", marginRight: "1.5rem" }}>
-              Let's Go
+              Confirm
             </IonText>
           </IonButton>
         </Container>
@@ -183,4 +180,4 @@ const LoginModal: React.FC<LoginModalProps> = (props: LoginModalProps) => {
   );
 };
 
-export default LoginModal;
+export default UploadProofModal;
