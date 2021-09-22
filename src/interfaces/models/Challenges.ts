@@ -10,6 +10,7 @@ export type ChallengeType = "LAST_TO_COMPLETE" | "NOT_COMPLETED";
 export interface ChallengePost {
   title: string;
   description?: string;
+  startAt: string;
   endAt: string;
   type: ChallengeType;
   participants: string[];
@@ -26,15 +27,19 @@ export interface ChallengeData {
   type: ChallengeType;
   owner: DeepPartialUserMini;
   participants: {
-    accepted: UserMini[];
+    accepted: {
+      completed: UserMini[];
+      notCompleted: UserMini[];
+    };
     pending: UserMini[];
   };
 }
-
 // Return schema for the `GET /challenges` route
 export interface ChallengeList {
   ongoing: ChallengeData[];
-  pending: ChallengeData[];
+  pendingResponse: ChallengeData[];
+  pendingStart: ChallengeData[];
+  history: ChallengeData[];
 }
 
 // Input schema for the `PATCH /challenges/:challengeId` route
@@ -51,20 +56,10 @@ export interface ChallengePatch {
 export type UserMini = Pick<
   UserList,
   "userId" | "username" | "name" | "avatar"
->;
-
-type ChallengeMini = Pick<
-  ChallengeData,
-  | "challengeId"
-  | "title"
-  | "description"
-  | "startAt"
-  | "endAt"
-  | "participantCount"
-  | "type"
-  | "owner"
->;
-
+> & {
+  completedAt?: string;
+  evidenceLink?: string;
+};
 // Deep partial of UserMini
 // This is to support the corner case of user being able to create a challenge without having a username/name/avatar
 // They should be prompted to add one asap

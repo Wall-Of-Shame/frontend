@@ -24,7 +24,7 @@ interface LoginModalProps {
   setShowModal: (showModal: boolean) => void;
 }
 
-export interface SignUpModalState {
+export interface LoginModalState {
   email: string;
   password: string;
   hasError: boolean;
@@ -43,7 +43,7 @@ const LoginModal: React.FC<LoginModalProps> = (props: LoginModalProps) => {
   const { login } = useAuth();
 
   const [state, setState] = useReducer(
-    (s: SignUpModalState, a: Partial<SignUpModalState>) => ({
+    (s: LoginModalState, a: Partial<LoginModalState>) => ({
       ...s,
       ...a,
     }),

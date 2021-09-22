@@ -7,8 +7,10 @@ import {
   ChallengePost,
 } from "../interfaces/models/Challenges";
 import {
-  setOngoingChallenges,
-  setPendingChallenges,
+  setHistory,
+  setOngoing,
+  setPendingResponse,
+  setPendingStart,
 } from "../reducers/ChallengeDux";
 import ChallengeService from "../services/ChallengeService";
 
@@ -23,14 +25,26 @@ const ChallengeProvider: React.FC = (props) => {
     try {
       const response = await ChallengeService.getChallenges();
       dispatch(
-        setOngoingChallenges({
+        setOngoing({
           challenges: response.ongoing,
           lastRetrieved: Date.now(),
         })
       );
       dispatch(
-        setPendingChallenges({
-          challenges: response.pending,
+        setPendingResponse({
+          challenges: response.pendingResponse,
+          lastRetrieved: Date.now(),
+        })
+      );
+      dispatch(
+        setPendingStart({
+          challenges: response.pendingStart,
+          lastRetrieved: Date.now(),
+        })
+      );
+      dispatch(
+        setHistory({
+          challenges: response.history,
           lastRetrieved: Date.now(),
         })
       );
@@ -43,7 +57,6 @@ const ChallengeProvider: React.FC = (props) => {
   const getChallenge = async (id: string): Promise<ChallengeData | null> => {
     try {
       const response = await ChallengeService.getChallenge(id);
-      console.log(response);
       return response;
     } catch (error) {
       return Promise.reject(error);
@@ -58,9 +71,62 @@ const ChallengeProvider: React.FC = (props) => {
     }
   };
 
+  const updateChallenge = async (
+    id: string,
+    data: ChallengePost
+  ): Promise<void> => {
+    try {
+      await ChallengeService.updateChallenge(id, data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
+
+  const acceptChallenge = async (id: string): Promise<void> => {
+    try {
+      await ChallengeService.acceptChallenge(id);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
+
+  const rejectChallenge = async (id: string): Promise<void> => {
+    try {
+      await ChallengeService.rejectChallenge(id);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
+
+  const completeChallenge = async (id: string): Promise<void> => {
+    try {
+      await ChallengeService.completeChallenge(id);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
+
+  const uploadProof = async (id: string, data: any): Promise<string | null> => {
+    try {
+      const url = await ChallengeService.uploadProof(id, data);
+      return url;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
+
   return (
     <ChallengeContext.Provider
-      value={{ getAllChallenges, getChallenge, createChallenge }}
+      value={{
+        getAllChallenges,
+        getChallenge,
+        createChallenge,
+        updateChallenge,
+        acceptChallenge,
+        rejectChallenge,
+        completeChallenge,
+        uploadProof,
+      }}
       {...props}
     />
   );

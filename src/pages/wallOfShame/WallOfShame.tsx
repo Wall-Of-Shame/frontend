@@ -58,7 +58,7 @@ const WallOfShame: React.FC = () => {
                 <h4 style={{ fontWeight: "bold" }}>
                   WATCH ALL CS1010 LECTURES
                 </h4>
-                <p>1 second ago</p>
+                <h6>1 second ago</h6>
               </IonLabel>
             </IonItem>
             <IonItem>
@@ -70,7 +70,7 @@ const WallOfShame: React.FC = () => {
                 <h4 style={{ fontWeight: "bold" }}>
                   WATCH ALL CS3216 LECTURES
                 </h4>
-                <p>1 second ago</p>
+                <h6>1 second ago</h6>
               </IonLabel>
             </IonItem>
             <IonItem>
@@ -82,7 +82,7 @@ const WallOfShame: React.FC = () => {
                 <h4 style={{ fontWeight: "bold" }}>
                   WATCH ALL CS3217 LECTURES
                 </h4>
-                <p>1 second ago</p>
+                <h6>1 second ago</h6>
               </IonLabel>
             </IonItem>
             <IonItem>
@@ -92,7 +92,7 @@ const WallOfShame: React.FC = () => {
               <IonLabel>
                 <h6>Finn has failed to:</h6>
                 <h4 style={{ fontWeight: "bold" }}>RUN 10KM BY THIS WEEKEND</h4>
-                <p>1 second ago</p>
+                <h6>1 second ago</h6>
               </IonLabel>
             </IonItem>
             <IonItem>
@@ -104,7 +104,7 @@ const WallOfShame: React.FC = () => {
                 <h4 style={{ fontWeight: "bold" }}>
                   WATCH ALL CS1010 LECTURES
                 </h4>
-                <p>1 second ago</p>
+                <h6>1 second ago</h6>
               </IonLabel>
             </IonItem>
             <IonItem>
@@ -116,7 +116,7 @@ const WallOfShame: React.FC = () => {
                 <h4 style={{ fontWeight: "bold" }}>
                   WATCH ALL CS3216 LECTURES
                 </h4>
-                <p>1 second ago</p>
+                <h6>1 second ago</h6>
               </IonLabel>
             </IonItem>
             <IonItem>
@@ -128,7 +128,7 @@ const WallOfShame: React.FC = () => {
                 <h4 style={{ fontWeight: "bold" }}>
                   WATCH ALL CS3217 LECTURES
                 </h4>
-                <p>1 second ago</p>
+                <h6>1 second ago</h6>
               </IonLabel>
             </IonItem>
             <IonItem>
@@ -138,7 +138,7 @@ const WallOfShame: React.FC = () => {
               <IonLabel>
                 <h6>Finn has failed to:</h6>
                 <h4 style={{ fontWeight: "bold" }}>RUN 10KM BY THIS WEEKEND</h4>
-                <p>1 second ago</p>
+                <h6>1 second ago</h6>
               </IonLabel>
             </IonItem>
           </IonList>

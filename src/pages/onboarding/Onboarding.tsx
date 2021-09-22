@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { IonButton, IonContent, IonFab, IonIcon, IonPage } from "@ionic/react";
-import React, { useReducer, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 
 import "./Onboarding.scss";
 import OnboardingSlides from "./OnboardingSlides";

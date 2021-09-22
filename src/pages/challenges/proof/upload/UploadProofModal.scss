@@ -1,0 +1,47 @@
+.fileUploader .fileContainer {
+  box-shadow: none;
+  background: inherit;
+  .chooseFileButton {
+    border-radius: 1.5rem;
+    background: #aff4f9;
+    color: #000000;
+    font: inherit;
+    height: inherit;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+  .chooseFileButton:hover {
+    background: #9ad7db;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .fileUploader .fileContainer {
+    box-shadow: none;
+    background: inherit;
+    .chooseFileButton {
+      border-radius: 1.5rem;
+      background: #8cc3c7;
+      color: #000000;
+      font: inherit;
+      height: inherit;
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+    }
+    .chooseFileButton:hover {
+      background: #7bacaf;
+    }
+  }
+}
+
+.fileUploader .uploadPicturesWrapper .uploadPictureContainer {
+  width: 90%;
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -o-transition: none !important;
+  transition: none !important;
+  .deleteImage {
+    background: #eb445a;
+    font-size: 15px;
+  }
+}
