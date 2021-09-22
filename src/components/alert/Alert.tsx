@@ -10,6 +10,7 @@ interface AlertProps {
   confirmHandler: () => void;
   cancelHandler?: () => void;
   okHandler?: () => void;
+  okText?: string;
 }
 
 const Alert: React.FunctionComponent<AlertProps> = (props: AlertProps) => {
@@ -22,6 +23,7 @@ const Alert: React.FunctionComponent<AlertProps> = (props: AlertProps) => {
     confirmHandler,
     cancelHandler,
     okHandler,
+    okText,
   } = props;
 
   return (
@@ -56,8 +58,8 @@ const Alert: React.FunctionComponent<AlertProps> = (props: AlertProps) => {
                 },
               ]
           : okHandler !== undefined
-          ? [{ text: "OK", handler: okHandler }]
-          : ["OK"]
+          ? [{ text: okText ?? "OK", handler: okHandler }]
+          : [okText ?? "OK"]
       }
     />
   );
