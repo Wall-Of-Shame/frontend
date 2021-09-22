@@ -57,7 +57,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
   const { getChallenge, acceptChallenge, rejectChallenge, completeChallenge } =
     useChallenge();
 
-  const [challenge, setChallenge] = useState<ChallengeData>(
+  const [challenge, setChallenge] = useState<ChallengeData | null>(
     location.state as ChallengeData
   );
 
@@ -100,6 +100,9 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
   };
 
   const handleAccept = async () => {
+    if (challenge === null) {
+      return;
+    }
     setState({ isLoading: true });
     try {
       await acceptChallenge(challenge.challengeId);
@@ -124,6 +127,9 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
   };
 
   const handleReject = async () => {
+    if (challenge === null) {
+      return;
+    }
     setState({ isLoading: true });
     try {
       await rejectChallenge(challenge.challengeId);
@@ -140,6 +146,9 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
   };
 
   const handleComplete = async () => {
+    if (challenge === null) {
+      return;
+    }
     setState({ isLoading: true });
     try {
       await completeChallenge(challenge.challengeId);
@@ -168,6 +177,9 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     if (didFinish) {
       return;
     }
+    if (challenge === null) {
+      return;
+    }
     const endAtTime = parseISO(challenge.endAt);
     const duration = intervalToDuration({
       start: Date.now(),
@@ -191,6 +203,9 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
   }, []);
 
   const renderParticipants = () => {
+    if (challenge === null) {
+      return <Redirect to={"challenges"} />;
+    }
     if (isAfter(Date.now(), parseISO(challenge.endAt!))) {
       return (
         <IonGrid>
@@ -453,6 +468,10 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
   };
 
   const renderHeader = () => {
+    if (challenge === null) {
+      return <Redirect to={"challenges"} />;
+    }
+
     if (isAfter(Date.now(), parseISO(challenge.endAt!))) {
       return (
         <IonRow className='ion-padding'>
@@ -486,6 +505,9 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
   };
 
   const renderFooter = () => {
+    if (challenge === null) {
+      return <Redirect to={"challenges"} />;
+    }
     if (isAfter(Date.now(), parseISO(challenge.endAt!))) {
       return (
         <IonRow className='ion-margin'>
@@ -620,6 +642,10 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
   };
 
   if (!(location.state as ChallengeData)) {
+    return <Redirect to={"challenges"} />;
+  }
+
+  if (challenge === null) {
     return <Redirect to={"challenges"} />;
   }
 
