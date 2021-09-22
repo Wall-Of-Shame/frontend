@@ -946,7 +946,27 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
                   );
                   if (updatedChallenge) {
                     setChallenge(updatedChallenge);
-                    if (
+                    if (isAfter(Date.now(), parseISO(updatedChallenge.endAt))) {
+                      setState({
+                        isLoading: false,
+                        showAlert: true,
+                        hasConfirm: false,
+                        alertHeader: "Notice",
+                        alertMessage:
+                          "This challenge has already ended, it cannot be edited anymore :)",
+                      });
+                    } else if (
+                      isAfter(Date.now(), parseISO(updatedChallenge.startAt!))
+                    ) {
+                      setState({
+                        isLoading: false,
+                        showAlert: true,
+                        hasConfirm: false,
+                        alertHeader: "Notice",
+                        alertMessage:
+                          "This challenge has already started, it cannot be edited anymore :)",
+                      });
+                    } else if (
                       updatedChallenge.participants.accepted.completed.concat(
                         updatedChallenge.participants.accepted.notCompleted
                       ).length > 1

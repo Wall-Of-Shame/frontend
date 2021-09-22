@@ -4,6 +4,7 @@ import {
   IonCol,
   IonContent,
   IonFab,
+  IonFabButton,
   IonGrid,
   IonIcon,
   IonModal,
@@ -11,7 +12,7 @@ import {
   IonText,
 } from "@ionic/react";
 import "./VoteModal.scss";
-import { arrowBackOutline } from "ionicons/icons";
+import { arrowBackOutline, refreshOutline } from "ionicons/icons";
 import yoda from "../../../assets/avatar-yoda.png";
 import { UserMini } from "../../../interfaces/models/Challenges";
 import { useUser } from "../../../contexts/UserContext";
@@ -240,6 +241,11 @@ const VoteModal: React.FC<VoteModalProps> = (props: VoteModalProps) => {
             })}
           </IonRow>
         </IonGrid>
+        <IonFab vertical='bottom' horizontal='end' slot='fixed'>
+          <IonFabButton color='senary' onClick={fetchData}>
+            <IonIcon icon={refreshOutline} />
+          </IonFabButton>
+        </IonFab>
         <LoadingSpinner
           loading={state.isLoading}
           message={"Loading"}
