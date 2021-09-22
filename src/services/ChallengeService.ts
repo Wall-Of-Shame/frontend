@@ -66,6 +66,19 @@ const completeChallenge = async (challengeId: string): Promise<void> => {
   }
 };
 
+const releaseResults = async (
+  challengeId: string,
+  vetoedParticipants: string[]
+): Promise<void> => {
+  try {
+    await APIService.post(`challenges/${challengeId}/vetoResults`, {
+      vetoedParticipants,
+    });
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 const uploadProof = async (
   challengeId: string,
   data: string
@@ -89,5 +102,6 @@ export default {
   acceptChallenge,
   rejectChallenge,
   completeChallenge,
+  releaseResults,
   uploadProof,
 };

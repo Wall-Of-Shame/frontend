@@ -106,6 +106,17 @@ const ChallengeProvider: React.FC = (props) => {
     }
   };
 
+  const releaseResults = async (
+    id: string,
+    vetoedParticipants: string[]
+  ): Promise<void> => {
+    try {
+      await ChallengeService.releaseResults(id, vetoedParticipants);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
+
   const uploadProof = async (id: string, data: any): Promise<string | null> => {
     try {
       const url = await ChallengeService.uploadProof(id, data);
@@ -125,6 +136,7 @@ const ChallengeProvider: React.FC = (props) => {
         acceptChallenge,
         rejectChallenge,
         completeChallenge,
+        releaseResults,
         uploadProof,
       }}
       {...props}

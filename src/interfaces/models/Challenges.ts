@@ -25,6 +25,7 @@ export interface ChallengeData {
   endAt: string;
   participantCount: number;
   type: ChallengeType;
+  hasReleasedResult: boolean;
   owner: DeepPartialUserMini;
   participants: {
     accepted: {
@@ -34,6 +35,7 @@ export interface ChallengeData {
     pending: UserMini[];
   };
 }
+
 // Return schema for the `GET /challenges` route
 export interface ChallengeList {
   ongoing: ChallengeData[];

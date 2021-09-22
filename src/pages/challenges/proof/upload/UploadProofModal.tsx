@@ -26,6 +26,7 @@ import parseISO from "date-fns/parseISO";
 interface UploadProofModalProps {
   challenge: ChallengeData;
   userData: UserMini | undefined;
+  uploadCallback: (data: ChallengeData) => void;
   showModal: boolean;
   setShowModal: (showModal: boolean) => void;
 }
@@ -47,7 +48,8 @@ export interface UploadProofModalState {
 const UploadProofModal: React.FC<UploadProofModalProps> = (
   props: UploadProofModalProps
 ) => {
-  const { challenge, userData, showModal, setShowModal } = props;
+  const { challenge, userData, uploadCallback, showModal, setShowModal } =
+    props;
   const { getChallenge, uploadProof } = useChallenge();
 
   const [state, setState] = useReducer(
@@ -144,6 +146,7 @@ const UploadProofModal: React.FC<UploadProofModalProps> = (
             (p) => p.userId === userData?.userId
           )?.evidenceLink ?? "";
         setState({ challenge: updatedChallenge, evidenceLink });
+        uploadCallback(updatedChallenge);
       }
     } catch (error) {
       console.log(error);
