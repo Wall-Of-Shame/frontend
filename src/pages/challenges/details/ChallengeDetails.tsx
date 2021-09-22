@@ -25,7 +25,7 @@ import { Redirect, useHistory, useLocation } from "react-router";
 import { useChallenge } from "../../../contexts/ChallengeContext";
 import { ChallengeData, UserMini } from "../../../interfaces/models/Challenges";
 import "./ChallengeDetails.scss";
-import { format, parseISO } from "date-fns";
+import { format, formatISO, parseISO } from "date-fns";
 import { useUser } from "../../../contexts/UserContext";
 import EditChallenge from "../edit";
 import { trimDisplayName } from "../../../utils/ProfileUtils";
@@ -38,6 +38,8 @@ import UploadProofModal from "../proof/upload";
 import VoteModal from "../vote";
 import ViewProofModal from "../proof/view";
 import { hideTabs } from "../../../utils/TabsUtils";
+import { database } from "../../../firebase";
+import { ref, set } from "firebase/database";
 
 interface ChallengeDetailsProps {}
 
@@ -67,11 +69,8 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
   const [challenge, setChallenge] = useState<ChallengeData | null>(
     location.state as ChallengeData
   );
-
   const [countdown, setCountdown] = useState<Duration | null>(null);
-
   const [didFinish, setDidFinish] = useState(false);
-
   const [state, setState] = useReducer(
     (s: ChallengeDetailsState, a: Partial<ChallengeDetailsState>) => ({
       ...s,
@@ -108,6 +107,34 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handlePublishToFirebase = async (
+    usersToShame: UserMini[]
+  ): Promise<void> => {
+    if (!challenge) {
+      return;
+    }
+    const promises = usersToShame.map((u) => {
+      const timestamp = new Date().getTime();
+      return new Promise<void>((resolve, reject) => {
+        set(ref(database, `shames/${timestamp}+${u.userId}`), {
+          name: u.name,
+          title: challenge.title,
+          time: formatISO(Date.now()),
+          timestamp: timestamp,
+        })
+          .then(() => resolve())
+          .catch(() => reject());
+      });
+    });
+    return await Promise.all(promises)
+      .then(() => {
+        return;
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
   };
 
   const handleAccept = async () => {
@@ -195,13 +222,24 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     }
     setState({ isLoading: true });
     try {
+      const updatedChallenge = await getChallenge(challenge.challengeId);
+      if (updatedChallenge) {
+        setChallenge(updatedChallenge);
+        await handlePublishToFirebase(
+          updatedChallenge.participants.accepted.notCompleted
+        );
+      } else {
+        await handlePublishToFirebase(
+          challenge.participants.accepted.notCompleted
+        );
+      }
       setState({
         isLoading: false,
         showAlert: true,
         hasConfirm: false,
         alertHeader: "Woohoo",
         alertMessage:
-          "You have completed the challenge. Now chill and watch the rest suffer :)",
+          "You have released the results of this challenge. Check out the Wall :)",
       });
     } catch (error) {
       setState({
@@ -242,7 +280,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     fetchData();
     hideTabs();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [didFinish]);
 
   const renderParticipants = () => {
     if (challenge === null) {
@@ -328,7 +366,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
                   {challenge.participants.accepted.notCompleted.length !== 1
                     ? "s have "
                     : " has "}
-                  been banished to the Wall of Shame :')
+                  failed to complete the challenge on time :')
                 </IonText>
               </IonCol>
             </IonRow>
@@ -604,7 +642,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
                   fill='solid'
                   onClick={() => setState({ showVoteModal: true })}
                 >
-                  <IonText>Vote</IonText>
+                  <IonText>Vote out cheaters</IonText>
                 </IonButton>
               </IonCol>
               <IonCol size='6'>
@@ -638,7 +676,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
                 onClick={() => setState({ showVoteModal: true })}
               >
                 <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
-                  Vote
+                  Vote out cheaters
                 </IonText>
               </IonButton>
             </IonRow>
