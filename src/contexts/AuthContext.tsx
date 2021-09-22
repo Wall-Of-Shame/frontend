@@ -12,13 +12,14 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth, messaging } from "../firebase";
 import LoadingSpinner from "../components/loadingSpinner/LoadingSpinner";
 import AuthContextInterface from "../interfaces/contexts/AuthContext";
 import AuthService from "../services/AuthService";
 import { FirebaseError } from "@firebase/util";
 import TokenUtils from "../utils/TokenUtils";
 import { UserData } from "../interfaces/models/Users";
+import { getToken } from "@firebase/messaging";
 
 const googleProvider = new GoogleAuthProvider();
 const facebookProvider = new FacebookAuthProvider();
@@ -89,7 +90,8 @@ const AuthProvider: React.FunctionComponent = (props) => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const token = await result.user.getIdToken();
-      await AuthService.login(token);
+      const messagingToken = await getToken(messaging);
+      await AuthService.login(token, messagingToken);
       await AuthService.getUser();
     } catch (error: any) {
       console.log(error);
@@ -108,7 +110,8 @@ const AuthProvider: React.FunctionComponent = (props) => {
     try {
       const result = await signInWithPopup(auth, facebookProvider);
       const token = await result.user.getIdToken();
-      await AuthService.login(token);
+      const messagingToken = await getToken(messaging);
+      await AuthService.login(token, messagingToken);
       await AuthService.getUser();
     } catch (error: any) {
       console.log(error);
@@ -132,7 +135,8 @@ const AuthProvider: React.FunctionComponent = (props) => {
       );
       const user = userCredential.user;
       const token = await user.getIdToken();
-      await AuthService.login(token);
+      const messagingToken = await getToken(messaging);
+      await AuthService.login(token, messagingToken);
       await AuthService.getUser().then(() => {
         reload();
       });

@@ -10,9 +10,13 @@ const logout = (): Promise<void> => {
   return Promise.resolve();
 };
 
-const login = async (token: string): Promise<void> => {
+const login = async (
+  token: string,
+  registrationToken?: string
+): Promise<void> => {
   const data = {
     token: token,
+    messagingToken: registrationToken,
   };
   try {
     const response = await APIService.post("auth", data);
