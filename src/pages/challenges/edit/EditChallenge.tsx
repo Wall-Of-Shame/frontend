@@ -64,7 +64,10 @@ interface EditChallengeState {
   startAt: string;
   endAt: string;
   participants: {
-    accepted: UserMini[];
+    accepted: {
+      completed: UserMini[];
+      notCompleted: UserMini[];
+    };
     pending: UserMini[];
   };
   invitedUsers: UserMini[];
@@ -101,7 +104,7 @@ const EditChallenge: React.FC<EditChallengeProps> = (
       startAt: challenge.startAt ?? formatISO(Date.now()),
       endAt: challenge.endAt,
       participants: challenge.participants,
-      invitedUsers: challenge.participants.accepted.concat(
+      invitedUsers: challenge.participants.accepted.notCompleted.concat(
         challenge.participants.pending
       ),
       isLoading: false,
@@ -358,9 +361,7 @@ const EditChallenge: React.FC<EditChallengeProps> = (
           >
             <IonCol size='10'>
               <IonText style={{ fontWeight: "bold", fontSize: "1.25rem" }}>
-                {challenge.participants.accepted.length +
-                  challenge.participants.pending.length}{" "}
-                participants
+                Participants
               </IonText>
             </IonCol>
             <IonCol size='2'>
@@ -379,16 +380,14 @@ const EditChallenge: React.FC<EditChallengeProps> = (
           >
             <IonCol>
               <IonText>
-                {challenge.participants.accepted.length} participant
-                {challenge.participants.accepted.length !== 1
-                  ? "s are "
-                  : " is "}
+                {challenge.participantCount} participant
+                {challenge.participantCount !== 1 ? "s are " : " is "}
                 ready to start the challenge
               </IonText>
             </IonCol>
           </IonRow>
           <IonRow className='ion-align-items-center'>
-            {challenge.participants.accepted.map((u) => {
+            {challenge.participants.accepted.notCompleted.map((u) => {
               return (
                 <div key={u.userId} style={{ margin: "0.5rem" }}>
                   <IonRow className='ion-justify-content-center'>
@@ -450,7 +449,7 @@ const EditChallenge: React.FC<EditChallengeProps> = (
           </IonRow>
         </IonGrid>
         <EditParticipantsModal
-          accepted={state.participants.accepted}
+          accepted={state.participants.accepted.notCompleted}
           pending={state.participants.pending}
           showModal={showModal}
           setShowModal={setShowModal}

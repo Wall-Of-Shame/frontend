@@ -27,11 +27,13 @@ export interface ChallengeData {
   type: ChallengeType;
   owner: DeepPartialUserMini;
   participants: {
-    accepted: UserMini[];
+    accepted: {
+      completed: UserMini[];
+      notCompleted: UserMini[];
+    };
     pending: UserMini[];
   };
 }
-
 // Return schema for the `GET /challenges` route
 export interface ChallengeList {
   ongoing: ChallengeData[];
