@@ -33,7 +33,6 @@ import {
   parseISO,
 } from "date-fns";
 import "./EditChallenge.scss";
-import { useHistory } from "react-router";
 import luke from "../../../assets/avatar-luke.png";
 import {
   ChallengeData,
@@ -78,7 +77,6 @@ interface EditChallengeState {
 const EditChallenge: React.FC<EditChallengeProps> = (
   props: EditChallengeProps
 ) => {
-  const history = useHistory();
   const { user } = useUser();
   const { challenge, backAction } = props;
   const { updateChallenge } = useChallenge();
@@ -380,29 +378,24 @@ const EditChallenge: React.FC<EditChallengeProps> = (
               </IonText>
             </IonCol>
           </IonRow>
-          <IonRow className='ion-align-items-center'>
-            {challenge.participants.accepted.notCompleted.map((u) => {
-              return (
-                <div key={u.userId} style={{ margin: "0.5rem" }}>
-                  <IonRow className='ion-justify-content-center'>
-                    <IonAvatar className='user-avatar'>
+          {challenge.participants.accepted.notCompleted.length > 0 && (
+            <IonList style={{ marginTop: "0.5rem", marginBottom: "0.5rem" }}>
+              {challenge.participants.accepted.notCompleted.map((u) => {
+                return (
+                  <IonItem key={u.userId} lines='none'>
+                    <IonAvatar slot='start'>
                       <img src={luke} alt='user1' />
                     </IonAvatar>
-                  </IonRow>
-                  <IonRow
-                    className='ion-justify-content-center'
-                    style={{ marginTop: "0.25rem" }}
-                  >
-                    <IonText style={{ fontSize: "0.7rem" }}>
+                    <IonLabel>
                       {u.userId === user?.userId
                         ? "You"
                         : trimDisplayName(u.name)}
-                    </IonText>
-                  </IonRow>
-                </div>
-              );
-            })}
-          </IonRow>
+                    </IonLabel>
+                  </IonItem>
+                );
+              })}
+            </IonList>
+          )}
           <IonRow
             className='ion-align-items-center'
             style={{
@@ -420,27 +413,20 @@ const EditChallenge: React.FC<EditChallengeProps> = (
               </IonText>
             </IonCol>
           </IonRow>
-          <IonRow className='ion-align-items-center'>
-            {challenge.participants.pending.map((u) => {
-              return (
-                <div key={u.userId} style={{ margin: "0.5rem" }}>
-                  <IonRow className='ion-justify-content-center'>
-                    <IonAvatar className='user-avatar'>
+          {challenge.participants.pending.length > 0 && (
+            <IonList style={{ marginTop: "0.5rem" }}>
+              {challenge.participants.pending.map((u) => {
+                return (
+                  <IonItem key={u.userId} lines='none'>
+                    <IonAvatar slot='start'>
                       <img src={luke} alt='user1' />
                     </IonAvatar>
-                  </IonRow>
-                  <IonRow
-                    className='ion-justify-content-center'
-                    style={{ marginTop: "0.25rem" }}
-                  >
-                    <IonText style={{ fontSize: "0.7rem" }}>
-                      {trimDisplayName(u.name)}
-                    </IonText>
-                  </IonRow>
-                </div>
-              );
-            })}
-          </IonRow>
+                    <IonLabel>{trimDisplayName(u.name)}</IonLabel>
+                  </IonItem>
+                );
+              })}
+            </IonList>
+          )}
         </IonGrid>
         <EditParticipantsModal
           accepted={state.participants.accepted.notCompleted}
