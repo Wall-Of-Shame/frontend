@@ -69,16 +69,12 @@ const completeChallenge = async (challengeId: string): Promise<void> => {
 
 const uploadProof = async (
   challengeId: string,
-  data: any
+  data: string
 ): Promise<string | null> => {
   try {
-    const response = await APIService.post(
-      `challenges/${challengeId}/proofs`,
-      data,
-      {
-        headers: { "Content-Type": "application/media" },
-      }
-    );
+    const response = await APIService.post(`challenges/${challengeId}/proofs`, {
+      data: data,
+    });
     return response.data;
   } catch (error) {
     return Promise.reject(error);

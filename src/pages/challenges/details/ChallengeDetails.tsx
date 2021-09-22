@@ -23,9 +23,9 @@ import luke from "../../../assets/avatar-luke.png";
 import { useEffect } from "react";
 import { Redirect, useHistory, useLocation } from "react-router";
 import { useChallenge } from "../../../contexts/ChallengeContext";
-import { ChallengeData } from "../../../interfaces/models/Challenges";
+import { ChallengeData, UserMini } from "../../../interfaces/models/Challenges";
 import "./ChallengeDetails.scss";
-import { format, isSameSecond, parseISO } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { useUser } from "../../../contexts/UserContext";
 import EditChallenge from "../edit";
 import { trimDisplayName } from "../../../utils/ProfileUtils";
@@ -34,15 +34,17 @@ import Alert from "../../../components/alert";
 import isAfter from "date-fns/isAfter";
 import { intervalToDuration } from "date-fns/esm";
 import useInterval from "../../../hooks/useInterval";
-import internal from "stream";
-import UploadProofModal from "../proof";
+import UploadProofModal from "../proof/upload";
 import VoteModal from "../vote";
+import ViewProofModal from "../proof/view";
 
 interface ChallengeDetailsProps {}
 
 interface ChallengeDetailsState {
   editMode: boolean;
   showUploadProofModal: boolean;
+  showViewProofModal: boolean;
+  userUnderViewing: UserMini | undefined;
   showVoteModal: boolean;
   isLoading: boolean;
   showAlert: boolean;
@@ -77,6 +79,8 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     {
       editMode: false,
       showUploadProofModal: false,
+      showViewProofModal: false,
+      userUnderViewing: undefined,
       showVoteModal: false,
       isLoading: false,
       showAlert: false,
@@ -245,22 +249,41 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
               </IonCol>
             </IonRow>
           )}
-          <IonList className='ion-margin-vertical'>
-            {challenge.participants.accepted.completed.map((u) => {
-              return (
-                <IonItem key={u.userId} lines='none'>
-                  <IonAvatar slot='start'>
-                    <img src={luke} alt='user1' />
-                  </IonAvatar>
-                  <IonLabel>
-                    {u.userId === user?.userId
-                      ? "You"
-                      : trimDisplayName(u.name)}
-                  </IonLabel>
-                </IonItem>
-              );
-            })}
-          </IonList>
+          {challenge.participants.accepted.completed.length > 0 && (
+            <IonList className='ion-margin-vertical'>
+              {challenge.participants.accepted.completed.map((u) => {
+                return (
+                  <IonItem key={u.userId} lines='none'>
+                    <IonAvatar slot='start'>
+                      <img src={luke} alt='user1' />
+                    </IonAvatar>
+                    <IonLabel slot='start'>
+                      {u.userId === user?.userId
+                        ? "You"
+                        : trimDisplayName(u.name)}
+                    </IonLabel>
+                    {u.evidenceLink !== undefined &&
+                      u.evidenceLink !== "" &&
+                      u.userId !== user?.userId && (
+                        <IonButton
+                          slot='end'
+                          shape='round'
+                          color='tertiary'
+                          onClick={() => {
+                            setState({
+                              userUnderViewing: u,
+                              showViewProofModal: true,
+                            });
+                          }}
+                        >
+                          &nbsp;View proof&nbsp;
+                        </IonButton>
+                      )}
+                  </IonItem>
+                );
+              })}
+            </IonList>
+          )}
           {challenge.participants.accepted.notCompleted.length > 0 && (
             <IonRow
               className='ion-align-items-center'
@@ -281,23 +304,24 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
               </IonCol>
             </IonRow>
           )}
-
-          <IonList className='ion-margin-vertical'>
-            {challenge.participants.accepted.notCompleted.map((u) => {
-              return (
-                <IonItem key={u.userId} lines='none'>
-                  <IonAvatar slot='start'>
-                    <img src={luke} alt='user1' />
-                  </IonAvatar>
-                  <IonLabel>
-                    {u.userId === user?.userId
-                      ? "You"
-                      : trimDisplayName(u.name)}
-                  </IonLabel>
-                </IonItem>
-              );
-            })}
-          </IonList>
+          {challenge.participants.accepted.notCompleted.length > 0 && (
+            <IonList className='ion-margin-vertical'>
+              {challenge.participants.accepted.notCompleted.map((u) => {
+                return (
+                  <IonItem key={u.userId} lines='none'>
+                    <IonAvatar slot='start'>
+                      <img src={luke} alt='user1' />
+                    </IonAvatar>
+                    <IonLabel>
+                      {u.userId === user?.userId
+                        ? "You"
+                        : trimDisplayName(u.name)}
+                    </IonLabel>
+                  </IonItem>
+                );
+              })}
+            </IonList>
+          )}
         </IonGrid>
       );
     } else if (isAfter(Date.now(), parseISO(challenge.startAt!))) {
@@ -333,22 +357,41 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
               </IonCol>
             </IonRow>
           )}
-          <IonList className='ion-margin-vertical'>
-            {challenge.participants.accepted.completed.map((u) => {
-              return (
-                <IonItem key={u.userId} lines='none'>
-                  <IonAvatar slot='start'>
-                    <img src={luke} alt='user1' />
-                  </IonAvatar>
-                  <IonLabel>
-                    {u.userId === user?.userId
-                      ? "You"
-                      : trimDisplayName(u.name)}
-                  </IonLabel>
-                </IonItem>
-              );
-            })}
-          </IonList>
+          {challenge.participants.accepted.completed.length > 0 && (
+            <IonList className='ion-margin-vertical'>
+              {challenge.participants.accepted.completed.map((u) => {
+                return (
+                  <IonItem key={u.userId} lines='none'>
+                    <IonAvatar slot='start'>
+                      <img src={luke} alt='user1' />
+                    </IonAvatar>
+                    <IonLabel slot='start'>
+                      {u.userId === user?.userId
+                        ? "You"
+                        : trimDisplayName(u.name)}
+                    </IonLabel>
+                    {u.evidenceLink !== undefined &&
+                      u.evidenceLink !== "" &&
+                      u.userId !== user?.userId && (
+                        <IonButton
+                          slot='end'
+                          shape='round'
+                          color='tertiary'
+                          onClick={() => {
+                            setState({
+                              userUnderViewing: u,
+                              showViewProofModal: true,
+                            });
+                          }}
+                        >
+                          &nbsp;View proof&nbsp;
+                        </IonButton>
+                      )}
+                  </IonItem>
+                );
+              })}
+            </IonList>
+          )}
           {challenge.participants.accepted.notCompleted.length > 0 && (
             <IonRow
               className='ion-align-items-center'
@@ -369,23 +412,24 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
               </IonCol>
             </IonRow>
           )}
-
-          <IonList className='ion-margin-vertical'>
-            {challenge.participants.accepted.notCompleted.map((u) => {
-              return (
-                <IonItem key={u.userId} lines='none'>
-                  <IonAvatar slot='start'>
-                    <img src={luke} alt='user1' />
-                  </IonAvatar>
-                  <IonLabel>
-                    {u.userId === user?.userId
-                      ? "You"
-                      : trimDisplayName(u.name)}
-                  </IonLabel>
-                </IonItem>
-              );
-            })}
-          </IonList>
+          {challenge.participants.accepted.notCompleted.length > 0 && (
+            <IonList className='ion-margin-vertical'>
+              {challenge.participants.accepted.notCompleted.map((u) => {
+                return (
+                  <IonItem key={u.userId} lines='none'>
+                    <IonAvatar slot='start'>
+                      <img src={luke} alt='user1' />
+                    </IonAvatar>
+                    <IonLabel>
+                      {u.userId === user?.userId
+                        ? "You"
+                        : trimDisplayName(u.name)}
+                    </IonLabel>
+                  </IonItem>
+                );
+              })}
+            </IonList>
+          )}
         </IonGrid>
       );
     }
@@ -422,20 +466,24 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
             </IonCol>
           </IonRow>
         )}
-        <IonList>
-          {challenge.participants.accepted.notCompleted.map((u) => {
-            return (
-              <IonItem key={u.userId} lines='none'>
-                <IonAvatar slot='start'>
-                  <img src={luke} alt='user1' />
-                </IonAvatar>
-                <IonLabel>
-                  {u.userId === user?.userId ? "You" : trimDisplayName(u.name)}
-                </IonLabel>
-              </IonItem>
-            );
-          })}
-        </IonList>
+        {challenge.participants.accepted.notCompleted.length > 0 && (
+          <IonList>
+            {challenge.participants.accepted.notCompleted.map((u) => {
+              return (
+                <IonItem key={u.userId} lines='none'>
+                  <IonAvatar slot='start'>
+                    <img src={luke} alt='user1' />
+                  </IonAvatar>
+                  <IonLabel>
+                    {u.userId === user?.userId
+                      ? "You"
+                      : trimDisplayName(u.name)}
+                  </IonLabel>
+                </IonItem>
+              );
+            })}
+          </IonList>
+        )}
         {challenge.participants.pending.length > 0 && (
           <IonRow
             className='ion-align-items-center'
@@ -455,20 +503,25 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
             </IonCol>
           </IonRow>
         )}
-        <IonList>
-          {challenge.participants.pending.map((u) => {
-            return (
-              <IonItem key={u.userId} lines='none'>
-                <IonAvatar slot='start'>
-                  <img src={luke} alt='user1' />
-                </IonAvatar>
-                <IonLabel>
-                  {u.userId === user?.userId ? "You" : trimDisplayName(u.name)}
-                </IonLabel>
-              </IonItem>
-            );
-          })}
-        </IonList>
+        {challenge.participants.pending.length > 0 && (
+          <IonList>
+            {challenge.participants.pending.map((u) => {
+              return (
+                <IonItem key={u.userId} lines='none'>
+                  <IonAvatar slot='start'>
+                    <img src={luke} alt='user1' />
+                  </IonAvatar>
+                  <IonLabel slot='start'>
+                    {u.userId === user?.userId
+                      ? "You"
+                      : trimDisplayName(u.name)}
+                  </IonLabel>
+                  <IonButton slot='end'>View proof</IonButton>
+                </IonItem>
+              );
+            })}
+          </IonList>
+        )}
       </IonGrid>
     );
   };
@@ -515,6 +568,10 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
       return <Redirect to={"challenges"} />;
     }
     if (isAfter(Date.now(), parseISO(challenge.endAt!))) {
+      const evidenceLink =
+        challenge.participants.accepted.completed.find(
+          (p) => p.userId === user?.userId
+        )?.evidenceLink ?? "";
       return (
         <IonRow className='ion-margin'>
           <IonCol>
@@ -525,7 +582,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
               fill='solid'
               onClick={() => setState({ showUploadProofModal: true })}
             >
-              Upload Proof
+              {evidenceLink !== "" ? "View proof" : "Upload proof"}
             </IonButton>
           </IonCol>
           <IonCol>
@@ -546,6 +603,10 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
         (p) => p.userId === user?.userId
       ) !== -1
     ) {
+      const viewingUser = challenge.participants.accepted.completed.find(
+        (p) => p.userId === user?.userId
+      );
+      const evidenceLink = viewingUser?.evidenceLink ?? "";
       return (
         <IonRow className='ion-justify-content-around ion-margin'>
           <IonButton
@@ -553,9 +614,14 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
             color='secondary'
             expand='block'
             fill='solid'
+            onClick={() =>
+              setState({
+                showUploadProofModal: true,
+              })
+            }
           >
             <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
-              Upload Proof
+              {evidenceLink !== "" ? "View proof" : "Upload proof"}
             </IonText>
           </IonButton>
         </IonRow>
@@ -818,9 +884,19 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
         {renderParticipants()}
         <UploadProofModal
           challenge={challenge}
+          userData={challenge.participants.accepted.completed.find(
+            (p) => p.userId === user?.userId
+          )}
           showModal={state.showUploadProofModal}
           setShowModal={(showModal) =>
             setState({ showUploadProofModal: showModal })
+          }
+        />
+        <ViewProofModal
+          userData={state.userUnderViewing}
+          showModal={state.showViewProofModal}
+          setShowModal={(showModal) =>
+            setState({ showViewProofModal: showModal })
           }
         />
         <VoteModal
