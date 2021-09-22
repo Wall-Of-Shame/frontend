@@ -42,6 +42,7 @@ import { format, formatDuration, intervalToDuration } from "date-fns";
 import parseISO from "date-fns/parseISO";
 import { RefresherEventDetail } from "@ionic/core";
 import Container from "../../components/container";
+import AvatarImg from "../../components/avatar";
 
 interface ChallengesState {
   isLoading: boolean;
@@ -237,7 +238,7 @@ const Challenges: React.FC = () => {
                                     key={p.userId}
                                     style={{ marginRight: "0.25rem" }}
                                   >
-                                    <img src={luke} alt='user1' />
+                                    <AvatarImg avatar={p.avatar} />
                                   </IonAvatar>
                                 );
                               })}
@@ -516,7 +517,7 @@ const Challenges: React.FC = () => {
                                       key={p.userId}
                                       style={{ marginRight: "0.25rem" }}
                                     >
-                                      <img src={luke} alt='user1' />
+                                      <AvatarImg avatar={p.avatar} />
                                     </IonAvatar>
                                   );
                                 })}
@@ -527,7 +528,7 @@ const Challenges: React.FC = () => {
                                     key={p.userId}
                                     style={{ marginRight: "0.25rem" }}
                                   >
-                                    <img src={luke} alt='user1' />
+                                    <AvatarImg avatar={p.avatar} />
                                   </IonAvatar>
                                 );
                               })}

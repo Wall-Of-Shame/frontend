@@ -42,6 +42,7 @@ import { useSelector } from "react-redux";
 import { ChallengeData } from "../../interfaces/models/Challenges";
 import parseISO from "date-fns/esm/fp/parseISO/index.js";
 import { format } from "date-fns";
+import AvatarImg from "../../components/avatar";
 
 const Profile: React.FC = () => {
   const { logout } = useAuth();
@@ -132,7 +133,7 @@ const Profile: React.FC = () => {
                                 key={p.userId}
                                 style={{ marginRight: "0.25rem" }}
                               >
-                                <img src={luke} alt='user1' />
+                                <AvatarImg avatar={p.avatar} />
                               </IonAvatar>
                             );
                           })}
@@ -143,7 +144,7 @@ const Profile: React.FC = () => {
                               key={p.userId}
                               style={{ marginRight: "0.25rem" }}
                             >
-                              <img src={luke} alt='user1' />
+                              <AvatarImg avatar={p.avatar} />
                             </IonAvatar>
                           );
                         })}
@@ -259,7 +260,7 @@ const Profile: React.FC = () => {
             <IonCol size='4'>
               <IonRow className='ion-justify-content-center ion-no-padding'>
                 <IonAvatar id='profile-avatar'>
-                  <img src={yoda} alt='user2' />
+                  <AvatarImg avatar={user?.avatar ?? null} />
                 </IonAvatar>
               </IonRow>
             </IonCol>

@@ -44,14 +44,14 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
   return (
     <IonSlides
       pager={true}
-      className="slides"
+      className='slides'
       onIonSlidesDidLoad={initSwiper}
       onIonSlideDidChange={swiperCallback}
     >
       <IonSlide>
-        <div className="slide">
+        <div className='slide'>
           <Container>
-            <img src={challenge} alt="challenge" />
+            <img src={challenge} alt='challenge' />
             <h1>Create a Challenge</h1>
             <br />
             <p>
@@ -60,13 +60,13 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
               Create a challenge and set a deadline for your task!
             </p>
             <IonRow
-              className="ion-justify-content-center"
+              className='ion-justify-content-center'
               style={{ marginTop: "2rem" }}
             >
               <IonButton
-                color="secondary"
-                shape="round"
-                fill="solid"
+                color='secondary'
+                shape='round'
+                fill='solid'
                 onClick={swipeNext}
               >
                 <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
@@ -80,18 +80,18 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
 
       <IonSlide>
         <Container>
-          <img src={invite} alt="invite" />
+          <img src={invite} alt='invite' />
           <h1>Invite your friends</h1>
           <br />
           <p>Why suffer alone? Invite your friends to join the challenge!</p>
           <IonRow
-            className="ion-justify-content-center"
+            className='ion-justify-content-center'
             style={{ marginTop: "2rem" }}
           >
             <IonButton
-              color="secondary"
-              shape="round"
-              fill="solid"
+              color='secondary'
+              shape='round'
+              fill='solid'
               onClick={swipeNext}
             >
               <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
@@ -103,7 +103,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
       </IonSlide>
 
       <IonSlide>
-        <div className="slide">
+        <div className='slide'>
           <Container>
             <h2>To the WALL OF SHAME</h2>
             <br />
@@ -112,13 +112,13 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
               will be for all to see!
             </p>
             <IonRow
-              className="ion-justify-content-center"
+              className='ion-justify-content-center'
               style={{ marginTop: "2rem" }}
             >
               <IonButton
-                color="secondary"
-                shape="round"
-                fill="solid"
+                color='secondary'
+                shape='round'
+                fill='solid'
                 onClick={swipeNext}
               >
                 <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
@@ -130,10 +130,10 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
         </div>
       </IonSlide>
       <IonSlide>
-        <div className="slide">
+        <div className='slide'>
           <Container>
-            <img src={highground} alt="highground" />
-            <IonRow class="ion-justify-content-center ion-padding-horizontal">
+            <img src={highground} alt='highground' />
+            <IonRow class='ion-justify-content-center ion-padding-horizontal'>
               <h1
                 style={{
                   fontSize: "2.25rem",
@@ -144,7 +144,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
                 WALL OF SHAME
               </h1>
             </IonRow>
-            <IonRow class="ion-justify-content-center">
+            <IonRow class='ion-justify-content-center'>
               Take the moral highground.
             </IonRow>
             <br />
@@ -154,10 +154,10 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
         </div>
         */}
             <IonButton
-              expand="block"
-              fill="solid"
-              shape="round"
-              color="quaternary"
+              expand='block'
+              fill='solid'
+              shape='round'
+              color='quaternary'
               style={{ margin: "1rem" }}
               onClick={async () => {
                 continueWithGoogle()
@@ -179,10 +179,10 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
               &nbsp;&nbsp;Continue with Google
             </IonButton>
             <IonButton
-              expand="block"
-              fill="solid"
-              shape="round"
-              color="tertiary"
+              expand='block'
+              fill='solid'
+              shape='round'
+              color='tertiary'
               style={{ margin: "1rem" }}
               onClick={async () => {
                 continueWithFacebook()
@@ -204,26 +204,26 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
               &nbsp;&nbsp;Continue with FaceBook
             </IonButton>
             <div style={{ margin: "1.5rem" }}>
-              <h4 className="separator">
+              <h4 className='separator'>
                 <span>OR</span>
               </h4>
             </div>
             <IonButton
-              expand="block"
-              fill="solid"
-              color="quinary"
-              shape="round"
+              expand='block'
+              fill='solid'
+              color='quinary'
+              shape='round'
               style={{ margin: "1rem" }}
               onClick={() => setShowSignUpModal(true)}
             >
               Create New Account
             </IonButton>
-            <IonRow class="ion-justify-content-center">
-              <IonText class="ion-text-center" color="medium">
+            <IonRow class='ion-justify-content-center'>
+              <IonText class='ion-text-center' color='medium'>
                 Have an account?&nbsp;
                 <Link
                   to={"#"}
-                  color="primary"
+                  color='primary'
                   style={{ textDecoration: "none" }}
                   onClick={() => {
                     setShowLoginModal(true);

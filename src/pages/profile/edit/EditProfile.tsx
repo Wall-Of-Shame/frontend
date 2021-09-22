@@ -30,6 +30,7 @@ import LoadingSpinner from "../../../components/loadingSpinner";
 import Alert from "../../../components/alert";
 import { useHistory } from "react-router";
 import { hideTabs } from "../../../utils/TabsUtils";
+import AvatarImg from "../../../components/avatar";
 
 export interface EditProfileState {
   displayName: string;
@@ -51,6 +52,7 @@ const EditProfile: React.FC = () => {
 
   const animals = ["CAT", "DOG", "RABBIT"];
   const colors = ["PRIMARY", "SECONDARY", "TERTIARY"];
+  const background = ["#cbe8e0", "#c9b2e1", "#c2d5eb"];
 
   const [state, setState] = useReducer(
     (s: EditProfileState, a: Partial<EditProfileState>) => ({
@@ -83,12 +85,13 @@ const EditProfile: React.FC = () => {
     const randomColor = colors[
       Math.floor(Math.random() * colors.length)
     ] as AvatarColor;
-    const randomBackground = Math.floor(Math.random() * 16777215).toString(16);
+    const randomBackground =
+      background[Math.floor(Math.random() * background.length)];
     setState({
       avatar: {
         animal: randomAnimal,
         color: randomColor,
-        background: `#${randomBackground}`,
+        background: randomBackground,
       },
     });
   };
@@ -131,7 +134,7 @@ const EditProfile: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader className='ion-no-border'>
+      <IonHeader className="ion-no-border">
         <IonToolbar>
           <IonTitle
             style={{
@@ -142,30 +145,30 @@ const EditProfile: React.FC = () => {
           >
             Edit Profile
           </IonTitle>
-          <IonButtons slot='start'>
+          <IonButtons slot="start">
             <IonButton
               style={{
                 marginTop: "1.5rem",
                 marginRight: "1rem",
               }}
-              color='dark'
+              color="dark"
               onClick={() => history.goBack()}
             >
-              <IonIcon slot='end' icon={arrowBackOutline} size='large' />
+              <IonIcon slot="end" icon={arrowBackOutline} size="large" />
             </IonButton>
           </IonButtons>
-          <IonButtons slot='end'>
+          <IonButtons slot="end">
             <IonButton
               style={{
                 marginTop: "1.5rem",
                 marginRight: "1rem",
               }}
-              color='dark'
+              color="dark"
               disabled={!verifyInputs()}
               onClick={handleSubmit}
             >
               <IonIcon
-                slot='end'
+                slot="end"
                 icon={checkmark}
                 style={{ fontSize: "32px" }}
               />
@@ -176,37 +179,37 @@ const EditProfile: React.FC = () => {
 
       <IonContent fullscreen>
         <IonRow
-          className='ion-justify-content-center'
+          className="ion-justify-content-center"
           style={{ marginTop: "3.5rem", marginBottom: "0.5rem" }}
         >
-          <IonAvatar className='edit-profile-avatar ion-margin-bottom'>
-            <img src={yoda} alt='avatar' />
+          <IonAvatar className="edit-profile-avatar ion-margin-bottom">
+            <AvatarImg avatar={state.avatar} />
           </IonAvatar>
         </IonRow>
-        <IonRow className='ion-justify-content-center'>
+        <IonRow className="ion-justify-content-center">
           <IonButton
-            shape='round'
-            color='medium'
-            fill='outline'
+            shape="round"
+            color="medium"
+            fill="outline"
             onClick={handleRandomize}
           >
             <IonIcon
               icon={dice}
-              color='dark'
+              color="dark"
               style={{ marginRight: "0.5rem" }}
             />
-            <IonText color='dark'>Gimme another one</IonText>
+            <IonText color="dark">Gimme another one</IonText>
           </IonButton>
         </IonRow>
-        <IonGrid className='ion-padding-horizontal'>
-          <IonList className='ion-padding-vertical'>
-            <IonItem lines='full' className='ion-margin-bottom'>
-              <IonLabel color='primary' position='floating'>
+        <IonGrid className="ion-padding-horizontal">
+          <IonList className="ion-padding-vertical">
+            <IonItem lines="full" className="ion-margin-bottom">
+              <IonLabel color="primary" position="floating">
                 Display name
               </IonLabel>
               <IonInput
-                name='display_name'
-                type='text'
+                name="display_name"
+                type="text"
                 value={state.displayName}
                 required
                 onIonChange={(event: CustomEvent) => {
@@ -214,13 +217,13 @@ const EditProfile: React.FC = () => {
                 }}
               />
             </IonItem>
-            <IonItem lines='full'>
-              <IonLabel color='primary' position='floating'>
+            <IonItem lines="full">
+              <IonLabel color="primary" position="floating">
                 Username
               </IonLabel>
               <IonInput
-                name='username'
-                type='text'
+                name="username"
+                type="text"
                 value={state.username}
                 required
                 onIonChange={(event: CustomEvent) => {

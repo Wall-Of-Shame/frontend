@@ -19,6 +19,7 @@ import luke from "../../assets/avatar-luke.png";
 import { useUser } from "../../contexts/UserContext";
 import { addOutline, removeOutline } from "ionicons/icons";
 import { UserMini } from "../../interfaces/models/Challenges";
+import AvatarImg from "../avatar";
 
 interface EditParticipantsModalProps {
   accepted: UserMini[];
@@ -99,7 +100,7 @@ const EditParticipantsModal: React.FC<EditParticipantsModalProps> = (props) => {
               <IonRow className='ion-margin' key={u.userId}>
                 <IonCol className='ion-align-item-center' size='3'>
                   <IonAvatar className='user-avatar'>
-                    <img src={luke} alt='user1' />
+                    <AvatarImg avatar={u.avatar} />
                   </IonAvatar>
                 </IonCol>
                 <IonCol
@@ -161,7 +162,7 @@ const EditParticipantsModal: React.FC<EditParticipantsModalProps> = (props) => {
               <IonRow className='ion-margin' key={u.username}>
                 <IonCol className='ion-align-item-center' size='3'>
                   <IonAvatar className='user-avatar'>
-                    <img src={luke} alt='user1' />
+                    <AvatarImg avatar={u.avatar} />
                   </IonAvatar>
                 </IonCol>
                 <IonCol
