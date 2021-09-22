@@ -68,3 +68,10 @@ type DeepPartialUserMini = Pick<UserMini, "userId"> &
   {
     [P in keyof Pick<UserList, "avatar">]: Partial<Pick<UserList, "avatar">[P]>;
   };
+
+export interface Shame {
+  name: string;
+  title: string;
+  time: string;
+  timestamp: number;
+}
