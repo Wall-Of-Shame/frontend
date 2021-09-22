@@ -17,7 +17,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import "./EditProfile.scss";
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import { checkmark, dice, arrowBackOutline } from "ionicons/icons";
 import yoda from "../../../assets/avatar-yoda.png";
 import {
@@ -29,6 +29,7 @@ import { useUser } from "../../../contexts/UserContext";
 import LoadingSpinner from "../../../components/loadingSpinner";
 import Alert from "../../../components/alert";
 import { useHistory } from "react-router";
+import { hideTabs } from "../../../utils/TabsUtils";
 
 export interface EditProfileState {
   displayName: string;
@@ -123,6 +124,10 @@ const EditProfile: React.FC = () => {
         });
       });
   };
+
+  useEffect(() => {
+    hideTabs();
+  }, []);
 
   return (
     <IonPage>

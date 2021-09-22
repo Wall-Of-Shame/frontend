@@ -37,6 +37,7 @@ import useInterval from "../../../hooks/useInterval";
 import UploadProofModal from "../proof/upload";
 import VoteModal from "../vote";
 import ViewProofModal from "../proof/view";
+import { hideTabs } from "../../../utils/TabsUtils";
 
 interface ChallengeDetailsProps {}
 
@@ -239,6 +240,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
 
   useEffect(() => {
     fetchData();
+    hideTabs();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -622,7 +624,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
                     });
                   }}
                 >
-                  <IonText>Confirm Results</IonText>
+                  <IonText>Release Results</IonText>
                 </IonButton>
               </IonCol>
             </IonRow>

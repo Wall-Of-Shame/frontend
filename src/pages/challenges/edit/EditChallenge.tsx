@@ -23,7 +23,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { arrowBackOutline, pencil } from "ionicons/icons";
-import { useState, useReducer } from "react";
+import { useState, useReducer, useEffect } from "react";
 import {
   addYears,
   format,
@@ -44,6 +44,7 @@ import { useChallenge } from "../../../contexts/ChallengeContext";
 import { trimDisplayName } from "../../../utils/ProfileUtils";
 import EditParticipantsModal from "../../../components/participants/EditParticipantsModal";
 import { useUser } from "../../../contexts/UserContext";
+import { hideTabs } from "../../../utils/TabsUtils";
 
 interface EditChallengeProps {
   challenge: ChallengeData;
@@ -148,6 +149,10 @@ const EditChallenge: React.FC<EditChallengeProps> = (
         setState({ isLoading: false });
       });
   };
+
+  useEffect(() => {
+    hideTabs();
+  }, []);
 
   return (
     <IonPage>

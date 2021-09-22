@@ -78,7 +78,8 @@ const AuthProvider: React.FunctionComponent = (props) => {
       const user = userCredential.user;
       await sendEmailVerification(user);
       const token = await user.getIdToken();
-      AuthService.login(token);
+      const messagingToken = await getToken(messaging).catch(_ => undefined);
+      AuthService.login(token, messagingToken);
       await AuthService.getUser();
     } catch (error) {
       console.log(error);
@@ -90,7 +91,7 @@ const AuthProvider: React.FunctionComponent = (props) => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const token = await result.user.getIdToken();
-      const messagingToken = await getToken(messaging);
+      const messagingToken = await getToken(messaging).catch(_ => undefined);
       await AuthService.login(token, messagingToken);
       await AuthService.getUser();
     } catch (error: any) {
@@ -110,7 +111,7 @@ const AuthProvider: React.FunctionComponent = (props) => {
     try {
       const result = await signInWithPopup(auth, facebookProvider);
       const token = await result.user.getIdToken();
-      const messagingToken = await getToken(messaging);
+      const messagingToken = await getToken(messaging).catch(_ => undefined);
       await AuthService.login(token, messagingToken);
       await AuthService.getUser();
     } catch (error: any) {
@@ -135,7 +136,7 @@ const AuthProvider: React.FunctionComponent = (props) => {
       );
       const user = userCredential.user;
       const token = await user.getIdToken();
-      const messagingToken = await getToken(messaging);
+      const messagingToken = await getToken(messaging).catch(_ => undefined);
       await AuthService.login(token, messagingToken);
       await AuthService.getUser().then(() => {
         reload();
