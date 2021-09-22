@@ -86,13 +86,23 @@ const WallOfShame: React.FC = () => {
                   <IonAvatar slot='start'>
                     <img src={luke} alt='user1' />
                   </IonAvatar>
-                  <IonLabel>
-                    <h6>{s.name} has failed to:</h6>
-                    <h4 style={{ fontWeight: "bold" }}>{s.title}</h4>
-                    <h6>
-                      At {format(parseISO(s.time), "dd MMM yyyy, HH:mm:ss")}
-                    </h6>
-                  </IonLabel>
+                  {s.type === "fail" ? (
+                    <IonLabel>
+                      <h6>{s.name} has failed the challenge:</h6>
+                      <h4 style={{ fontWeight: "bold" }}>{s.title}</h4>
+                      <h6>
+                        At {format(parseISO(s.time), "dd MMM yyyy, HH:mm:ss")}
+                      </h6>
+                    </IonLabel>
+                  ) : (
+                    <IonLabel>
+                      <h6>{s.name} has cheated in the challenge:</h6>
+                      <h4 style={{ fontWeight: "bold" }}>{s.title}</h4>
+                      <h6>
+                        At {format(parseISO(s.time), "dd MMM yyyy, HH:mm:ss")}
+                      </h6>
+                    </IonLabel>
+                  )}
                 </IonItem>
               );
             })}

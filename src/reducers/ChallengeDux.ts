@@ -1,11 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ChallengeData } from "../interfaces/models/Challenges";
+import { VoteList } from "../interfaces/models/Votes";
 
 export interface ChallengeDux {
   ongoing: ChallengeData[];
   pendingResponse: ChallengeData[];
   pendingStart: ChallengeData[];
   history: ChallengeData[];
+  votes: VoteList;
   lastRetrieved: Date | number | null;
 }
 
@@ -14,6 +16,7 @@ const initialState: ChallengeDux = {
   pendingResponse: [],
   pendingStart: [],
   history: [],
+  votes: [],
   lastRetrieved: null,
 };
 
@@ -61,6 +64,16 @@ const challenges = createSlice({
       state.history = action.payload.challenges;
       state.lastRetrieved = action.payload.lastRetrieved;
     },
+    setVotes: (
+      state,
+      action: PayloadAction<{
+        votes: VoteList;
+        lastRetrieved: Date | number;
+      }>
+    ): void => {
+      state.votes = action.payload.votes;
+      state.lastRetrieved = action.payload.lastRetrieved;
+    },
     clearChallenges: (state): void => {
       state.ongoing = [];
       state.pendingResponse = [];
@@ -76,6 +89,7 @@ export const {
   setPendingResponse,
   setPendingStart,
   setHistory,
+  setVotes,
   clearChallenges,
 } = challenges.actions;
 

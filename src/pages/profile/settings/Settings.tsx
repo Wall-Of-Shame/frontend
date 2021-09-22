@@ -16,11 +16,12 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import "./Settings.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { arrowBackOutline } from "ionicons/icons";
 import { useUser } from "../../../contexts/UserContext";
 import { ToggleChangeEventDetail } from "@ionic/core";
 import { useHistory } from "react-router";
+import { hideTabs } from "../../../utils/TabsUtils";
 
 const Settings: React.FC = () => {
   const history = useHistory();
@@ -71,6 +72,10 @@ const Settings: React.FC = () => {
       }
     );
   };
+
+  useEffect(() => {
+    hideTabs();
+  }, []);
 
   return (
     <IonPage>

@@ -40,6 +40,7 @@ import ViewProofModal from "../proof/view";
 import { hideTabs } from "../../../utils/TabsUtils";
 import { database } from "../../../firebase";
 import { ref, set } from "firebase/database";
+import { VoteData } from "../../../interfaces/models/Votes";
 
 interface ChallengeDetailsProps {}
 
@@ -68,6 +69,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     acceptChallenge,
     rejectChallenge,
     completeChallenge,
+    getVotes,
     releaseResults,
   } = useChallenge();
 
@@ -114,7 +116,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     }
   };
 
-  const handlePublishToFirebase = async (
+  const handlePublishFailedUsersToFirebase = async (
     usersToShame: UserMini[]
   ): Promise<void> => {
     if (!challenge) {
@@ -128,6 +130,43 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           title: challenge.title,
           time: formatISO(Date.now()),
           timestamp: timestamp,
+          avatar: u.avatar,
+        })
+          .then(() => resolve())
+          .catch(() => reject());
+      });
+    });
+    return await Promise.all(promises)
+      .then(() => {
+        return;
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  };
+
+  const handlePublishCheatersToFirebase = async (
+    usersToShame: VoteData[]
+  ): Promise<void> => {
+    if (!challenge) {
+      return;
+    }
+    const promises = usersToShame.map((u) => {
+      const timestamp = new Date().getTime();
+      const victimData = challenge.participants.accepted.completed.find(
+        (p) => p.userId === u.victim.userId
+      );
+      if (!victimData) {
+        return Promise.resolve();
+      }
+      return new Promise<void>((resolve, reject) => {
+        set(ref(database, `shames/${timestamp}+${u.victim.userId}`), {
+          name: u.victim.name,
+          title: challenge.title,
+          type: "cheat",
+          time: formatISO(Date.now()),
+          timestamp: timestamp,
+          avatar: victimData.avatar,
         })
           .then(() => resolve())
           .catch(() => reject());
@@ -221,24 +260,36 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     }
   };
 
-  const handleConfirmResults = async () => {
+  const handleReleaseResults = async () => {
     if (challenge === null) {
       return;
     }
     setState({ isLoading: true });
     try {
-      await releaseResults(challenge.challengeId, []);
+      const votes = await getVotes(challenge.challengeId);
+      const cheaters: VoteData[] = votes.filter((v) => {
+        return (
+          v.accusers.length >=
+          challenge.participants.accepted.completed.concat(
+            challenge.participants.accepted.notCompleted
+          ).length /
+            2
+        );
+      });
+      const cheaterIds = cheaters.map((c) => c.victim.userId);
+      await releaseResults(challenge.challengeId, cheaterIds);
       const updatedChallenge = await getChallenge(challenge.challengeId);
       if (updatedChallenge) {
         setChallenge(updatedChallenge);
-        await handlePublishToFirebase(
+        await handlePublishFailedUsersToFirebase(
           updatedChallenge.participants.accepted.notCompleted
         );
       } else {
-        await handlePublishToFirebase(
+        await handlePublishFailedUsersToFirebase(
           challenge.participants.accepted.notCompleted
         );
       }
+      await handlePublishCheatersToFirebase(cheaters);
       setState({
         isLoading: false,
         showAlert: true,
@@ -696,7 +747,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
                       alertHeader: "Are you sure?",
                       alertMessage:
                         "This will confirm the challenge and voting results and banish those who failed the challenge or cheated to the Wall of Shame :')",
-                      confirmHandler: handleConfirmResults,
+                      confirmHandler: handleReleaseResults,
                     });
                   }}
                 >
