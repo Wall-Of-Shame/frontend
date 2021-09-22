@@ -8,7 +8,10 @@ import {
   IonGrid,
   IonHeader,
   IonIcon,
+  IonItem,
   IonItemDivider,
+  IonLabel,
+  IonList,
   IonPage,
   IonRow,
   IonText,
@@ -54,7 +57,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
   const { getChallenge, acceptChallenge, rejectChallenge, completeChallenge } =
     useChallenge();
 
-  const [challenge, setChallenge] = useState<ChallengeData>(
+  const [challenge, setChallenge] = useState<ChallengeData | null>(
     location.state as ChallengeData
   );
 
@@ -97,6 +100,9 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
   };
 
   const handleAccept = async () => {
+    if (challenge === null) {
+      return;
+    }
     setState({ isLoading: true });
     try {
       await acceptChallenge(challenge.challengeId);
@@ -110,10 +116,20 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
         alertHeader: "Woohoo",
         alertMessage: "You have accepted the challenge. ",
       });
-    } catch (error) {}
+    } catch (error) {
+      setState({
+        isLoading: false,
+        showAlert: true,
+        alertHeader: "Ooooops",
+        alertMessage: "Our server is taking a break, come back later please :)",
+      });
+    }
   };
 
   const handleReject = async () => {
+    if (challenge === null) {
+      return;
+    }
     setState({ isLoading: true });
     try {
       await rejectChallenge(challenge.challengeId);
@@ -129,8 +145,39 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     }
   };
 
+  const handleComplete = async () => {
+    if (challenge === null) {
+      return;
+    }
+    setState({ isLoading: true });
+    try {
+      await completeChallenge(challenge.challengeId);
+      const updatedChallenge = await getChallenge(challenge.challengeId);
+      if (updatedChallenge) {
+        setChallenge(updatedChallenge);
+      }
+      setState({
+        isLoading: false,
+        showAlert: true,
+        alertHeader: "Woohoo",
+        alertMessage:
+          "You have completed the challenge. Now chill and watch the rest suffer :)",
+      });
+    } catch (error) {
+      setState({
+        isLoading: false,
+        showAlert: true,
+        alertHeader: "Ooooops",
+        alertMessage: "Our server is taking a break, come back later please :)",
+      });
+    }
+  };
+
   useInterval(() => {
     if (didFinish) {
+      return;
+    }
+    if (challenge === null) {
       return;
     }
     const endAtTime = parseISO(challenge.endAt);
@@ -155,7 +202,276 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const renderParticipants = () => {
+    if (challenge === null) {
+      return <Redirect to={"challenges"} />;
+    }
+    if (isAfter(Date.now(), parseISO(challenge.endAt!))) {
+      return (
+        <IonGrid>
+          <IonRow
+            className='ion-align-items-center'
+            style={{
+              marginBottom: "0.5rem",
+              marginLeft: "0.5rem",
+              marginRight: "0.5rem",
+            }}
+          >
+            <IonCol>
+              <IonText style={{ fontWeight: "bold", fontSize: "1.25rem" }}>
+                Participants
+              </IonText>
+            </IonCol>
+          </IonRow>
+          {challenge.participants.accepted.completed.length > 0 && (
+            <IonRow
+              className='ion-align-items-center'
+              style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}
+            >
+              <IonCol>
+                <IonText>
+                  {challenge.participants.accepted.completed.length} participant
+                  {challenge.participants.accepted.completed.length !== 1
+                    ? "s are "
+                    : " is "}
+                  safe from the Wall of Shame
+                </IonText>
+              </IonCol>
+            </IonRow>
+          )}
+          <IonList className='ion-margin-vertical'>
+            {challenge.participants.accepted.completed.map((u) => {
+              return (
+                <IonItem key={u.userId} lines='none'>
+                  <IonAvatar slot='start'>
+                    <img src={luke} alt='user1' />
+                  </IonAvatar>
+                  <IonLabel>
+                    {u.userId === user?.userId
+                      ? "You"
+                      : trimDisplayName(u.name)}
+                  </IonLabel>
+                </IonItem>
+              );
+            })}
+          </IonList>
+          {challenge.participants.accepted.notCompleted.length > 0 && (
+            <IonRow
+              className='ion-align-items-center'
+              style={{
+                marginLeft: "0.5rem",
+                marginRight: "0.5rem",
+              }}
+            >
+              <IonCol>
+                <IonText>
+                  {challenge.participants.accepted.notCompleted.length}{" "}
+                  participant
+                  {challenge.participants.accepted.notCompleted.length !== 1
+                    ? "s have "
+                    : " has "}
+                  been banished to the Wall of Shame :')
+                </IonText>
+              </IonCol>
+            </IonRow>
+          )}
+
+          <IonList className='ion-margin-vertical'>
+            {challenge.participants.accepted.notCompleted.map((u) => {
+              return (
+                <IonItem key={u.userId} lines='none'>
+                  <IonAvatar slot='start'>
+                    <img src={luke} alt='user1' />
+                  </IonAvatar>
+                  <IonLabel>
+                    {u.userId === user?.userId
+                      ? "You"
+                      : trimDisplayName(u.name)}
+                  </IonLabel>
+                </IonItem>
+              );
+            })}
+          </IonList>
+        </IonGrid>
+      );
+    } else if (isAfter(Date.now(), parseISO(challenge.startAt!))) {
+      return (
+        <IonGrid>
+          <IonRow
+            className='ion-align-items-center'
+            style={{
+              marginBottom: "0.5rem",
+              marginLeft: "0.5rem",
+              marginRight: "0.5rem",
+            }}
+          >
+            <IonCol>
+              <IonText style={{ fontWeight: "bold", fontSize: "1.25rem" }}>
+                Participants
+              </IonText>
+            </IonCol>
+          </IonRow>
+          {challenge.participants.accepted.completed.length > 0 && (
+            <IonRow
+              className='ion-align-items-center'
+              style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}
+            >
+              <IonCol>
+                <IonText>
+                  {challenge.participants.accepted.completed.length} participant
+                  {challenge.participants.accepted.completed.length !== 1
+                    ? "s are "
+                    : " is "}
+                  safe from the Wall of Shame
+                </IonText>
+              </IonCol>
+            </IonRow>
+          )}
+          <IonList className='ion-margin-vertical'>
+            {challenge.participants.accepted.completed.map((u) => {
+              return (
+                <IonItem key={u.userId} lines='none'>
+                  <IonAvatar slot='start'>
+                    <img src={luke} alt='user1' />
+                  </IonAvatar>
+                  <IonLabel>
+                    {u.userId === user?.userId
+                      ? "You"
+                      : trimDisplayName(u.name)}
+                  </IonLabel>
+                </IonItem>
+              );
+            })}
+          </IonList>
+          {challenge.participants.accepted.notCompleted.length > 0 && (
+            <IonRow
+              className='ion-align-items-center'
+              style={{
+                marginLeft: "0.5rem",
+                marginRight: "0.5rem",
+              }}
+            >
+              <IonCol>
+                <IonText>
+                  {challenge.participants.accepted.notCompleted.length}{" "}
+                  participant
+                  {challenge.participants.accepted.notCompleted.length !== 1
+                    ? "s are "
+                    : " is "}
+                  are still trying their best
+                </IonText>
+              </IonCol>
+            </IonRow>
+          )}
+
+          <IonList className='ion-margin-vertical'>
+            {challenge.participants.accepted.notCompleted.map((u) => {
+              return (
+                <IonItem key={u.userId} lines='none'>
+                  <IonAvatar slot='start'>
+                    <img src={luke} alt='user1' />
+                  </IonAvatar>
+                  <IonLabel>
+                    {u.userId === user?.userId
+                      ? "You"
+                      : trimDisplayName(u.name)}
+                  </IonLabel>
+                </IonItem>
+              );
+            })}
+          </IonList>
+        </IonGrid>
+      );
+    }
+    return (
+      <IonGrid>
+        <IonRow
+          className='ion-align-items-center'
+          style={{
+            marginBottom: "0.5rem",
+            marginLeft: "0.5rem",
+            marginRight: "0.5rem",
+          }}
+        >
+          <IonCol>
+            <IonText style={{ fontWeight: "bold", fontSize: "1.25rem" }}>
+              Participants
+            </IonText>
+          </IonCol>
+        </IonRow>
+        {challenge.participants.accepted.notCompleted.length > 0 && (
+          <IonRow
+            className='ion-align-items-center'
+            style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}
+          >
+            <IonCol>
+              <IonText>
+                {challenge.participants.accepted.notCompleted.length}{" "}
+                participant
+                {challenge.participants.accepted.notCompleted.length !== 1
+                  ? "s are "
+                  : " is "}
+                ready to start the challenge
+              </IonText>
+            </IonCol>
+          </IonRow>
+        )}
+        <IonList>
+          {challenge.participants.accepted.notCompleted.map((u) => {
+            return (
+              <IonItem key={u.userId} lines='none'>
+                <IonAvatar slot='start'>
+                  <img src={luke} alt='user1' />
+                </IonAvatar>
+                <IonLabel>
+                  {u.userId === user?.userId ? "You" : trimDisplayName(u.name)}
+                </IonLabel>
+              </IonItem>
+            );
+          })}
+        </IonList>
+        {challenge.participants.pending.length > 0 && (
+          <IonRow
+            className='ion-align-items-center'
+            style={{
+              marginLeft: "0.5rem",
+              marginRight: "0.5rem",
+            }}
+          >
+            <IonCol>
+              <IonText>
+                {challenge.participants.pending.length} burden
+                {challenge.participants.pending.length !== 1
+                  ? "s are "
+                  : " is "}
+                still questioning life
+              </IonText>
+            </IonCol>
+          </IonRow>
+        )}
+        <IonList>
+          {challenge.participants.pending.map((u) => {
+            return (
+              <IonItem key={u.userId} lines='none'>
+                <IonAvatar slot='start'>
+                  <img src={luke} alt='user1' />
+                </IonAvatar>
+                <IonLabel>
+                  {u.userId === user?.userId ? "You" : trimDisplayName(u.name)}
+                </IonLabel>
+              </IonItem>
+            );
+          })}
+        </IonList>
+      </IonGrid>
+    );
+  };
+
   const renderHeader = () => {
+    if (challenge === null) {
+      return <Redirect to={"challenges"} />;
+    }
+
     if (isAfter(Date.now(), parseISO(challenge.endAt!))) {
       return (
         <IonRow className='ion-padding'>
@@ -175,22 +491,54 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
         </IonRow>
       );
     } else if (
-      challenge.participants.accepted.findIndex(
+      challenge.participants.pending.findIndex(
         (p) => p.userId === user?.userId
-      ) === -1
+      ) !== -1
     ) {
       return (
         <IonRow className='ion-padding'>
           <IonText>You have been invited to</IonText>
         </IonRow>
       );
-    } else {
-      return <></>;
     }
+    return <></>;
   };
 
   const renderFooter = () => {
-    if (isAfter(Date.now(), parseISO(challenge.startAt!))) {
+    if (challenge === null) {
+      return <Redirect to={"challenges"} />;
+    }
+    if (isAfter(Date.now(), parseISO(challenge.endAt!))) {
+      return (
+        <IonRow className='ion-margin'>
+          <IonCol>
+            <IonButton
+              shape='round'
+              color='tertiary'
+              expand='block'
+              fill='solid'
+            >
+              Upload Proof
+            </IonButton>
+          </IonCol>
+          <IonCol>
+            <IonButton
+              shape='round'
+              color='secondary'
+              expand='block'
+              fill='solid'
+              onClick={() => history.push(`vote`, challenge)}
+            >
+              Vote
+            </IonButton>
+          </IonCol>
+        </IonRow>
+      );
+    } else if (
+      challenge.participants.accepted.completed.findIndex(
+        (p) => p.userId === user?.userId
+      ) !== -1
+    ) {
       return (
         <IonRow className='ion-justify-content-around ion-margin'>
           <IonButton
@@ -198,6 +546,22 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
             color='secondary'
             expand='block'
             fill='solid'
+          >
+            <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
+              Upload Proof
+            </IonText>
+          </IonButton>
+        </IonRow>
+      );
+    } else if (isAfter(Date.now(), parseISO(challenge.startAt!))) {
+      return (
+        <IonRow className='ion-justify-content-around ion-margin'>
+          <IonButton
+            shape='round'
+            color='secondary'
+            expand='block'
+            fill='solid'
+            onClick={handleComplete}
           >
             <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
               I've completed the challenge
@@ -216,9 +580,9 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
         </IonRow>
       );
     } else if (
-      challenge.participants.accepted.findIndex(
+      challenge.participants.pending.findIndex(
         (p) => p.userId === user?.userId
-      ) === -1
+      ) !== -1
     ) {
       return (
         <IonRow className='ion-justify-content-around ion-margin'>
@@ -265,20 +629,23 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           </IonCol>
         </IonRow>
       );
-    } else {
-      return (
-        <IonRow className='ion-justify-content-center ion-margin'>
-          <IonButton shape='round' color='secondary' disabled>
-            <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
-              Waiting for the challenge to start
-            </IonText>
-          </IonButton>
-        </IonRow>
-      );
     }
+    return (
+      <IonRow className='ion-justify-content-center ion-margin'>
+        <IonButton shape='round' color='secondary' disabled>
+          <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
+            Waiting for the challenge to start
+          </IonText>
+        </IonButton>
+      </IonRow>
+    );
   };
 
   if (!(location.state as ChallengeData)) {
+    return <Redirect to={"challenges"} />;
+  }
+
+  if (challenge === null) {
     return <Redirect to={"challenges"} />;
   }
 
@@ -324,7 +691,11 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
                   );
                   if (updatedChallenge) {
                     setChallenge(updatedChallenge);
-                    if (updatedChallenge.participants.accepted.length > 1) {
+                    if (
+                      updatedChallenge.participants.accepted.completed.concat(
+                        updatedChallenge.participants.accepted.notCompleted
+                      ).length > 1
+                    ) {
                       setState({
                         isLoading: false,
                         showAlert: true,
@@ -437,103 +808,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           </IonGrid>
         )}
         <IonItemDivider style={{ marginBottom: "0.25rem" }} />
-        <IonGrid>
-          <IonRow
-            className='ion-align-items-center'
-            style={{
-              marginBottom: "0.5rem",
-              marginLeft: "0.5rem",
-              marginRight: "0.5rem",
-            }}
-          >
-            <IonCol>
-              <IonText style={{ fontWeight: "bold", fontSize: "1.25rem" }}>
-                {challenge.participants.accepted.length +
-                  challenge.participants.pending.length}{" "}
-                participants
-              </IonText>
-            </IonCol>
-          </IonRow>
-          {challenge.participants.accepted.length && (
-            <IonRow
-              className='ion-align-items-center'
-              style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}
-            >
-              <IonCol>
-                <IonText>
-                  {challenge.participants.accepted.length} participant
-                  {challenge.participants.accepted.length !== 1
-                    ? "s are "
-                    : " is "}
-                  ready to start the challenge
-                </IonText>
-              </IonCol>
-            </IonRow>
-          )}
-          <IonRow className='ion-align-items-center'>
-            {challenge.participants.accepted.map((u) => {
-              return (
-                <div key={u.userId} style={{ margin: "0.5rem" }}>
-                  <IonRow className='ion-justify-content-center'>
-                    <IonAvatar className='user-avatar'>
-                      <img src={luke} alt='user1' />
-                    </IonAvatar>
-                  </IonRow>
-                  <IonRow
-                    className='ion-justify-content-center'
-                    style={{ marginTop: "0.25rem" }}
-                  >
-                    <IonText style={{ fontSize: "0.7rem" }}>
-                      {u.userId === user?.userId
-                        ? "You"
-                        : trimDisplayName(u.name)}
-                    </IonText>
-                  </IonRow>
-                </div>
-              );
-            })}
-          </IonRow>
-          {challenge.participants.pending.length > 0 && (
-            <IonRow
-              className='ion-align-items-center'
-              style={{
-                marginLeft: "0.5rem",
-                marginRight: "0.5rem",
-              }}
-            >
-              <IonCol>
-                <IonText>
-                  {challenge.participants.pending.length} burden
-                  {challenge.participants.pending.length !== 1
-                    ? "s are "
-                    : " is "}
-                  still questioning life
-                </IonText>
-              </IonCol>
-            </IonRow>
-          )}
-          <IonRow className='ion-align-items-center'>
-            {challenge.participants.pending.map((u) => {
-              return (
-                <div key={u.userId} style={{ margin: "0.5rem" }}>
-                  <IonRow className='ion-justify-content-center'>
-                    <IonAvatar className='user-avatar'>
-                      <img src={luke} alt='user1' />
-                    </IonAvatar>
-                  </IonRow>
-                  <IonRow
-                    className='ion-justify-content-center'
-                    style={{ marginTop: "0.25rem" }}
-                  >
-                    <IonText style={{ fontSize: "0.7rem" }}>
-                      {trimDisplayName(u.name)}
-                    </IonText>
-                  </IonRow>
-                </div>
-              );
-            })}
-          </IonRow>
-        </IonGrid>
+        {renderParticipants()}
         <LoadingSpinner
           loading={state.isLoading}
           message={"Loading"}

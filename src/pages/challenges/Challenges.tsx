@@ -129,6 +129,9 @@ const Challenges: React.FC = () => {
         return (
           <>
             {ongoing?.map((c) => {
+              const acceptedCount = c.participants.accepted.completed.concat(
+                c.participants.accepted.notCompleted
+              ).length;
               return (
                 <IonCard
                   button
@@ -167,26 +170,27 @@ const Challenges: React.FC = () => {
                           </IonRow>
                           <IonRow>
                             <IonText style={{ fontSize: "0.8rem" }}>
-                              {c.participants.accepted.length +
-                                c.participants.pending.length}{" "}
-                              participants
+                              {acceptedCount} participant
+                              {acceptedCount === 1 ? "" : "s"}
                             </IonText>
                           </IonRow>
                           <IonRow
                             style={{ paddingTop: "0.5rem" }}
                             className='ion-align-items-center'
                           >
-                            {c.participants.accepted.map((p) => {
-                              return (
-                                <IonAvatar
-                                  className='avatar'
-                                  key={p.userId}
-                                  style={{ marginRight: "0.25rem" }}
-                                >
-                                  <img src={luke} alt='user1' />
-                                </IonAvatar>
-                              );
-                            })}
+                            {c.participants.accepted.completed
+                              .concat(c.participants.accepted.notCompleted)
+                              .map((p) => {
+                                return (
+                                  <IonAvatar
+                                    className='avatar'
+                                    key={p.userId}
+                                    style={{ marginRight: "0.25rem" }}
+                                  >
+                                    <img src={luke} alt='user1' />
+                                  </IonAvatar>
+                                );
+                              })}
                             {c.participants.pending.map((p) => {
                               return (
                                 <IonAvatar
@@ -218,6 +222,9 @@ const Challenges: React.FC = () => {
         return (
           <>
             {pendingStart?.map((c) => {
+              const acceptedCount = c.participants.accepted.completed.concat(
+                c.participants.accepted.notCompleted
+              ).length;
               return (
                 <IonCard
                   button
@@ -251,24 +258,27 @@ const Challenges: React.FC = () => {
                           </IonRow>
                           <IonRow>
                             <IonText style={{ fontSize: "0.8rem" }}>
-                              {c.participantCount} participants have accepted
+                              {acceptedCount} participant
+                              {acceptedCount === 1 ? "" : "s"} have accepted
                             </IonText>
                           </IonRow>
                           <IonRow
                             style={{ paddingTop: "0.5rem" }}
                             className='ion-align-items-center'
                           >
-                            {c.participants.accepted.map((p) => {
-                              return (
-                                <IonAvatar
-                                  className='avatar'
-                                  key={p.userId}
-                                  style={{ marginRight: "0.25rem" }}
-                                >
-                                  <img src={luke} alt='user1' />
-                                </IonAvatar>
-                              );
-                            })}
+                            {c.participants.accepted.completed
+                              .concat(c.participants.accepted.notCompleted)
+                              .map((p) => {
+                                return (
+                                  <IonAvatar
+                                    className='avatar'
+                                    key={p.userId}
+                                    style={{ marginRight: "0.25rem" }}
+                                  >
+                                    <img src={luke} alt='user1' />
+                                  </IonAvatar>
+                                );
+                              })}
                           </IonRow>
                         </IonCardContent>
                       </IonCol>
@@ -289,6 +299,9 @@ const Challenges: React.FC = () => {
         return (
           <>
             {pendingResponse?.map((c) => {
+              const acceptedCount = c.participants.accepted.completed.concat(
+                c.participants.accepted.notCompleted
+              ).length;
               return (
                 <IonCard
                   button
@@ -317,19 +330,20 @@ const Challenges: React.FC = () => {
                                 marginBottom: "0.25rem",
                               }}
                             >
-                              Waiting for the host to start
+                              Waiting for the challenge to start
                             </IonText>
                           </IonRow>
                           <IonRow>
                             <IonText style={{ fontSize: "0.8rem" }}>
-                              {c.participantCount} participants
+                              {acceptedCount} participant
+                              {acceptedCount === 1 ? "" : "s"}
                             </IonText>
                           </IonRow>
                           <IonRow
                             style={{ paddingTop: "0.5rem" }}
                             className='ion-align-items-center'
                           >
-                            {c.participants.accepted.map((p) => {
+                            {c.participants.pending.map((p) => {
                               return (
                                 <IonAvatar
                                   className='avatar'
@@ -421,17 +435,6 @@ const Challenges: React.FC = () => {
           </IonSegmentButton>
         </IonSegment>
 
-        {(!user?.username || !user?.name) && (
-          <IonButton
-            expand='block'
-            color='quinary'
-            shape='round'
-            onClick={() => setShowModal(true)}
-            style={{ margin: "1.5rem" }}
-          >
-            Set up profile
-          </IonButton>
-        )}
         {renderChallenges()}
         <IonFab vertical='bottom' horizontal='end' slot='fixed'>
           <IonFabButton color='senary' onClick={fetchData}>

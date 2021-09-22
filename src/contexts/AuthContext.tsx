@@ -88,7 +88,6 @@ const AuthProvider: React.FunctionComponent = (props) => {
   const continueWithGoogle = async (): Promise<void> => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
-      const credential = GoogleAuthProvider.credentialFromResult(result)!;
       const token = await result.user.getIdToken();
       await AuthService.login(token);
       await AuthService.getUser();
@@ -108,7 +107,6 @@ const AuthProvider: React.FunctionComponent = (props) => {
   const continueWithFacebook = async (): Promise<void> => {
     try {
       const result = await signInWithPopup(auth, facebookProvider);
-      const credential = FacebookAuthProvider.credentialFromResult(result)!;
       const token = await result.user.getIdToken();
       await AuthService.login(token);
       await AuthService.getUser();

@@ -56,11 +56,11 @@ const AuthenticatedApp: React.FC = () => {
             <Route exact path='/challenges/create'>
               <CreateChallenge />
             </Route>
-            <Route exact path='/challenges/:id/details'>
-              <ChallengeDetails />
-            </Route>
             <Route exact path='/challenges/:id/vote'>
               <Vote />
+            </Route>
+            <Route exact path='/challenges/:id/details'>
+              <ChallengeDetails />
             </Route>
             <Route exact path='/wall-of-shame'>
               <WallOfShame />
@@ -76,7 +76,7 @@ const AuthenticatedApp: React.FC = () => {
             </Route>
             <Route render={redirectToChallenges} />
           </IonRouterOutlet>
-          <IonTabBar slot='bottom' className='tabs-nav'>
+          <IonTabBar slot='bottom' className='tabs-nav' hidden>
             <IonTabButton tab='challenges' href='/challenges'>
               <IonIcon icon={alarm} />
             </IonTabButton>
