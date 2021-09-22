@@ -262,23 +262,20 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
                         ? "You"
                         : trimDisplayName(u.name)}
                     </IonLabel>
-                    {u.evidenceLink !== undefined &&
-                      u.evidenceLink !== "" &&
-                      u.userId !== user?.userId && (
-                        <IonButton
-                          slot='end'
-                          shape='round'
-                          color='tertiary'
-                          onClick={() => {
-                            setState({
-                              userUnderViewing: u,
-                              showViewProofModal: true,
-                            });
-                          }}
-                        >
-                          &nbsp;View proof&nbsp;
-                        </IonButton>
-                      )}
+
+                    <IonButton
+                      slot='end'
+                      shape='round'
+                      color='tertiary'
+                      onClick={() => {
+                        setState({
+                          userUnderViewing: u,
+                          showViewProofModal: true,
+                        });
+                      }}
+                    >
+                      &nbsp;View proof&nbsp;
+                    </IonButton>
                   </IonItem>
                 );
               })}
@@ -370,23 +367,19 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
                         ? "You"
                         : trimDisplayName(u.name)}
                     </IonLabel>
-                    {u.evidenceLink !== undefined &&
-                      u.evidenceLink !== "" &&
-                      u.userId !== user?.userId && (
-                        <IonButton
-                          slot='end'
-                          shape='round'
-                          color='tertiary'
-                          onClick={() => {
-                            setState({
-                              userUnderViewing: u,
-                              showViewProofModal: true,
-                            });
-                          }}
-                        >
-                          &nbsp;View proof&nbsp;
-                        </IonButton>
-                      )}
+                    <IonButton
+                      slot='end'
+                      shape='round'
+                      color='tertiary'
+                      onClick={() => {
+                        setState({
+                          userUnderViewing: u,
+                          showViewProofModal: true,
+                        });
+                      }}
+                    >
+                      &nbsp;View proof&nbsp;
+                    </IonButton>
                   </IonItem>
                 );
               })}
@@ -568,34 +561,19 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
       return <Redirect to={"challenges"} />;
     }
     if (isAfter(Date.now(), parseISO(challenge.endAt!))) {
-      const evidenceLink =
-        challenge.participants.accepted.completed.find(
-          (p) => p.userId === user?.userId
-        )?.evidenceLink ?? "";
       return (
-        <IonRow className='ion-margin'>
-          <IonCol>
-            <IonButton
-              shape='round'
-              color='tertiary'
-              expand='block'
-              fill='solid'
-              onClick={() => setState({ showUploadProofModal: true })}
-            >
-              {evidenceLink !== "" ? "View proof" : "Upload proof"}
-            </IonButton>
-          </IonCol>
-          <IonCol>
-            <IonButton
-              shape='round'
-              color='secondary'
-              expand='block'
-              fill='solid'
-              onClick={() => setState({ showVoteModal: true })}
-            >
+        <IonRow className='ion-margin ion-justify-content-center'>
+          <IonButton
+            shape='round'
+            color='secondary'
+            expand='block'
+            fill='solid'
+            onClick={() => setState({ showVoteModal: true })}
+          >
+            <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
               Vote
-            </IonButton>
-          </IonCol>
+            </IonText>
+          </IonButton>
         </IonRow>
       );
     } else if (
@@ -621,7 +599,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
             }
           >
             <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
-              {evidenceLink !== "" ? "View proof" : "Upload proof"}
+              {evidenceLink !== "" ? "Re-upload proof" : "Upload proof"}
             </IonText>
           </IonButton>
         </IonRow>

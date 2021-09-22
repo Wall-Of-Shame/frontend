@@ -17,7 +17,6 @@ const getChallenges = async (): Promise<ChallengeList> => {
 const getChallenge = async (id: string): Promise<ChallengeData | null> => {
   try {
     const response = await APIService.get(`challenges/${id}`);
-    console.log(response);
     return response.data;
   } catch (error) {
     return Promise.reject(error);

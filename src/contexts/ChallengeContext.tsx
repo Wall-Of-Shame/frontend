@@ -7,6 +7,7 @@ import {
   ChallengePost,
 } from "../interfaces/models/Challenges";
 import {
+  setHistory,
   setOngoing,
   setPendingResponse,
   setPendingStart,
@@ -41,6 +42,12 @@ const ChallengeProvider: React.FC = (props) => {
           lastRetrieved: Date.now(),
         })
       );
+      dispatch(
+        setHistory({
+          challenges: response.history,
+          lastRetrieved: Date.now(),
+        })
+      );
       return response;
     } catch (error) {
       return Promise.reject(error);
@@ -50,7 +57,6 @@ const ChallengeProvider: React.FC = (props) => {
   const getChallenge = async (id: string): Promise<ChallengeData | null> => {
     try {
       const response = await ChallengeService.getChallenge(id);
-      console.log(response);
       return response;
     } catch (error) {
       return Promise.reject(error);

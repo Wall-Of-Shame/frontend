@@ -5,6 +5,7 @@ export interface ChallengeDux {
   ongoing: ChallengeData[];
   pendingResponse: ChallengeData[];
   pendingStart: ChallengeData[];
+  history: ChallengeData[];
   lastRetrieved: Date | number | null;
 }
 
@@ -12,6 +13,7 @@ const initialState: ChallengeDux = {
   ongoing: [],
   pendingResponse: [],
   pendingStart: [],
+  history: [],
   lastRetrieved: null,
 };
 
@@ -49,10 +51,21 @@ const challenges = createSlice({
       state.pendingStart = action.payload.challenges;
       state.lastRetrieved = action.payload.lastRetrieved;
     },
+    setHistory: (
+      state,
+      action: PayloadAction<{
+        challenges: ChallengeData[];
+        lastRetrieved: Date | number;
+      }>
+    ): void => {
+      state.history = action.payload.challenges;
+      state.lastRetrieved = action.payload.lastRetrieved;
+    },
     clearChallenges: (state): void => {
       state.ongoing = [];
       state.pendingResponse = [];
       state.pendingStart = [];
+      state.history = [];
       state.lastRetrieved = null;
     },
   },
@@ -62,6 +75,7 @@ export const {
   setOngoing,
   setPendingResponse,
   setPendingStart,
+  setHistory,
   clearChallenges,
 } = challenges.actions;
 

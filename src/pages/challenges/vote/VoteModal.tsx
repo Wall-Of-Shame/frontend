@@ -82,6 +82,7 @@ const VoteModal: React.FC<VoteModalProps> = (props: VoteModalProps) => {
         alignItems: "center",
         marginTop: "1rem",
       }}
+      key={u.username}
     >
       <IonRow className='ion-align-items'>
         <IonAvatar

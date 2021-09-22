@@ -5,16 +5,11 @@ import {
   IonModal,
   IonRow,
   IonText,
-  IonList,
   IonButton,
-  IonInput,
-  IonItem,
-  IonLabel,
 } from "@ionic/react";
-import { arrowBackOutline, cloudUploadOutline } from "ionicons/icons";
+import { arrowBackOutline } from "ionicons/icons";
 import Container from "../../../../components/container";
 import { useReducer, useState } from "react";
-import { useAuth } from "../../../../contexts/AuthContext";
 import LoadingSpinner from "../../../../components/loadingSpinner";
 import Alert from "../../../../components/alert";
 import ImageUploader from "react-images-upload";
@@ -25,6 +20,8 @@ import {
   UserMini,
 } from "../../../../interfaces/models/Challenges";
 import imageCompression from "browser-image-compression";
+import isAfter from "date-fns/isAfter";
+import parseISO from "date-fns/parseISO";
 
 interface UploadProofModalProps {
   challenge: ChallengeData;
@@ -153,6 +150,95 @@ const UploadProofModal: React.FC<UploadProofModalProps> = (
     }
   };
 
+  const renderProof = () => {
+    if (isAfter(Date.now(), parseISO(challenge.endAt)) && !state.evidenceLink) {
+      return (
+        <Container>
+          <IonText>
+            Too late, you did not upload any proof before the challenge ended 🤪
+          </IonText>
+        </Container>
+      );
+    }
+    return (
+      <Container>
+        <IonRow slot='start'>
+          <IonText
+            style={{
+              fontSize: "32px",
+              fontWeight: "bold",
+              marginLeft: "1rem",
+              marginBottom: "1rem",
+            }}
+          >
+            My proof
+          </IonText>
+        </IonRow>
+        {state.uploadMode ? (
+          <>
+            <ImageUploader
+              withIcon={false}
+              buttonText='&nbsp;&nbsp;&nbsp;Select Image&nbsp;&nbsp;&nbsp;'
+              buttonStyles={image ? { display: "none" } : undefined}
+              onChange={onDrop}
+              withPreview={true}
+              singleImage={true}
+              label={"Selected: " + image ?? "None"}
+              labelStyles={{
+                textAlign: "center",
+                paddingBottom: "16px",
+                fontSize: "16px",
+              }}
+              imgExtension={[".jpg", ".png", ".gif", "jpeg"]}
+              maxFileSize={Infinity}
+            />
+            <IonButton
+              fill='solid'
+              shape='round'
+              color='secondary'
+              className='ion-padding-horizontal'
+              style={{ marginTop: "2rem" }}
+              disabled={file === null}
+              onClick={handleSubmit}
+            >
+              <IonText style={{ marginLeft: "1.5rem", marginRight: "1.5rem" }}>
+                Confirm
+              </IonText>
+            </IonButton>
+          </>
+        ) : (
+          <>
+            <IonRow className='ion-justify-content-center ion-margin-top'>
+              <img src={state.evidenceLink} alt='Proof' />
+            </IonRow>
+            {!isAfter(Date.now(), parseISO(challenge.endAt)) ? (
+              <IonButton
+                fill='solid'
+                shape='round'
+                color='secondary'
+                className='ion-padding-horizontal'
+                style={{ marginTop: "2rem" }}
+                onClick={handleReUpload}
+              >
+                <IonText
+                  style={{ marginLeft: "1.5rem", marginRight: "1.5rem" }}
+                >
+                  Re-upload
+                </IonText>
+              </IonButton>
+            ) : (
+              <IonRow className='ion-justify-content-center ion-margin-top'>
+                <IonText>
+                  Congratulations for completing the challenge 😊
+                </IonText>
+              </IonRow>
+            )}
+          </>
+        )}
+      </Container>
+    );
+  };
+
   return (
     <IonModal
       isOpen={showModal}
@@ -178,75 +264,7 @@ const UploadProofModal: React.FC<UploadProofModalProps> = (
             }}
           />
         </IonFab>
-        <Container>
-          <IonRow slot='start'>
-            <IonText
-              style={{
-                fontSize: "32px",
-                fontWeight: "bold",
-                marginLeft: "1rem",
-                marginBottom: "1rem",
-              }}
-            >
-              My proof
-            </IonText>
-          </IonRow>
-          {state.uploadMode ? (
-            <>
-              <ImageUploader
-                withIcon={false}
-                buttonText='&nbsp;&nbsp;&nbsp;Select Image&nbsp;&nbsp;&nbsp;'
-                buttonStyles={image ? { display: "none" } : undefined}
-                onChange={onDrop}
-                withPreview={true}
-                singleImage={true}
-                label={"Selected: " + image ?? "None"}
-                labelStyles={{
-                  textAlign: "center",
-                  paddingBottom: "16px",
-                  fontSize: "16px",
-                }}
-                imgExtension={[".jpg", ".png", ".gif", "jpeg"]}
-                maxFileSize={Infinity}
-              />
-              <IonButton
-                fill='solid'
-                shape='round'
-                color='secondary'
-                className='ion-padding-horizontal'
-                style={{ marginTop: "2rem" }}
-                disabled={file === null}
-                onClick={handleSubmit}
-              >
-                <IonText
-                  style={{ marginLeft: "1.5rem", marginRight: "1.5rem" }}
-                >
-                  Confirm
-                </IonText>
-              </IonButton>
-            </>
-          ) : (
-            <>
-              <IonRow className='ion-justify-content-center ion-margin-top'>
-                <img src={state.evidenceLink} alt='Proof' />
-              </IonRow>
-              <IonButton
-                fill='solid'
-                shape='round'
-                color='secondary'
-                className='ion-padding-horizontal'
-                style={{ marginTop: "2rem" }}
-                onClick={handleReUpload}
-              >
-                <IonText
-                  style={{ marginLeft: "1.5rem", marginRight: "1.5rem" }}
-                >
-                  Re-upload
-                </IonText>
-              </IonButton>
-            </>
-          )}
-        </Container>
+        {renderProof()}
         <LoadingSpinner
           loading={state.isLoading}
           message={"Loading"}
