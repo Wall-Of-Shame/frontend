@@ -25,7 +25,6 @@ import {
 import { arrowBackOutline, pencil } from "ionicons/icons";
 import { useState, useReducer } from "react";
 import {
-  addHours,
   addYears,
   format,
   formatISO,
@@ -34,11 +33,7 @@ import {
   parseISO,
 } from "date-fns";
 import "./EditChallenge.scss";
-import AddParticipantsModal from "../../../components/participants/AddParticipantsModal";
 import { useHistory } from "react-router";
-import yoda from "../../../assets/avatar-yoda.png";
-import rey from "../../../assets/avatar-rey.png";
-import poe from "../../../assets/avatar-poe.png";
 import luke from "../../../assets/avatar-luke.png";
 import {
   ChallengeData,
@@ -47,7 +42,6 @@ import {
   UserMini,
 } from "../../../interfaces/models/Challenges";
 import { useChallenge } from "../../../contexts/ChallengeContext";
-import { UserList } from "../../../interfaces/models/Users";
 import { trimDisplayName } from "../../../utils/ProfileUtils";
 import EditParticipantsModal from "../../../components/participants/EditParticipantsModal";
 import { useUser } from "../../../contexts/UserContext";

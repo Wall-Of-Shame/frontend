@@ -22,7 +22,7 @@ import {
   IonTextarea,
   IonToolbar,
 } from "@ionic/react";
-import { addOutline, arrowBackOutline, pencil } from "ionicons/icons";
+import { arrowBackOutline, pencil } from "ionicons/icons";
 import { useState, useReducer } from "react";
 import {
   addHours,
@@ -36,9 +36,6 @@ import {
 import "./CreateChallenge.scss";
 import AddParticipantsModal from "../../../components/participants/AddParticipantsModal";
 import { useHistory } from "react-router";
-import yoda from "../../../assets/avatar-yoda.png";
-import rey from "../../../assets/avatar-rey.png";
-import poe from "../../../assets/avatar-poe.png";
 import luke from "../../../assets/avatar-luke.png";
 import {
   ChallengePost,
@@ -71,7 +68,6 @@ interface CreateChallengeState {
 const CreateChallenge: React.FC<CreateChallengeProps> = (
   props: CreateChallengeProps
 ) => {
-  const history = useHistory();
   const { user } = useUser();
   const { createChallenge } = useChallenge();
   const [showModal, setShowModal] = useState(false);
@@ -355,40 +351,28 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
               </IonRow>
             </IonCol>
           </IonRow>
-          <IonRow className='ion-align-items-center ion-padding'>
-            <div key={user?.userId ?? "owner"} style={{ margin: "0.5rem" }}>
-              <IonRow className='ion-justify-content-center'>
-                <IonAvatar className='user-avatar'>
-                  <img src={luke} alt='user1' />
-                </IonAvatar>
-              </IonRow>
-              <IonRow
-                className='ion-justify-content-center'
-                style={{ marginTop: "0.25rem" }}
-              >
-                <IonText style={{ fontSize: "0.7rem" }}>You</IonText>
-              </IonRow>
-            </div>
+          <IonList style={{ marginTop: "1rem" }}>
+            <IonItem key={user?.userId ?? "owner"} lines='none'>
+              <IonAvatar slot='start'>
+                <img src={luke} alt='user1' />
+              </IonAvatar>
+              <IonLabel>You</IonLabel>
+            </IonItem>
             {state.invitedUsers.map((u) => {
               return (
-                <div key={u.userId} style={{ margin: "0.5rem" }}>
-                  <IonRow className='ion-justify-content-center'>
-                    <IonAvatar className='user-avatar'>
-                      <img src={luke} alt='user1' />
-                    </IonAvatar>
-                  </IonRow>
-                  <IonRow
-                    className='ion-justify-content-center'
-                    style={{ marginTop: "0.25rem" }}
-                  >
-                    <IonText style={{ fontSize: "0.7rem" }}>
-                      {trimDisplayName(u.name)}
-                    </IonText>
-                  </IonRow>
-                </div>
+                <IonItem key={u.userId} lines='none'>
+                  <IonAvatar slot='start'>
+                    <img src={luke} alt='user1' />
+                  </IonAvatar>
+                  <IonLabel>
+                    {u.userId === user?.userId
+                      ? "You"
+                      : trimDisplayName(u.name)}
+                  </IonLabel>
+                </IonItem>
               );
             })}
-          </IonRow>
+          </IonList>
         </IonGrid>
         <AddParticipantsModal
           users={state.invitedUsers}

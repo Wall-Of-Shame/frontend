@@ -14,15 +14,9 @@ import {
   IonIcon,
 } from "@ionic/react";
 import "./EditParticipantsModal.scss";
-import LoadingSpinner from "../loadingSpinner";
-import { Avatar, Settings, UserList } from "../../interfaces/models/Users";
 import { useState } from "react";
-import yoda from "../../assets/avatar-yoda.png";
-import rey from "../../assets/avatar-rey.png";
-import poe from "../../assets/avatar-poe.png";
 import luke from "../../assets/avatar-luke.png";
 import { useUser } from "../../contexts/UserContext";
-import Container from "../container";
 import { addOutline, removeOutline } from "ionicons/icons";
 import { UserMini } from "../../interfaces/models/Challenges";
 

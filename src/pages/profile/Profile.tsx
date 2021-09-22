@@ -22,8 +22,6 @@ import {
   IonPopover,
 } from "@ionic/react";
 import yoda from "../../assets/avatar-yoda.png";
-import rey from "../../assets/avatar-rey.png";
-import poe from "../../assets/avatar-poe.png";
 import luke from "../../assets/avatar-luke.png";
 import { useEffect } from "react";
 import {
@@ -42,7 +40,6 @@ import { RootState } from "../../reducers/RootReducer";
 import { ChallengeDux } from "../../reducers/ChallengeDux";
 import { useSelector } from "react-redux";
 import { ChallengeData } from "../../interfaces/models/Challenges";
-import formatISO from "date-fns/formatISO";
 import parseISO from "date-fns/esm/fp/parseISO/index.js";
 import { format } from "date-fns";
 
@@ -58,6 +55,7 @@ const Profile: React.FC = () => {
 
   const selectChallenges = (state: RootState): ChallengeDux => state.challenges;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [pastChallenges, setPastChallenges] = useState<ChallengeData[]>(
     useSelector(selectChallenges).history
   );

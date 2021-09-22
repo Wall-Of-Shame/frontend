@@ -801,7 +801,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
         <IonGrid style={{ marginBottom: "0.5rem" }}>
           <IonRow className='ion-padding-horizontal ion-padding-bottom'>
             <IonText style={{ fontWeight: "bold" }}>
-              Complete the challenge by
+              Complete the challenge and upload your proof by
             </IonText>
           </IonRow>
           <IonRow className='ion-padding-horizontal ion-padding-bottom'>
