@@ -46,6 +46,7 @@ import { VoteData } from "../../../interfaces/models/Votes";
 import AvatarImg from "../../../components/avatar";
 import ActiveChallengeImg from "../../../components/activeChallengeImg";
 import PendingChallengeImg from "../../../components/pendingChallengeImg";
+import OfflineToast from "../../../components/offlineToast";
 
 interface ChallengeDetailsProps {}
 
@@ -85,6 +86,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
   );
   const [countdown, setCountdown] = useState<Duration | null>(null);
   const [didFinish, setDidFinish] = useState(false);
+  const [showOfflineToast, setShowOfflineToast] = useState(false);
   const [state, setState] = useReducer(
     (s: ChallengeDetailsState, a: Partial<ChallengeDetailsState>) => ({
       ...s,
@@ -226,6 +228,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
         alertHeader: "Ooooops",
         alertMessage: "Our server is taking a break, come back later please :)",
       });
+      setShowOfflineToast(true);
     }
   };
 
@@ -246,6 +249,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
         alertHeader: "Ooooops",
         alertMessage: "Our server is taking a break, come back later please :)",
       });
+      setShowOfflineToast(true);
     }
   };
 
@@ -276,6 +280,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
         alertHeader: "Ooooops",
         alertMessage: "Our server is taking a break, come back later please :)",
       });
+      setShowOfflineToast(true);
     }
   };
 
@@ -325,6 +330,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
         alertHeader: "Ooooops",
         alertMessage: "Our server is taking a break, come back later please :)",
       });
+      setShowOfflineToast(true);
     }
   };
 
@@ -934,7 +940,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     if (challenge.hasReleasedResult) {
       return (
         <IonRow
-          className='ion-justify-content-center'
+          className="ion-justify-content-center"
           style={{ margin: "0.5rem" }}
         >
           <IonButton
@@ -956,10 +962,10 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
         <>
           {user?.userId === challenge.owner.userId ? (
             <IonRow
-              className='ion-justify-content-around'
+              className="ion-justify-content-around"
               style={{ margin: "0.5rem" }}
             >
-              <IonCol size='6'>
+              <IonCol size="6">
                 <IonButton
                   shape="round"
                   color="secondary"
@@ -993,7 +999,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
             </IonRow>
           ) : (
             <IonRow
-              className='ion-justify-content-center'
+              className="ion-justify-content-center"
               style={{ margin: "0.5rem" }}
             >
               <IonButton
@@ -1023,7 +1029,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
       const evidenceLink = viewingUser?.evidenceLink ?? "";
       return (
         <IonRow
-          className='ion-justify-content-around'
+          className="ion-justify-content-around"
           style={{ margin: "0.5rem" }}
         >
           <IonButton
@@ -1048,7 +1054,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     if (isAfter(Date.now(), parseISO(challenge.startAt!))) {
       return (
         <IonRow
-          className='ion-justify-content-around'
+          className="ion-justify-content-around"
           style={{ margin: "0.5rem" }}
         >
           <IonButton
@@ -1069,10 +1075,10 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     if (user?.userId === challenge.owner.userId) {
       return (
         <IonRow
-          className='ion-justify-content-center'
+          className="ion-justify-content-center"
           style={{ margin: "0.5rem" }}
         >
-          <IonButton shape='round' color='secondary-shade'>
+          <IonButton shape="round" color="secondary-shade">
             <IonText style={{ marginLeft: "1.5rem", marginRight: "1.5rem" }}>
               Waiting for the challenge to start
             </IonText>
@@ -1088,7 +1094,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     ) {
       return (
         <IonRow
-          className='ion-justify-content-around'
+          className="ion-justify-content-around"
           style={{ margin: "0.5rem" }}
         >
           <IonCol>
@@ -1138,10 +1144,10 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
 
     return (
       <IonRow
-        className='ion-justify-content-center'
+        className="ion-justify-content-center"
         style={{ margin: "0.5rem" }}
       >
-        <IonButton shape='round' color='secondary' disabled>
+        <IonButton shape="round" color="secondary" disabled>
           <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
             Waiting for the challenge to start
           </IonText>
@@ -1381,6 +1387,11 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
             challenge.participants.accepted.completed.length +
             challenge.participants.accepted.notCompleted.length
           }
+        />
+        <OfflineToast
+          message="Sorry, we need the internets to do that :("
+          showToast={showOfflineToast}
+          setShowToast={setShowOfflineToast}
         />
         <LoadingSpinner
           loading={state.isLoading}

@@ -44,6 +44,7 @@ import { hideTabs } from "../../../utils/TabsUtils";
 import LoadingSpinner from "../../../components/loadingSpinner";
 import Alert from "../../../components/alert";
 import AvatarImg from "../../../components/avatar";
+import OfflineToast from "../../../components/offlineToast"
 
 interface CreateChallengeProps {}
 
@@ -71,6 +72,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
   const { createChallenge } = useChallenge();
   const [showModal, setShowModal] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [showOfflineToast, setShowOfflineToast] = useState(false);
 
   const [state, setState] = useReducer(
     (s: CreateChallengeState, a: Partial<CreateChallengeState>) => ({
@@ -103,6 +105,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
         isAfter(parseISO(state.endAt), Date.now())
       )
     ) {
+      
       setHasError(true);
       return;
     }
@@ -124,6 +127,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
     } catch (error) {
       console.log(error);
       setState({ isLoading: false });
+      setShowOfflineToast(true);
     }
   };
 
@@ -365,6 +369,11 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
             setState({ invitedUsers: invitedUsers });
             setShowModal(false);
           }}
+        />
+        <OfflineToast 
+          message="Sorry, we need the internets to create a challenge :("
+          showToast={showOfflineToast}
+          setShowToast={setShowOfflineToast}
         />
         <LoadingSpinner
           loading={state.isLoading}

@@ -42,6 +42,7 @@ import EditParticipantsModal from "../../../components/participants/EditParticip
 import { useUser } from "../../../contexts/UserContext";
 import { hideTabs } from "../../../utils/TabsUtils";
 import AvatarImg from "../../../components/avatar";
+import OfflineToast from "../../../components/offlineToast";
 
 interface EditChallengeProps {
   challenge: ChallengeData;
@@ -80,6 +81,7 @@ const EditChallenge: React.FC<EditChallengeProps> = (
   const { updateChallenge } = useChallenge();
   const [showModal, setShowModal] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [showOfflineToast, setShowOfflineToast] = useState(false);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [state, setState] = useReducer(
@@ -141,6 +143,7 @@ const EditChallenge: React.FC<EditChallengeProps> = (
       .catch((error) => {
         console.log(error);
         setState({ isLoading: false });
+        setShowOfflineToast(true);
       });
   };
 
@@ -418,17 +421,22 @@ const EditChallenge: React.FC<EditChallengeProps> = (
             setShowModal(false);
           }}
         />
+        <OfflineToast
+          message="Sorry, we need the internets to edit a challenge :("
+          showToast={showOfflineToast}
+          setShowToast={setShowOfflineToast}
+        />
       </IonContent>
       <IonFooter translucent={true} className="ion-margin-top">
         <IonToolbar>
           <IonRow
-            className='ion-justify-content-center'
+            className="ion-justify-content-center"
             style={{ margin: "0.5rem" }}
           >
             <IonButton
-              shape='round'
-              color='secondary'
-              fill='solid'
+              shape="round"
+              color="secondary"
+              fill="solid"
               onClick={handleSubmit}
             >
               <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>

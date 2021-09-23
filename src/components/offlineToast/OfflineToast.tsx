@@ -3,18 +3,19 @@ import {
 } from "@ionic/react";
 
 interface OfflineToastProps {
+  message: string;
   showToast: boolean;
   setShowToast: (showToast: boolean) => void;
 }
 
 const OfflineToast: React.FC<OfflineToastProps> = (props) => {
-  const { showToast, setShowToast } = props;
+  const { message, showToast, setShowToast } = props;
 
   return (
     <IonToast
       isOpen={showToast}
       onDidDismiss={() => setShowToast(false)}
-      message="Sorry, we need the internets to do that :("
+      message={message}
       duration={2000}
       color="dark"
     />
