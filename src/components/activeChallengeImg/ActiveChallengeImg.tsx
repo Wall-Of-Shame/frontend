@@ -19,7 +19,7 @@ const ActiveChallengeImg: React.FunctionComponent<ActiveChallengeImgProps> = (
       {notCompletedSliced.map((u, index) => {
         return (
           <div
-            className='animal'
+            className='animal-in-wheel'
             style={{
               transform: `rotate(${startingPosition - 45 * index}deg)`,
               zIndex: index,
