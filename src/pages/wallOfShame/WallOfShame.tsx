@@ -3,25 +3,24 @@ import {
   IonButton,
   IonCol,
   IonContent,
+  IonFab,
+  IonFabButton,
   IonGrid,
   IonIcon,
   IonItem,
   IonLabel,
   IonList,
   IonPage,
-  IonRefresher,
-  IonRefresherContent,
   IonRow,
   IonSelect,
   IonSelectOption,
-  IonToast,
 } from "@ionic/react";
 import { useEffect, useState } from "react";
 import "./WallOfShame.scss";
 import luke from "../../assets/avatar-luke.png";
 import { hideTabs, showTabs } from "../../utils/TabsUtils";
 import { useLocation } from "react-router";
-import { medal } from "ionicons/icons";
+import { medal, refreshOutline } from "ionicons/icons";
 import { database } from "../../firebase";
 import {
   ref,
@@ -32,9 +31,10 @@ import {
 } from "firebase/database";
 import { Shame } from "../../interfaces/models/Challenges";
 import { differenceInSeconds, format, parseISO } from "date-fns";
-import { RefresherEventDetail } from "@ionic/core";
 import { UserList } from "../../interfaces/models/Users";
 import { useUser } from "../../contexts/UserContext";
+import LoadingSpinner from "../../components/loadingSpinner";
+import Alert from "../../components/alert";
 
 const WallOfShame: React.FC = () => {
   const location = useLocation();
@@ -44,8 +44,7 @@ const WallOfShame: React.FC = () => {
   const [shames, setShames] = useState<Shame[]>([]);
   const [lastUpdated, setLastUpdated] = useState(Date.now());
   const [hasSynced, setHasSynced] = useState(false);
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [globalRankings, setGlobalRankings] = useState<UserList[]>([]);
   const [friendsRankings, setFriendsRankings] = useState<UserList[]>([]);
   const types = ["Global", "Friends"];
@@ -77,32 +76,16 @@ const WallOfShame: React.FC = () => {
     }
   });
 
-  const handleRefresh = async (event: CustomEvent<RefresherEventDetail>) => {
-    try {
-      await fetchData();
-      setTimeout(() => {
-        event.detail.complete();
-        setToastMessage("Refreshed successfully");
-        setShowToast(true);
-      }, 2000);
-    } catch (error) {
-      setTimeout(() => {
-        event.detail.complete();
-        setToastMessage(
-          "Our server is taking a break, come back later please :)"
-        );
-        setShowToast(true);
-      }, 2000);
-    }
-  };
-
   const fetchData = async (): Promise<void> => {
+    setIsLoading(true);
     try {
       const global = await getGlobalRankings();
       const friends = await getFriendsRankings();
       setGlobalRankings(global);
       setFriendsRankings(friends);
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       return Promise.reject(error);
     }
   };
@@ -166,93 +149,84 @@ const WallOfShame: React.FC = () => {
         );
       case "shameful":
         return (
-          <IonContent>
-            <IonRefresher
-              slot='fixed'
-              onIonRefresh={handleRefresh}
-              style={{ zIndex: "1000" }}
+          <IonList>
+            <IonItem
+              className='ion-padding-horizontal'
+              style={{ paddingBottom: "1rem" }}
+              lines='full'
             >
-              <IonRefresherContent></IonRefresherContent>
-            </IonRefresher>
-            <IonList>
-              <IonItem
-                className='ion-padding-horizontal'
-                style={{ paddingBottom: "1rem" }}
-                lines='full'
+              <IonLabel>Viewing</IonLabel>
+              <IonSelect
+                ok-text='Proceed'
+                cancel-text='Cancel'
+                value={type}
+                onIonChange={(e) => setType(e.detail.value)}
               >
-                <IonLabel>Viewing</IonLabel>
-                <IonSelect
-                  ok-text='Proceed'
-                  cancel-text='Cancel'
-                  value={type}
-                  onIonChange={(e) => setType(e.detail.value)}
-                >
-                  {types.map((t) => {
-                    return (
-                      <IonSelectOption value={t} key={t}>
-                        {t}
-                      </IonSelectOption>
-                    );
-                  })}
-                </IonSelect>
-              </IonItem>
-              {type === "Global" ? (
-                <>
-                  {globalRankings.length > 0 ? (
-                    <>
-                      {globalRankings.map((r) => {
-                        return (
-                          <IonItem lines='none' key={r.userId}>
-                            <IonAvatar slot='start'>
-                              <img src={luke} alt='user1' />
-                            </IonAvatar>
-                            <IonLabel>
-                              <h4 style={{ fontWeight: "bold" }}>{r.name}</h4>
-                            </IonLabel>
-                            <IonIcon slot='end' icon={medal}></IonIcon>
-                            <IonLabel slot='end'>
-                              {r.failedChallengeCount}
-                            </IonLabel>
-                          </IonItem>
-                        );
-                      })}
-                    </>
-                  ) : (
-                    <IonRow className='ion-padding ion-justify-content-center'>
-                      No records yet
-                    </IonRow>
-                  )}
-                </>
-              ) : (
-                <>
-                  {friendsRankings.length > 0 ? (
-                    <>
-                      {friendsRankings.map((r) => {
-                        return (
-                          <IonItem lines='none' key={r.userId}>
-                            <IonAvatar slot='start'>
-                              <img src={luke} alt='user1' />
-                            </IonAvatar>
-                            <IonLabel>
-                              <h4 style={{ fontWeight: "bold" }}>{r.name}</h4>
-                            </IonLabel>
-                            <IonIcon slot='end' icon={medal}></IonIcon>
-                            <IonLabel slot='end'>
-                              {r.failedChallengeCount}
-                            </IonLabel>
-                          </IonItem>
-                        );
-                      })}
-                    </>
-                  ) : (
-                    <IonRow className='ion-padding ion-justify-content-center'>
-                      No records yet
-                    </IonRow>
-                  )}
-                </>
-              )}
-            </IonList>
-          </IonContent>
+                {types.map((t) => {
+                  return (
+                    <IonSelectOption value={t} key={t}>
+                      {t}
+                    </IonSelectOption>
+                  );
+                })}
+              </IonSelect>
+            </IonItem>
+            {type === "Global" ? (
+              <>
+                {globalRankings.length > 0 ? (
+                  <>
+                    {globalRankings.map((r) => {
+                      return (
+                        <IonItem lines='none' key={r.userId}>
+                          <IonAvatar slot='start'>
+                            <img src={luke} alt='user1' />
+                          </IonAvatar>
+                          <IonLabel>
+                            <h4 style={{ fontWeight: "bold" }}>{r.name}</h4>
+                          </IonLabel>
+                          <IonIcon slot='end' icon={medal}></IonIcon>
+                          <IonLabel slot='end'>
+                            {r.failedChallengeCount}
+                          </IonLabel>
+                        </IonItem>
+                      );
+                    })}
+                  </>
+                ) : (
+                  <IonRow className='ion-padding ion-justify-content-center'>
+                    No records yet
+                  </IonRow>
+                )}
+              </>
+            ) : (
+              <>
+                {friendsRankings.length > 0 ? (
+                  <>
+                    {friendsRankings.map((r) => {
+                      return (
+                        <IonItem lines='none' key={r.userId}>
+                          <IonAvatar slot='start'>
+                            <img src={luke} alt='user1' />
+                          </IonAvatar>
+                          <IonLabel>
+                            <h4 style={{ fontWeight: "bold" }}>{r.name}</h4>
+                          </IonLabel>
+                          <IonIcon slot='end' icon={medal}></IonIcon>
+                          <IonLabel slot='end'>
+                            {r.failedChallengeCount}
+                          </IonLabel>
+                        </IonItem>
+                      );
+                    })}
+                  </>
+                ) : (
+                  <IonRow className='ion-padding ion-justify-content-center'>
+                    No records yet
+                  </IonRow>
+                )}
+              </>
+            )}
+          </IonList>
         );
     }
   };
@@ -306,13 +280,16 @@ const WallOfShame: React.FC = () => {
             </IonCol>
           </IonRow>
         </IonGrid>
-
         {renderWall()}
-        <IonToast
-          isOpen={showToast}
-          onDidDismiss={() => setShowToast(false)}
-          message={toastMessage}
-          duration={1500}
+        <IonFab vertical='bottom' horizontal='end' slot='fixed'>
+          <IonFabButton color='senary' onClick={fetchData}>
+            <IonIcon icon={refreshOutline} />
+          </IonFabButton>
+        </IonFab>
+        <LoadingSpinner
+          loading={isLoading}
+          message={"Loading"}
+          closeLoading={() => {}}
         />
       </IonContent>
     </IonPage>

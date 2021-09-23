@@ -8,25 +8,24 @@ import {
   IonCardTitle,
   IonCol,
   IonContent,
+  IonFab,
+  IonFabButton,
   IonGrid,
   IonHeader,
   IonIcon,
   IonLabel,
   IonPage,
-  IonRefresher,
-  IonRefresherContent,
   IonRow,
   IonSegment,
   IonSegmentButton,
   IonText,
   IonTitle,
-  IonToast,
   IonToolbar,
 } from "@ionic/react";
 import luke from "../../assets/avatar-luke.png";
 import "./Challenges.scss";
 import { useEffect, useReducer, useState } from "react";
-import { chevronForward, addOutline } from "ionicons/icons";
+import { chevronForward, addOutline, refreshOutline } from "ionicons/icons";
 import { hideTabs, showTabs } from "../../utils/TabsUtils";
 import { useHistory, useLocation } from "react-router";
 import SetUpProfileModal from "../../components/setupProfile/ProfileSetUpModal";
@@ -40,7 +39,6 @@ import LoadingSpinner from "../../components/loadingSpinner";
 import Alert from "../../components/alert";
 import { format, formatDuration, intervalToDuration } from "date-fns";
 import parseISO from "date-fns/parseISO";
-import { RefresherEventDetail } from "@ionic/core";
 import AvatarImg from "../../components/avatar";
 
 interface ChallengesState {
@@ -130,34 +128,6 @@ const Challenges: React.FC = () => {
         alertMessage: "Please reload and try again later.",
         showAlert: true,
       });
-    }
-  };
-
-  const handleRefresh = async (event: CustomEvent<RefresherEventDetail>) => {
-    try {
-      const allChallenges = await getAllChallenges();
-      console.log(allChallenges);
-      setState({ isLoading: false });
-      setOngoing(allChallenges.ongoing);
-      setPendingStart(allChallenges.pendingStart);
-      setPendingResponse(allChallenges.pendingResponse);
-      setCompleted(allChallenges.history);
-      setTimeout(() => {
-        event.detail.complete();
-        setState({
-          showToast: true,
-          toastMessage: "Refreshed successfully",
-        });
-      }, 2000);
-    } catch (error) {
-      setTimeout(() => {
-        event.detail.complete();
-        setState({
-          showToast: true,
-          toastMessage:
-            "Our server is taking a break, come back later please :)",
-        });
-      }, 2000);
     }
   };
 
@@ -616,7 +586,6 @@ const Challenges: React.FC = () => {
             </IonButtons>
           </IonToolbar>
         </IonHeader>
-
         <IonSegment
           onIonChange={(e) => setTab(e.detail.value ?? "active")}
           value={tab}
@@ -634,16 +603,12 @@ const Challenges: React.FC = () => {
           </IonSegmentButton>
         </IonSegment>
 
-        <IonContent>
-          <IonRefresher
-            slot='fixed'
-            onIonRefresh={handleRefresh}
-            style={{ zIndex: "1000" }}
-          >
-            <IonRefresherContent></IonRefresherContent>
-          </IonRefresher>
-          {renderChallenges()}
-        </IonContent>
+        {renderChallenges()}
+        <IonFab vertical='bottom' horizontal='end' slot='fixed'>
+          <IonFabButton color='senary' onClick={fetchData}>
+            <IonIcon icon={refreshOutline} />
+          </IonFabButton>
+        </IonFab>
         <SetUpProfileModal showModal={showModal} setShowModal={setShowModal} />
         <LoadingSpinner
           loading={state.isLoading}
@@ -663,12 +628,6 @@ const Challenges: React.FC = () => {
           confirmHandler={state.confirmHandler}
           cancelHandler={state.cancelHandler}
           okHandler={state.okHandler}
-        />
-        <IonToast
-          isOpen={state.showToast}
-          onDidDismiss={() => setState({ showToast: false })}
-          message={state.toastMessage}
-          duration={1500}
         />
       </IonContent>
     </IonPage>

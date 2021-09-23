@@ -13,8 +13,6 @@ import {
   IonLabel,
   IonList,
   IonPage,
-  IonRefresher,
-  IonRefresherContent,
   IonRow,
   IonText,
   IonToast,
@@ -43,7 +41,6 @@ import { hideTabs } from "../../../utils/TabsUtils";
 import { database } from "../../../firebase";
 import { ref, set } from "firebase/database";
 import { VoteData } from "../../../interfaces/models/Votes";
-import { RefresherEventDetail } from "@ionic/core";
 import AvatarImg from "../../../components/avatar";
 
 interface ChallengeDetailsProps {}
@@ -324,35 +321,6 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
         alertHeader: "Ooooops",
         alertMessage: "Our server is taking a break, come back later please :)",
       });
-    }
-  };
-
-  const handleRefresh = async (event: CustomEvent<RefresherEventDetail>) => {
-    if (!challenge) {
-      event.detail.complete();
-      return;
-    }
-    try {
-      const updatedChallenge = await getChallenge(challenge.challengeId);
-      if (updatedChallenge) {
-        setChallenge(updatedChallenge);
-      }
-      setTimeout(() => {
-        event.detail.complete();
-        setState({
-          showToast: true,
-          toastMessage: "Refreshed successfully",
-        });
-      }, 2000);
-    } catch (error) {
-      setTimeout(() => {
-        event.detail.complete();
-        setState({
-          showToast: true,
-          toastMessage:
-            "Our server is taking a break, come back later please :)",
-        });
-      }, 2000);
     }
   };
 
@@ -1040,9 +1008,6 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
       </IonHeader>
 
       <IonContent fullscreen>
-        <IonRefresher onIonRefresh={handleRefresh} style={{ zIndex: "1000" }}>
-          <IonRefresherContent></IonRefresherContent>
-        </IonRefresher>
         <IonGrid style={{ marginBottom: "0.5rem" }}>
           {renderHeader()}
           <IonRow className='ion-padding-horizontal ion-padding-bottom'>
