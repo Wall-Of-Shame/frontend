@@ -174,6 +174,8 @@ const AuthProvider: React.FunctionComponent = (props) => {
     }
   };
 
+  const sendForgotPasswordEmail = async (): Promise<void> => {};
+
   const logout = (): Promise<void> =>
     AuthService.logout()
       .then(reload)

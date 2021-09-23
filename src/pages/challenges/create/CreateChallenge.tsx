@@ -183,6 +183,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
                 debounce={100}
                 placeholder='Enter title*'
                 maxlength={50}
+                autoCorrect='on'
                 style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}
                 onIonChange={(event) => {
                   setState({ title: event.detail.value ?? "" });
@@ -223,6 +224,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
                 debounce={100}
                 rows={4}
                 maxlength={200}
+                autoCorrect='on'
                 placeholder='Enter challenge description*'
                 style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}
                 onIonChange={(event) => {
