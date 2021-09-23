@@ -33,7 +33,6 @@ import {
   parseISO,
 } from "date-fns";
 import "./EditChallenge.scss";
-import luke from "../../../assets/avatar-luke.png";
 import {
   ChallengeData,
   ChallengePost,
@@ -115,9 +114,6 @@ const EditChallenge: React.FC<EditChallengeProps> = (
   const handleSubmit = async () => {
     const startAtTime = parseISO(state.startAt);
     const endAtTime = parseISO(state.endAt);
-    console.log(startAtTime);
-    console.log(endAtTime);
-    console.log(isAfter(startAtTime, endAtTime));
     if (
       state.title.length <= 0 ||
       state.description.length <= 0 ||

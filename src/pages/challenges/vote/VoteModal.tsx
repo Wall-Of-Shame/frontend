@@ -4,18 +4,16 @@ import {
   IonCol,
   IonContent,
   IonFab,
+  IonFabButton,
   IonGrid,
   IonIcon,
   IonModal,
-  IonRefresher,
-  IonRefresherContent,
   IonRow,
   IonText,
   IonToast,
 } from "@ionic/react";
 import "./VoteModal.scss";
-import { arrowBackOutline } from "ionicons/icons";
-import { RefresherEventDetail } from "@ionic/core";
+import { arrowBackOutline, refreshOutline } from "ionicons/icons";
 import { UserMini } from "../../../interfaces/models/Challenges";
 import { useUser } from "../../../contexts/UserContext";
 import { useEffect, useReducer, useState } from "react";
@@ -138,30 +136,6 @@ const VoteModal: React.FC<VoteModalProps> = (props: VoteModalProps) => {
     }
   };
 
-  const handleRefresh = async (event: CustomEvent<RefresherEventDetail>) => {
-    try {
-      const votes = await getVotes(challengeId);
-      console.log(votes);
-      setVotes(votes);
-      setTimeout(() => {
-        event.detail.complete();
-        setState({
-          showToast: true,
-          toastMessage: "Refreshed successfully",
-        });
-      }, 2000);
-    } catch (error) {
-      setTimeout(() => {
-        event.detail.complete();
-        setState({
-          showToast: true,
-          toastMessage:
-            "Our server is taking a break, come back later please :)",
-        });
-      }, 2000);
-    }
-  };
-
   useEffect(() => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -250,9 +224,11 @@ const VoteModal: React.FC<VoteModalProps> = (props: VoteModalProps) => {
           />
         </IonFab>
         <IonContent>
-          <IonRefresher onIonRefresh={handleRefresh} style={{ zIndex: "1000" }}>
-            <IonRefresherContent></IonRefresherContent>
-          </IonRefresher>
+          <IonFab vertical='bottom' horizontal='end' slot='fixed'>
+            <IonFabButton color='senary' onClick={fetchData}>
+              <IonIcon icon={refreshOutline} />
+            </IonFabButton>
+          </IonFab>
           <IonGrid style={{ marginTop: "3.5rem" }}>
             <IonRow className='ion-padding'>
               <IonText style={{ fontWeight: "bold", fontSize: "1.5rem" }}>
