@@ -4,15 +4,18 @@ import {
   IonCol,
   IonContent,
   IonFab,
-  IonFabButton,
   IonGrid,
   IonIcon,
   IonModal,
+  IonRefresher,
+  IonRefresherContent,
   IonRow,
   IonText,
+  IonToast,
 } from "@ionic/react";
 import "./VoteModal.scss";
-import { arrowBackOutline, refreshOutline } from "ionicons/icons";
+import { arrowBackOutline } from "ionicons/icons";
+import { RefresherEventDetail } from "@ionic/core";
 import yoda from "../../../assets/avatar-yoda.png";
 import { UserMini } from "../../../interfaces/models/Challenges";
 import { useUser } from "../../../contexts/UserContext";
@@ -41,6 +44,8 @@ interface VoteModalState {
   cancelHandler: () => void;
   okHandler?: () => void;
   okText?: string;
+  showToast: boolean;
+  toastMessage: string;
 }
 
 const VoteModal: React.FC<VoteModalProps> = (props: VoteModalProps) => {
@@ -70,6 +75,8 @@ const VoteModal: React.FC<VoteModalProps> = (props: VoteModalProps) => {
       cancelHandler: () => {},
       okHandler: undefined,
       okText: undefined,
+      showToast: false,
+      toastMessage: "",
     }
   );
 
@@ -128,6 +135,30 @@ const VoteModal: React.FC<VoteModalProps> = (props: VoteModalProps) => {
         alertHeader: "Ooooops",
         alertMessage: "Our server is taking a break, come back later please :)",
       });
+    }
+  };
+
+  const handleRefresh = async (event: CustomEvent<RefresherEventDetail>) => {
+    try {
+      const votes = await getVotes(challengeId);
+      console.log(votes);
+      setVotes(votes);
+      setTimeout(() => {
+        event.detail.complete();
+        setState({
+          showToast: true,
+          toastMessage: "Refreshed successfully",
+        });
+      }, 2000);
+    } catch (error) {
+      setTimeout(() => {
+        event.detail.complete();
+        setState({
+          showToast: true,
+          toastMessage:
+            "Our server is taking a break, come back later please :)",
+        });
+      }, 2000);
     }
   };
 
@@ -218,34 +249,34 @@ const VoteModal: React.FC<VoteModalProps> = (props: VoteModalProps) => {
             onClick={() => setShowModal(false)}
           />
         </IonFab>
-        <IonGrid style={{ marginTop: "3.5rem" }}>
-          <IonRow className='ion-padding'>
-            <IonText style={{ fontWeight: "bold", fontSize: "1.5rem" }}>
-              {hasReleasedResults
-                ? "Here are the voting results"
-                : "Vote to banish a cheater to the wall"}
-            </IonText>
-          </IonRow>
-          <IonRow className='ion-padding-horizontal ion-padding-top'>
-            <IonText style={{ fontSize: 17 }}>
-              Rule: At least <strong>50%</strong> of the participants have to
-              vote for a successful shaming 😊
-            </IonText>
-          </IonRow>
-        </IonGrid>
+        <IonContent>
+          <IonRefresher onIonRefresh={handleRefresh} style={{ zIndex: "1000" }}>
+            <IonRefresherContent></IonRefresherContent>
+          </IonRefresher>
+          <IonGrid style={{ marginTop: "3.5rem" }}>
+            <IonRow className='ion-padding'>
+              <IonText style={{ fontWeight: "bold", fontSize: "1.5rem" }}>
+                {hasReleasedResults
+                  ? "Here are the voting results"
+                  : "Vote to banish a cheater to the wall"}
+              </IonText>
+            </IonRow>
+            <IonRow className='ion-padding-horizontal ion-padding-top'>
+              <IonText style={{ fontSize: 17 }}>
+                Rule: At least <strong>50%</strong> of the participants have to
+                vote for a successful shaming 😊
+              </IonText>
+            </IonRow>
+          </IonGrid>
 
-        <IonGrid>
-          <IonRow className='ion-padding-bottom'>
-            {participantsCompleted.map((p) => {
-              return userCard(p);
-            })}
-          </IonRow>
-        </IonGrid>
-        <IonFab vertical='bottom' horizontal='end' slot='fixed'>
-          <IonFabButton color='senary' onClick={fetchData}>
-            <IonIcon icon={refreshOutline} />
-          </IonFabButton>
-        </IonFab>
+          <IonGrid>
+            <IonRow className='ion-padding-bottom'>
+              {participantsCompleted.map((p) => {
+                return userCard(p);
+              })}
+            </IonRow>
+          </IonGrid>
+        </IonContent>
         <LoadingSpinner
           loading={state.isLoading}
           message={"Loading"}
@@ -265,6 +296,12 @@ const VoteModal: React.FC<VoteModalProps> = (props: VoteModalProps) => {
           cancelHandler={state.cancelHandler}
           okHandler={state.okHandler}
           okText={state.okText}
+        />
+        <IonToast
+          isOpen={state.showToast}
+          onDidDismiss={() => setState({ showToast: false })}
+          message={state.toastMessage}
+          duration={1500}
         />
       </IonContent>
     </IonModal>

@@ -13,8 +13,11 @@ import {
   IonLabel,
   IonList,
   IonPage,
+  IonRefresher,
+  IonRefresherContent,
   IonRow,
   IonText,
+  IonToast,
   IonToolbar,
 } from "@ionic/react";
 import { useReducer, useState } from "react";
@@ -41,6 +44,7 @@ import { hideTabs } from "../../../utils/TabsUtils";
 import { database } from "../../../firebase";
 import { ref, set } from "firebase/database";
 import { VoteData } from "../../../interfaces/models/Votes";
+import { RefresherEventDetail } from "@ionic/core";
 
 interface ChallengeDetailsProps {}
 
@@ -58,6 +62,8 @@ interface ChallengeDetailsState {
   confirmHandler: () => void;
   cancelHandler: () => void;
   okHandler?: () => void;
+  showToast: boolean;
+  toastMessage: string;
 }
 
 const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
@@ -97,13 +103,17 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
       confirmHandler: () => {},
       cancelHandler: () => {},
       okHandler: undefined,
+      showToast: false,
+      toastMessage: "",
     }
   );
 
   const fetchData = async () => {
+    setState({ isLoading: true });
     try {
       const locationState = location.state as ChallengeData;
       if (!locationState) {
+        setState({ isLoading: false });
         return;
       }
       const challenge = await getChallenge(locationState.challengeId);
@@ -111,8 +121,16 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
       if (challenge) {
         setChallenge(challenge);
       }
+      setState({ isLoading: false });
     } catch (error) {
       console.log(error);
+      setState({
+        isLoading: false,
+        hasConfirm: false,
+        showAlert: true,
+        alertHeader: "Ooooops",
+        alertMessage: "Our server is taking a break, come back later please :)",
+      });
     }
   };
 
@@ -306,6 +324,35 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
         alertHeader: "Ooooops",
         alertMessage: "Our server is taking a break, come back later please :)",
       });
+    }
+  };
+
+  const handleRefresh = async (event: CustomEvent<RefresherEventDetail>) => {
+    if (!challenge) {
+      event.detail.complete();
+      return;
+    }
+    try {
+      const updatedChallenge = await getChallenge(challenge.challengeId);
+      if (updatedChallenge) {
+        setChallenge(updatedChallenge);
+      }
+      setTimeout(() => {
+        event.detail.complete();
+        setState({
+          showToast: true,
+          toastMessage: "Refreshed successfully",
+        });
+      }, 2000);
+    } catch (error) {
+      setTimeout(() => {
+        event.detail.complete();
+        setState({
+          showToast: true,
+          toastMessage:
+            "Our server is taking a break, come back later please :)",
+        });
+      }, 2000);
     }
   };
 
@@ -993,6 +1040,9 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
       </IonHeader>
 
       <IonContent fullscreen>
+        <IonRefresher onIonRefresh={handleRefresh} style={{ zIndex: "1000" }}>
+          <IonRefresherContent></IonRefresherContent>
+        </IonRefresher>
         <IonGrid style={{ marginBottom: "0.5rem" }}>
           {renderHeader()}
           <IonRow className='ion-padding-horizontal ion-padding-bottom'>
@@ -1132,6 +1182,12 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           confirmHandler={state.confirmHandler}
           cancelHandler={state.cancelHandler}
           okHandler={state.okHandler}
+        />
+        <IonToast
+          isOpen={state.showToast}
+          onDidDismiss={() => setState({ showToast: false })}
+          message={state.toastMessage}
+          duration={1500}
         />
       </IonContent>
       <IonFooter>{renderFooter()}</IonFooter>

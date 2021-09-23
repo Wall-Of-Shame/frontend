@@ -205,10 +205,11 @@ const WallOfShame: React.FC = () => {
           <IonRow>
             <IonCol size='6' style={{ paddingRight: "0px" }}>
               <IonButton
-                color='senary'
+                color={tab === "live" ? "tertiary" : "senary"}
                 expand='block'
                 style={{
-                  fontWeight: tab === "live" ? "bold" : "normal",
+                  fontWeight: tab === "live" ? "800" : "normal",
+                  textDecoration: tab === "live" ? "underline" : "none",
                 }}
                 onClick={() => setTab("live")}
               >
@@ -217,9 +218,12 @@ const WallOfShame: React.FC = () => {
             </IonCol>
             <IonCol size='6' style={{ paddingLeft: "0px" }}>
               <IonButton
-                color='tertiary'
+                color={tab !== "live" ? "tertiary" : "senary"}
                 expand='block'
-                style={{ fontWeight: tab !== "live" ? "bold" : "normal" }}
+                style={{
+                  fontWeight: tab !== "live" ? "800" : "normal",
+                  textDecoration: tab !== "live" ? "underline" : "none",
+                }}
                 onClick={() => setTab("shameful")}
               >
                 Shameful 100
