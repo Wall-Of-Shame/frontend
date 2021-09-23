@@ -33,9 +33,7 @@ const CacheProvider: React.SFC = (props) => {
       })
       .then((meta) => {
         const latestVersion = meta.version;
-        console.log(`Meta version: ${latestVersion}`);
         const currentVersion = packageJson.version;
-        console.log(`Package version: ${currentVersion}`);
         const shouldForceRefresh = semverGreaterThan(
           latestVersion,
           currentVersion

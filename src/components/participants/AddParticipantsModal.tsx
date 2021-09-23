@@ -16,7 +16,6 @@ import {
 import "./AddParticipantsModal.scss";
 import { UserList } from "../../interfaces/models/Users";
 import { useState } from "react";
-import luke from "../../assets/avatar-luke.png";
 import { useUser } from "../../contexts/UserContext";
 import { addOutline, removeOutline } from "ionicons/icons";
 import AvatarImg from "../avatar";
@@ -42,7 +41,6 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
     }
     try {
       const response = await searchUser(searchText);
-      console.log(response);
       setMatchedUsers(response);
     } catch (error) {}
   };
