@@ -10,7 +10,9 @@ const ActiveChallengeImg: React.FunctionComponent<ActiveChallengeImgProps> = (
   props: ActiveChallengeImgProps
 ) => {
   const { notCompleted } = props;
-  const notCompletedSliced = notCompleted.slice(0, 6);
+  const notCompletedSliced = notCompleted.slice(0, 8);
+  const startingPosition =
+    notCompletedSliced.length == 1 ? 0 : (notCompletedSliced.length - 1) * 45;
 
   return (
     <div className='bg'>
@@ -20,8 +22,10 @@ const ActiveChallengeImg: React.FunctionComponent<ActiveChallengeImgProps> = (
             style={{
               width: "100px",
               height: "100px",
-              transform: `rotate(-${60 * index}deg)`,
+              transform: `rotate(${startingPosition - 45 * index}deg)`,
               transformOrigin: "50% -50%",
+              zIndex: index,
+              position: "absolute",
             }}
             key={index}
           >
