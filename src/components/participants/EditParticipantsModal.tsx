@@ -14,11 +14,12 @@ import {
   IonIcon,
 } from "@ionic/react";
 import "./EditParticipantsModal.scss";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useUser } from "../../contexts/UserContext";
 import { addOutline, removeOutline } from "ionicons/icons";
 import { UserMini } from "../../interfaces/models/Challenges";
 import AvatarImg from "../avatar";
+import lodash from "lodash";
 
 interface EditParticipantsModalProps {
   accepted: UserMini[];
@@ -34,6 +35,14 @@ const EditParticipantsModal: React.FC<EditParticipantsModalProps> = (props) => {
   const [searchText, setSearchText] = useState("");
   const [matchedUsers, setMatchedUsers] = useState<UserMini[]>([]);
   const [invitedUsers, setInvitedUsers] = useState<UserMini[]>(pending);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debouncedSearch = useCallback(
+    lodash.debounce((e) => {
+      handleSearch(e);
+    }, 250),
+    []
+  );
 
   const handleSearch = async (searchText: string) => {
     if (searchText.length <= 0) {
@@ -86,9 +95,9 @@ const EditParticipantsModal: React.FC<EditParticipantsModalProps> = (props) => {
             value={searchText}
             onIonChange={(e) => {
               setSearchText(e.detail.value ?? "");
-              handleSearch(e.detail.value ?? "");
+              debouncedSearch(e.detail.value ?? "");
             }}
-            debounce={500}
+            debounce={0}
             placeholder='Search for a name or username'
             showCancelButton='never'
             className='ion-margin-top'

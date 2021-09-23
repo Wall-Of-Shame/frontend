@@ -4,6 +4,8 @@ import {
   IonButtons,
   IonCol,
   IonContent,
+  IonFab,
+  IonFabButton,
   IonFooter,
   IonGrid,
   IonHeader,
@@ -19,7 +21,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { useReducer, useState } from "react";
-import { arrowBackOutline, pencil } from "ionicons/icons";
+import { arrowBackOutline, pencil, refreshOutline } from "ionicons/icons";
 import { useEffect } from "react";
 import { Redirect, useHistory, useLocation } from "react-router";
 import { useChallenge } from "../../../contexts/ChallengeContext";
@@ -411,16 +413,12 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
             >
               <IonCol>
                 <IonText>
-                  {challenge.participants.accepted.completed.length}{" "}
+                  {nonCheaters.length}{" "}
                   <strong>
                     participant
-                    {challenge.participants.accepted.completed.length !== 1
-                      ? "s"
-                      : ""}
+                    {nonCheaters.length !== 1 ? "s" : ""}
                   </strong>
-                  {challenge.participants.accepted.completed.length !== 1
-                    ? " are "
-                    : " is "}
+                  {nonCheaters.length !== 1 ? " are " : " is "}
                   safe from the Wall of Shame
                 </IonText>
               </IonCol>
@@ -467,16 +465,12 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
             >
               <IonCol>
                 <IonText>
-                  {challenge.participants.accepted.completed.length}{" "}
+                  {cheaters.length}{" "}
                   <strong>
                     cheater
-                    {challenge.participants.accepted.completed.length !== 1
-                      ? "s"
-                      : ""}
+                    {cheaters.length !== 1 ? "s" : ""}
                   </strong>
-                  {challenge.participants.accepted.completed.length !== 1
-                    ? " have "
-                    : " has "}
+                  {cheaters.length !== 1 ? " have " : " has "}
                   been banished to the Wall of Shame
                 </IonText>
               </IonCol>
@@ -484,7 +478,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           )}
           {cheaters.length > 0 && (
             <IonList className='ion-margin-vertical'>
-              {challenge.participants.accepted.completed.map((u) => {
+              {cheaters.map((u) => {
                 return (
                   <IonItem key={u.userId} lines='none'>
                     <IonAvatar slot='start'>
@@ -1055,7 +1049,12 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     if (user?.userId === challenge.owner.userId) {
       return (
         <IonRow className='ion-justify-content-center ion-margin'>
-          <IonButton shape='round' color='secondary' disabled>
+          <IonButton
+            shape='round'
+            color='secondary'
+            disabled
+            style={{ opacity: 0.7 }}
+          >
             <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
               Waiting for the challenge to start
             </IonText>
@@ -1317,6 +1316,11 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
         </IonGrid>
         <IonItemDivider style={{ marginBottom: "0.25rem" }} />
         {renderParticipants()}
+        <IonFab vertical='bottom' horizontal='end' slot='fixed'>
+          <IonFabButton color='senary' onClick={fetchData}>
+            <IonIcon icon={refreshOutline} />
+          </IonFabButton>
+        </IonFab>
         <UploadProofModal
           challenge={challenge}
           userData={challenge.participants.accepted.completed.find(
