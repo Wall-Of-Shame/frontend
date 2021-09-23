@@ -334,7 +334,7 @@ const Challenges: React.FC = () => {
               {pendingStart.length > 0 && (
                 <>
                   <IonRow className="ion-padding-horizontal ion-margin-top">
-                    <IonText style={{ color: "grey" }}>
+                    <IonText style={{ color: "grey", marginTop: 5 }}>
                       Waiting to start
                     </IonText>
                   </IonRow>
@@ -579,7 +579,11 @@ const Challenges: React.FC = () => {
                 color="dark"
                 routerLink="challenges/create"
               >
-                <IonIcon slot="end" icon={addOutline} />
+                <IonIcon
+                  slot="end"
+                  icon={addOutline}
+                  style={{ fontSize: "2rem" }}
+                />
               </IonButton>
             </IonButtons>
           </IonToolbar>

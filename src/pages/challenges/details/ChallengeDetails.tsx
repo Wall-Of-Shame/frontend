@@ -393,7 +393,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
       return (
         <IonGrid>
           <IonRow
-            className='ion-align-items-center'
+            className="ion-align-items-center"
             style={{
               marginBottom: "0.5rem",
               marginLeft: "0.5rem",
@@ -408,7 +408,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           </IonRow>
           {nonCheaters.length > 0 && (
             <IonRow
-              className='ion-align-items-center'
+              className="ion-align-items-center"
               style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}
             >
               <IonCol>
@@ -425,14 +425,14 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
             </IonRow>
           )}
           {nonCheaters.length > 0 && (
-            <IonList className='ion-margin-vertical'>
+            <IonList className="ion-margin-vertical">
               {challenge.participants.accepted.completed.map((u) => {
                 return (
-                  <IonItem key={u.userId} lines='none'>
-                    <IonAvatar slot='start'>
+                  <IonItem key={u.userId} lines="none">
+                    <IonAvatar slot="start">
                       <AvatarImg avatar={u.avatar} />
                     </IonAvatar>
-                    <IonLabel slot='start'>
+                    <IonLabel slot="start">
                       {u.userId === user?.userId
                         ? "You"
                         : trimDisplayName(u.name)}
@@ -440,9 +440,9 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
 
                     {u.evidenceLink !== undefined && u.evidenceLink !== "" && (
                       <IonButton
-                        slot='end'
-                        shape='round'
-                        color='tertiary'
+                        slot="end"
+                        shape="round"
+                        color="tertiary"
                         onClick={() => {
                           setState({
                             userUnderViewing: u,
@@ -460,7 +460,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           )}
           {cheaters.length > 0 && (
             <IonRow
-              className='ion-align-items-center'
+              className="ion-align-items-center"
               style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}
             >
               <IonCol>
@@ -477,14 +477,14 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
             </IonRow>
           )}
           {cheaters.length > 0 && (
-            <IonList className='ion-margin-vertical'>
+            <IonList className="ion-margin-vertical">
               {cheaters.map((u) => {
                 return (
-                  <IonItem key={u.userId} lines='none'>
-                    <IonAvatar slot='start'>
+                  <IonItem key={u.userId} lines="none">
+                    <IonAvatar slot="start">
                       <AvatarImg avatar={u.avatar} />
                     </IonAvatar>
-                    <IonLabel slot='start'>
+                    <IonLabel slot="start">
                       {u.userId === user?.userId
                         ? "You"
                         : trimDisplayName(u.name)}
@@ -492,9 +492,9 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
 
                     {u.evidenceLink !== undefined && u.evidenceLink !== "" && (
                       <IonButton
-                        slot='end'
-                        shape='round'
-                        color='tertiary'
+                        slot="end"
+                        shape="round"
+                        color="tertiary"
                         onClick={() => {
                           setState({
                             userUnderViewing: u,
@@ -512,7 +512,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           )}
           {challenge.participants.accepted.notCompleted.length > 0 && (
             <IonRow
-              className='ion-align-items-center'
+              className="ion-align-items-center"
               style={{
                 marginLeft: "0.5rem",
                 marginRight: "0.5rem",
@@ -547,11 +547,11 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
             </IonRow>
           )}
           {challenge.participants.accepted.notCompleted.length > 0 && (
-            <IonList className='ion-margin-vertical'>
+            <IonList className="ion-margin-vertical">
               {challenge.participants.accepted.notCompleted.map((u) => {
                 return (
-                  <IonItem key={u.userId} lines='none'>
-                    <IonAvatar slot='start'>
+                  <IonItem key={u.userId} lines="none">
+                    <IonAvatar slot="start">
                       <AvatarImg avatar={u.avatar} />
                     </IonAvatar>
                     <IonLabel>
@@ -571,7 +571,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
       return (
         <IonGrid>
           <IonRow
-            className='ion-align-items-center'
+            className="ion-align-items-center"
             style={{
               marginBottom: "0.5rem",
               marginLeft: "0.5rem",
@@ -586,7 +586,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           </IonRow>
           {challenge.participants.accepted.completed.length > 0 && (
             <IonRow
-              className='ion-align-items-center'
+              className="ion-align-items-center"
               style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}
             >
               <IonCol>
@@ -601,14 +601,14 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
             </IonRow>
           )}
           {challenge.participants.accepted.completed.length > 0 && (
-            <IonList className='ion-margin-vertical'>
+            <IonList className="ion-margin-vertical">
               {challenge.participants.accepted.completed.map((u) => {
                 return (
-                  <IonItem key={u.userId} lines='none'>
-                    <IonAvatar slot='start'>
+                  <IonItem key={u.userId} lines="none">
+                    <IonAvatar slot="start">
                       <AvatarImg avatar={u.avatar} />
                     </IonAvatar>
-                    <IonLabel slot='start'>
+                    <IonLabel slot="start">
                       {u.userId === user?.userId
                         ? "You"
                         : trimDisplayName(u.name)}
@@ -616,9 +616,9 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
 
                     {u.evidenceLink !== undefined && u.evidenceLink !== "" && (
                       <IonButton
-                        slot='end'
-                        shape='round'
-                        color='tertiary'
+                        slot="end"
+                        shape="round"
+                        color="tertiary"
                         onClick={() => {
                           setState({
                             userUnderViewing: u,
@@ -636,7 +636,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           )}
           {challenge.participants.accepted.notCompleted.length > 0 && (
             <IonRow
-              className='ion-align-items-center'
+              className="ion-align-items-center"
               style={{
                 marginLeft: "0.5rem",
                 marginRight: "0.5rem",
@@ -666,11 +666,11 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
             </IonRow>
           )}
           {challenge.participants.accepted.notCompleted.length > 0 && (
-            <IonList className='ion-margin-vertical'>
+            <IonList className="ion-margin-vertical">
               {challenge.participants.accepted.notCompleted.map((u) => {
                 return (
-                  <IonItem key={u.userId} lines='none'>
-                    <IonAvatar slot='start'>
+                  <IonItem key={u.userId} lines="none">
+                    <IonAvatar slot="start">
                       <AvatarImg avatar={u.avatar} />
                     </IonAvatar>
                     <IonLabel>
@@ -690,7 +690,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
       return (
         <IonGrid>
           <IonRow
-            className='ion-align-items-center'
+            className="ion-align-items-center"
             style={{
               marginBottom: "0.5rem",
               marginLeft: "0.5rem",
@@ -705,7 +705,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           </IonRow>
           {challenge.participants.accepted.completed.length > 0 && (
             <IonRow
-              className='ion-align-items-center'
+              className="ion-align-items-center"
               style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}
             >
               <IonCol>
@@ -720,23 +720,23 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
             </IonRow>
           )}
           {challenge.participants.accepted.completed.length > 0 && (
-            <IonList className='ion-margin-vertical'>
+            <IonList className="ion-margin-vertical">
               {challenge.participants.accepted.completed.map((u) => {
                 return (
-                  <IonItem key={u.userId} lines='none'>
-                    <IonAvatar slot='start'>
+                  <IonItem key={u.userId} lines="none">
+                    <IonAvatar slot="start">
                       <AvatarImg avatar={u.avatar} />
                     </IonAvatar>
-                    <IonLabel slot='start'>
+                    <IonLabel slot="start">
                       {u.userId === user?.userId
                         ? "You"
                         : trimDisplayName(u.name)}
                     </IonLabel>
                     {u.evidenceLink !== undefined && u.evidenceLink !== "" && (
                       <IonButton
-                        slot='end'
-                        shape='round'
-                        color='tertiary'
+                        slot="end"
+                        shape="round"
+                        color="tertiary"
                         onClick={() => {
                           setState({
                             userUnderViewing: u,
@@ -754,7 +754,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           )}
           {challenge.participants.accepted.notCompleted.length > 0 && (
             <IonRow
-              className='ion-align-items-center'
+              className="ion-align-items-center"
               style={{
                 marginLeft: "0.5rem",
                 marginRight: "0.5rem",
@@ -773,11 +773,11 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
             </IonRow>
           )}
           {challenge.participants.accepted.notCompleted.length > 0 && (
-            <IonList className='ion-margin-vertical'>
+            <IonList className="ion-margin-vertical">
               {challenge.participants.accepted.notCompleted.map((u) => {
                 return (
-                  <IonItem key={u.userId} lines='none'>
-                    <IonAvatar slot='start'>
+                  <IonItem key={u.userId} lines="none">
+                    <IonAvatar slot="start">
                       <AvatarImg avatar={u.avatar} />
                     </IonAvatar>
                     <IonLabel>
@@ -796,7 +796,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     return (
       <IonGrid>
         <IonRow
-          className='ion-align-items-center'
+          className="ion-align-items-center"
           style={{
             marginBottom: "0.5rem",
             marginLeft: "0.5rem",
@@ -811,7 +811,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
         </IonRow>
         {challenge.participants.accepted.notCompleted.length > 0 && (
           <IonRow
-            className='ion-align-items-center'
+            className="ion-align-items-center"
             style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}
           >
             <IonCol>
@@ -827,11 +827,11 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           </IonRow>
         )}
         {challenge.participants.accepted.notCompleted.length > 0 && (
-          <IonList className='ion-margin-vertical'>
+          <IonList className="ion-margin-vertical">
             {challenge.participants.accepted.notCompleted.map((u) => {
               return (
-                <IonItem key={u.userId} lines='none'>
-                  <IonAvatar slot='start'>
+                <IonItem key={u.userId} lines="none">
+                  <IonAvatar slot="start">
                     <AvatarImg avatar={u.avatar} />
                   </IonAvatar>
                   <IonLabel>
@@ -846,7 +846,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
         )}
         {challenge.participants.pending.length > 0 && (
           <IonRow
-            className='ion-align-items-center'
+            className="ion-align-items-center"
             style={{
               marginLeft: "0.5rem",
               marginRight: "0.5rem",
@@ -864,14 +864,14 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           </IonRow>
         )}
         {challenge.participants.pending.length > 0 && (
-          <IonList className='ion-margin-vertical'>
+          <IonList className="ion-margin-vertical">
             {challenge.participants.pending.map((u) => {
               return (
-                <IonItem key={u.userId} lines='none'>
-                  <IonAvatar slot='start'>
+                <IonItem key={u.userId} lines="none">
+                  <IonAvatar slot="start">
                     <AvatarImg avatar={u.avatar} />
                   </IonAvatar>
-                  <IonLabel slot='start'>
+                  <IonLabel slot="start">
                     {u.userId === user?.userId
                       ? "You"
                       : trimDisplayName(u.name)}
@@ -892,19 +892,19 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
 
     if (isAfter(Date.now(), parseISO(challenge.endAt!))) {
       return (
-        <IonRow className='ion-padding'>
+        <IonRow className="ion-padding">
           <IonText>The challenge has ended</IonText>
         </IonRow>
       );
     } else if (isAfter(Date.now(), parseISO(challenge.startAt!))) {
       return (
-        <IonRow className='ion-padding'>
+        <IonRow className="ion-padding">
           <IonText>Your challenge is</IonText>
         </IonRow>
       );
     } else if (user?.userId === challenge.owner.userId) {
       return (
-        <IonRow className='ion-padding'>
+        <IonRow className="ion-padding">
           <IonText>You have created a challenge to</IonText>
         </IonRow>
       );
@@ -914,7 +914,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
       ) !== -1
     ) {
       return (
-        <IonRow className='ion-padding'>
+        <IonRow className="ion-padding">
           <IonText>You have been invited to</IonText>
         </IonRow>
       );
@@ -928,12 +928,12 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     }
     if (challenge.hasReleasedResult) {
       return (
-        <IonRow className='ion-margin ion-justify-content-center'>
+        <IonRow className="ion-margin ion-justify-content-center">
           <IonButton
-            shape='round'
-            color='secondary'
-            expand='block'
-            fill='solid'
+            shape="round"
+            color="secondary"
+            expand="block"
+            fill="solid"
             onClick={() => setState({ showVoteModal: true })}
           >
             <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
@@ -947,24 +947,24 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
       return (
         <>
           {user?.userId === challenge.owner.userId ? (
-            <IonRow className='ion-margin ion-justify-content-around'>
-              <IonCol size='6'>
+            <IonRow className="ion-margin ion-justify-content-around">
+              <IonCol size="6">
                 <IonButton
-                  shape='round'
-                  color='secondary'
-                  expand='block'
-                  fill='solid'
+                  shape="round"
+                  color="secondary"
+                  expand="block"
+                  fill="solid"
                   onClick={() => setState({ showVoteModal: true })}
                 >
                   <IonText>Vote out cheaters</IonText>
                 </IonButton>
               </IonCol>
-              <IonCol size='6'>
+              <IonCol size="6">
                 <IonButton
-                  shape='round'
-                  color='senary'
-                  expand='block'
-                  fill='solid'
+                  shape="round"
+                  color="senary"
+                  expand="block"
+                  fill="solid"
                   onClick={() => {
                     setState({
                       showAlert: true,
@@ -981,12 +981,12 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
               </IonCol>
             </IonRow>
           ) : (
-            <IonRow className='ion-margin ion-justify-content-center'>
+            <IonRow className="ion-margin ion-justify-content-center">
               <IonButton
-                shape='round'
-                color='secondary'
-                expand='block'
-                fill='solid'
+                shape="round"
+                color="secondary"
+                expand="block"
+                fill="solid"
                 onClick={() => setState({ showVoteModal: true })}
               >
                 <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
@@ -1008,12 +1008,12 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
       );
       const evidenceLink = viewingUser?.evidenceLink ?? "";
       return (
-        <IonRow className='ion-justify-content-around ion-margin'>
+        <IonRow className="ion-justify-content-around ion-margin">
           <IonButton
-            shape='round'
-            color='secondary'
-            expand='block'
-            fill='solid'
+            shape="round"
+            color="secondary"
+            expand="block"
+            fill="solid"
             onClick={() =>
               setState({
                 showUploadProofModal: true,
@@ -1030,12 +1030,12 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
 
     if (isAfter(Date.now(), parseISO(challenge.startAt!))) {
       return (
-        <IonRow className='ion-justify-content-around ion-margin'>
+        <IonRow className="ion-justify-content-around ion-margin">
           <IonButton
-            shape='round'
-            color='secondary'
-            expand='block'
-            fill='solid'
+            shape="round"
+            color="secondary"
+            expand="block"
+            fill="solid"
             onClick={handleComplete}
           >
             <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
@@ -1048,10 +1048,10 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
 
     if (user?.userId === challenge.owner.userId) {
       return (
-        <IonRow className='ion-justify-content-center ion-margin'>
+        <IonRow className="ion-justify-content-center ion-margin">
           <IonButton
-            shape='round'
-            color='secondary'
+            shape="round"
+            color="secondary"
             disabled
             style={{ opacity: 0.7 }}
           >
@@ -1069,13 +1069,13 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
       ) !== -1
     ) {
       return (
-        <IonRow className='ion-justify-content-around ion-margin'>
+        <IonRow className="ion-justify-content-around ion-margin">
           <IonCol>
             <IonButton
-              shape='round'
-              color='danger'
-              expand='block'
-              fill='solid'
+              shape="round"
+              color="danger"
+              expand="block"
+              fill="solid"
               onClick={() => {
                 setState({
                   showAlert: true,
@@ -1092,10 +1092,10 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           </IonCol>
           <IonCol>
             <IonButton
-              shape='round'
-              color='secondary'
-              fill='solid'
-              expand='block'
+              shape="round"
+              color="secondary"
+              fill="solid"
+              expand="block"
               style={{ marginBottom: "0.5rem" }}
               onClick={() => {
                 setState({
@@ -1116,8 +1116,8 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     }
 
     return (
-      <IonRow className='ion-justify-content-center ion-margin'>
-        <IonButton shape='round' color='secondary' disabled>
+      <IonRow className="ion-justify-content-center ion-margin">
+        <IonButton shape="round" color="secondary" disabled>
           <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
             Waiting for the challenge to start
           </IonText>
@@ -1145,30 +1145,30 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
 
   return (
     <IonPage>
-      <IonHeader className='ion-no-border'>
+      <IonHeader className="ion-no-border">
         <IonToolbar>
-          <IonButtons slot='start'>
+          <IonButtons slot="start">
             <IonButton
               style={{
                 marginTop: "1.5rem",
                 marginRight: "1rem",
               }}
-              color='dark'
+              color="dark"
               onClick={() => {
                 history.goBack();
               }}
             >
-              <IonIcon slot='end' icon={arrowBackOutline} size='large' />
+              <IonIcon slot="end" icon={arrowBackOutline} size="large" />
             </IonButton>
           </IonButtons>
           {user?.userId === challenge.owner.userId && (
-            <IonButtons slot='end'>
+            <IonButtons slot="end">
               <IonButton
                 style={{
                   marginTop: "1.5rem",
                   marginRight: "1rem",
                 }}
-                color='dark'
+                color="dark"
                 onClick={async () => {
                   setState({ isLoading: true });
                   const updatedChallenge = await getChallenge(
@@ -1215,7 +1215,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
                   }
                 }}
               >
-                <IonIcon slot='end' icon={pencil} />
+                <IonIcon slot="end" icon={pencil} />
               </IonButton>
             </IonButtons>
           )}
@@ -1225,7 +1225,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
       <IonContent fullscreen>
         <IonGrid style={{ marginBottom: "0.5rem" }}>
           {renderHeader()}
-          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
+          <IonRow className="ion-padding-horizontal ion-padding-bottom">
             <IonText style={{ fontWeight: "bold", fontSize: "1.5rem" }}>
               {challenge.title}
             </IonText>
@@ -1234,90 +1234,98 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
         {renderImage()}
         {isAfter(Date.now(), parseISO(challenge.startAt!)) && (
           <IonGrid style={{ marginBottom: "0.5rem" }}>
-            <IonRow className='ion-padding-horizontal'>
-              <IonCol size='3'>
-                <IonRow className='ion-justify-content-center'>
+            <IonRow className="ion-padding-horizontal">
+              <IonCol size="3">
+                <IonRow className="ion-justify-content-center">
                   <IonText style={{ fontWeight: "800", fontSize: "2rem" }}>
                     {countdown?.days ?? "-"}
                   </IonText>
                 </IonRow>
               </IonCol>
-              <IonCol size='3'>
-                <IonRow className='ion-justify-content-center'>
+              <IonCol size="3">
+                <IonRow className="ion-justify-content-center">
                   <IonText style={{ fontWeight: "800", fontSize: "2rem" }}>
                     {countdown?.hours ?? "-"}
                   </IonText>
                 </IonRow>
               </IonCol>
-              <IonCol size='3'>
-                <IonRow className='ion-justify-content-center'>
+              <IonCol size="3">
+                <IonRow className="ion-justify-content-center">
                   <IonText style={{ fontWeight: "800", fontSize: "2rem" }}>
                     {countdown?.minutes ?? "-"}
                   </IonText>
                 </IonRow>
               </IonCol>
-              <IonCol size='3'>
-                <IonRow className='ion-justify-content-center'>
+              <IonCol size="3">
+                <IonRow className="ion-justify-content-center">
                   <IonText style={{ fontWeight: "800", fontSize: "2rem" }}>
                     {countdown?.seconds ?? "-"}
                   </IonText>
                 </IonRow>
               </IonCol>
             </IonRow>
-            <IonRow className='ion-padding-horizontal ion-padding-bottom'>
-              <IonCol size='3'>
-                <IonRow className='ion-justify-content-center'>Days</IonRow>
+            <IonRow className="ion-padding-horizontal ion-padding-bottom">
+              <IonCol size="3">
+                <IonRow className="ion-justify-content-center">Days</IonRow>
               </IonCol>
-              <IonCol size='3'>
-                <IonRow className='ion-justify-content-center'>Hours</IonRow>
+              <IonCol size="3">
+                <IonRow className="ion-justify-content-center">Hours</IonRow>
               </IonCol>
-              <IonCol size='3'>
-                <IonRow className='ion-justify-content-center'>Minutes</IonRow>
+              <IonCol size="3">
+                <IonRow className="ion-justify-content-center">Minutes</IonRow>
               </IonCol>
-              <IonCol size='3'>
-                <IonRow className='ion-justify-content-center'>Seconds</IonRow>
+              <IonCol size="3">
+                <IonRow className="ion-justify-content-center">Seconds</IonRow>
               </IonCol>
             </IonRow>
           </IonGrid>
         )}
         <IonGrid style={{ marginBottom: "0.5rem" }}>
-          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
+          <IonRow className="ion-padding-horizontal ion-padding-bottom">
             <IonText style={{ fontWeight: "bold" }}>
               What do we need to do?
             </IonText>
           </IonRow>
-          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
+          <IonRow className="ion-padding-horizontal ion-padding-bottom">
             <IonText>{challenge.description}</IonText>
           </IonRow>
         </IonGrid>
         <IonGrid style={{ marginBottom: "0.5rem" }}>
-          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
+          <IonRow className="ion-padding-horizontal ion-padding-bottom">
             <IonText style={{ fontWeight: "bold" }}>
               This challenge starts at
             </IonText>
           </IonRow>
-          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
+          <IonRow className="ion-padding-horizontal ion-padding-bottom">
             <IonText>
               {format(parseISO(challenge.startAt!), "EEEE, dd MMM yyyy, HH:mm")}
             </IonText>
           </IonRow>
         </IonGrid>
         <IonGrid style={{ marginBottom: "0.5rem" }}>
-          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
+          <IonRow className="ion-padding-horizontal ion-padding-bottom">
             <IonText style={{ fontWeight: "bold" }}>
               Complete the challenge and upload your proof by
             </IonText>
           </IonRow>
-          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
+          <IonRow className="ion-padding-horizontal ion-padding-bottom">
             <IonText>
               {format(parseISO(challenge.endAt), "EEEE, dd MMM yyyy, HH:mm")}
             </IonText>
           </IonRow>
         </IonGrid>
-        <IonItemDivider style={{ marginBottom: "0.25rem" }} />
+        <div
+          style={{
+            width: "100%",
+            height: "0.5rem",
+            backgroundColor: "#E5E5E5",
+            marginTop: "0.5rem",
+            marginBottom: "0.5rem",
+          }}
+        />
         {renderParticipants()}
-        <IonFab vertical='bottom' horizontal='end' slot='fixed'>
-          <IonFabButton color='senary' onClick={fetchData}>
+        <IonFab vertical="bottom" horizontal="end" slot="fixed">
+          <IonFabButton color="senary" onClick={fetchData}>
             <IonIcon icon={refreshOutline} />
           </IonFabButton>
         </IonFab>

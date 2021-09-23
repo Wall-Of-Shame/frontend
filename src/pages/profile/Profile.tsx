@@ -259,7 +259,7 @@ const Profile: React.FC = () => {
               <IonIcon
                 slot='end'
                 icon={ellipsisVertical}
-                style={{ fontSize: "24px" }}
+                style={{ fontSize: "1.5rem" }}
               />
             </IonButton>
           </IonButtons>
