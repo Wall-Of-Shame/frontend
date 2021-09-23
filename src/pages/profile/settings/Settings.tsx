@@ -48,7 +48,7 @@ const Settings: React.FC = () => {
       user?.avatar ?? {
         animal: "CAT",
         color: "PRIMARY",
-        background: "#ffffff",
+        background: "#cbe8e0",
       }
     );
   };
@@ -68,7 +68,7 @@ const Settings: React.FC = () => {
       user?.avatar ?? {
         animal: "CAT",
         color: "PRIMARY",
-        background: "#ffffff",
+        background: "#cbe8e0",
       }
     );
   };

@@ -28,10 +28,7 @@ import {
   createOutline,
   settingsOutline,
   logOutOutline,
-  helpOutline,
   helpCircleOutline,
-  informationCircle,
-  informationCircleOutline,
 } from "ionicons/icons";
 import { useHistory, useLocation } from "react-router";
 import { useAuth } from "../../contexts/AuthContext";
@@ -232,6 +229,22 @@ const Profile: React.FC = () => {
             lines='none'
             onClick={() => {
               setShowPopover({ showPopover: false, event: undefined });
+              // Show help modal
+            }}
+          >
+            <IonIcon
+              slot='start'
+              icon={helpCircleOutline}
+              style={{ fontSize: "1.5rem" }}
+            />
+            <IonLabel>Help</IonLabel>
+          </IonItem>
+          <IonItem
+            button
+            detail={false}
+            lines='none'
+            onClick={() => {
+              setShowPopover({ showPopover: false, event: undefined });
               logout();
             }}
             style={{ marginBottom: "0.5rem" }}
@@ -248,21 +261,6 @@ const Profile: React.FC = () => {
 
       <IonHeader className='ion-no-border'>
         <IonToolbar>
-          <IonButtons slot='start'>
-            <IonButton
-              style={{
-                marginTop: "1.5rem",
-                marginLeft: "1rem",
-              }}
-              color='dark'
-            >
-              <IonIcon
-                slot='start'
-                icon={helpOutline}
-                style={{ fontSize: "1.75rem" }}
-              />
-            </IonButton>
-          </IonButtons>
           <IonButtons slot='end'>
             <IonButton
               style={{

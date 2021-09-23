@@ -61,10 +61,10 @@ const EditProfile: React.FC = () => {
     {
       displayName: user?.name ?? "",
       username: user?.username ?? "",
-      avatar: {
+      avatar: user?.avatar ?? {
         animal: "CAT",
         color: "PRIMARY",
-        background: "#cdcdcd",
+        background: "#cbe8e0",
       },
       isLoading: false,
       showAlert: false,
