@@ -422,7 +422,7 @@ const EditChallenge: React.FC<EditChallengeProps> = (
           }}
         />
       </IonContent>
-      <IonFooter translucent={true}>
+      <IonFooter translucent={true} className="ion-margin-top">
         <IonToolbar>
           <IonRow
             className='ion-justify-content-center'

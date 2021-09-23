@@ -162,10 +162,11 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
           </IonRow>
         </IonGrid>
         <IonGrid>
-          <IonRow
-            className="ion-padding-bottom ion-padding-horizontal"
-          >
-            <IonText>Anyone who doesn't finish the challenge in time will be thrown to the wall</IonText>
+          <IonRow className="ion-padding-bottom ion-padding-horizontal">
+            <IonText>
+              Anyone who doesn't finish the challenge in time will be thrown to
+              the wall
+            </IonText>
           </IonRow>
         </IonGrid>
         <IonGrid>
@@ -386,19 +387,24 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
           okHandler={state.okHandler}
         />
       </IonContent>
-      <IonFooter>
-        <IonRow className="ion-justify-content-center ion-margin">
-          <IonButton
-            shape="round"
-            color="secondary"
-            fill="solid"
-            onClick={handleSubmit}
+      <IonFooter translucent={true} className="ion-margin-top">
+        <IonToolbar>
+          <IonRow
+            className="ion-justify-content-center"
+            style={{ margin: "0.5rem" }}
           >
-            <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
-              Let's geddittt
-            </IonText>
-          </IonButton>
-        </IonRow>
+            <IonButton
+              shape="round"
+              color="secondary"
+              fill="solid"
+              onClick={handleSubmit}
+            >
+              <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
+                Let's geddittt
+              </IonText>
+            </IonButton>
+          </IonRow>
+        </IonToolbar>
       </IonFooter>
     </IonPage>
   );
