@@ -11,12 +11,9 @@ import {
   IonIcon,
   IonInput,
   IonItem,
-  IonItemDivider,
   IonLabel,
   IonList,
   IonPage,
-  IonRadio,
-  IonRadioGroup,
   IonRow,
   IonText,
   IonTextarea,
@@ -174,7 +171,15 @@ const EditChallenge: React.FC<EditChallengeProps> = (
         <IonGrid style={{ marginTop: "0.5rem" }}>
           <IonRow className='ion-padding'>
             <IonText style={{ fontWeight: "bold", fontSize: "1.5rem" }}>
-              Edit challenge
+              Edit your challenge
+            </IonText>
+          </IonRow>
+        </IonGrid>
+        <IonGrid>
+          <IonRow className='ion-padding-bottom ion-padding-horizontal'>
+            <IonText>
+              Anyone who doesn't finish the challenge in time will be thrown to
+              the wall
             </IonText>
           </IonRow>
         </IonGrid>
@@ -248,45 +253,7 @@ const EditChallenge: React.FC<EditChallengeProps> = (
           </IonRow>
         </IonGrid>
         <IonGrid>
-          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
-            <IonText style={{ fontWeight: "bold" }}>
-              Who gets thrown onto the wall?
-            </IonText>
-          </IonRow>
-          <IonRow className='ion-padding-bottom ion-padding-horizontal'>
-            <IonRadioGroup
-              value={state.punishmentType}
-              style={{ width: "100%" }}
-            >
-              <IonRow style={{ marginTop: "0.75rem" }}>
-                <IonCol size='10'>
-                  <IonLabel>Anyone who doesn't finish in time</IonLabel>
-                </IonCol>
-                <IonCol size='2'>
-                  <IonRow className='ion-justify-content-end'>
-                    <IonRadio value='NOT_COMPLETED' mode='md' color='quinary' />
-                  </IonRow>
-                </IonCol>
-              </IonRow>
-              <IonRow style={{ marginTop: "0.75rem" }}>
-                <IonCol size='10'>
-                  <IonLabel>Last person to complete</IonLabel>
-                </IonCol>
-                <IonCol size='2'>
-                  <IonRow className='ion-justify-content-end'>
-                    <IonRadio
-                      value='LAST_TO_COMPLETE'
-                      mode='md'
-                      color='quinary'
-                    />
-                  </IonRow>
-                </IonCol>
-              </IonRow>
-            </IonRadioGroup>
-          </IonRow>
-        </IonGrid>
-        <IonGrid>
-          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
+          <IonRow className='ion-padding'>
             <IonText
               style={{ fontWeight: "bold" }}
               color={
@@ -295,12 +262,12 @@ const EditChallenge: React.FC<EditChallengeProps> = (
                   : "primary"
               }
             >
-              When does the challenge end?
+              When does the challenge start and end?
             </IonText>
           </IonRow>
           <IonList>
             <IonItem lines='none'>
-              <IonLabel>Start at*</IonLabel>
+              <IonLabel>Starts at</IonLabel>
               <IonDatetime
                 displayFormat='D MMM YYYY HH:mm'
                 min={formatISO(Date.now()).slice(0, -6)}
@@ -311,7 +278,7 @@ const EditChallenge: React.FC<EditChallengeProps> = (
               ></IonDatetime>
             </IonItem>
             <IonItem lines='none'>
-              <IonLabel>End at*</IonLabel>
+              <IonLabel>Ends at</IonLabel>
               <IonDatetime
                 displayFormat='D MMM YYYY HH:mm'
                 min={formatISO(Date.now()).slice(0, -6)}
@@ -343,7 +310,15 @@ const EditChallenge: React.FC<EditChallengeProps> = (
             </IonRow>
           )}
         </IonGrid>
-        <IonItemDivider style={{ marginBottom: "0.25rem" }} />
+        <div
+          style={{
+            width: "100%",
+            height: "0.5rem",
+            backgroundColor: "#E5E5E5",
+            marginTop: "0.5rem",
+            marginBottom: "0.5rem",
+          }}
+        />
         <IonGrid>
           <IonRow
             className='ion-align-items-center'
@@ -374,8 +349,8 @@ const EditChallenge: React.FC<EditChallengeProps> = (
           >
             <IonCol>
               <IonText>
-                {challenge.participantCount} participant
-                {challenge.participantCount !== 1 ? "s are " : " is "}
+                {challenge.participantCount + 1} participant
+                {challenge.participantCount + 1 !== 1 ? "s are " : " is "}
                 ready to start the challenge
               </IonText>
             </IonCol>
@@ -398,36 +373,39 @@ const EditChallenge: React.FC<EditChallengeProps> = (
               })}
             </IonList>
           )}
-          <IonRow
-            className='ion-align-items-center'
-            style={{
-              marginLeft: "0.5rem",
-              marginRight: "0.5rem",
-            }}
-          >
-            <IonCol>
-              <IonText>
-                {challenge.participants.pending.length} burden
-                {challenge.participants.pending.length !== 1
-                  ? "s are "
-                  : " is "}
-                still questioning life
-              </IonText>
-            </IonCol>
-          </IonRow>
           {challenge.participants.pending.length > 0 && (
-            <IonList style={{ marginTop: "0.5rem" }}>
-              {challenge.participants.pending.map((u) => {
-                return (
-                  <IonItem key={u.userId} lines='none'>
-                    <IonAvatar slot='start'>
-                      <AvatarImg avatar={u.avatar} />
-                    </IonAvatar>
-                    <IonLabel>{trimDisplayName(u.name)}</IonLabel>
-                  </IonItem>
-                );
-              })}
-            </IonList>
+            <>
+              <IonRow
+                className='ion-align-items-center'
+                style={{
+                  marginLeft: "0.5rem",
+                  marginRight: "0.5rem",
+                }}
+              >
+                <IonCol>
+                  <IonText>
+                    {challenge.participants.pending.length} burden
+                    {challenge.participants.pending.length !== 1
+                      ? "s are "
+                      : " is "}
+                    still questioning life
+                  </IonText>
+                </IonCol>
+              </IonRow>
+
+              <IonList style={{ marginTop: "0.5rem" }}>
+                {challenge.participants.pending.map((u) => {
+                  return (
+                    <IonItem key={u.userId} lines='none'>
+                      <IonAvatar slot='start'>
+                        <AvatarImg avatar={u.avatar} />
+                      </IonAvatar>
+                      <IonLabel>{trimDisplayName(u.name)}</IonLabel>
+                    </IonItem>
+                  );
+                })}
+              </IonList>
+            </>
           )}
         </IonGrid>
         <EditParticipantsModal
@@ -441,7 +419,7 @@ const EditChallenge: React.FC<EditChallengeProps> = (
           }}
         />
       </IonContent>
-      <IonFooter translucent={true}>
+      <IonFooter translucent={true} className='ion-margin-top'>
         <IonToolbar>
           <IonRow
             className='ion-justify-content-center'

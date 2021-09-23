@@ -11,7 +11,6 @@ import {
   IonIcon,
   IonInput,
   IonItem,
-  IonItemDivider,
   IonLabel,
   IonList,
   IonPage,
@@ -162,6 +161,14 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
           </IonRow>
         </IonGrid>
         <IonGrid>
+          <IonRow className='ion-padding-bottom ion-padding-horizontal'>
+            <IonText>
+              Anyone who doesn't finish the challenge in time will be thrown to
+              the wall
+            </IonText>
+          </IonRow>
+        </IonGrid>
+        <IonGrid>
           <IonRow className='ion-padding-horizontal ion-padding-bottom'>
             <IonText
               style={{ fontWeight: "bold" }}
@@ -243,20 +250,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
           </IonRow>
         </IonGrid>
         <IonGrid>
-          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
-            <IonText style={{ fontWeight: "bold" }}>
-              Who gets thrown onto the wall?
-            </IonText>
-          </IonRow>
-          <IonRow
-            className='ion-padding-bottom ion-padding-horizontal'
-            style={{ marginTop: "0.5rem" }}
-          >
-            <IonText>Anyone who doesn't finish in time</IonText>
-          </IonRow>
-        </IonGrid>
-        <IonGrid>
-          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
+          <IonRow className='ion-padding'>
             <IonText
               style={{ fontWeight: "bold" }}
               color={
@@ -265,12 +259,12 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
                   : "primary"
               }
             >
-              When does the challenge end?
+              When does the challenge start and end?
             </IonText>
           </IonRow>
           <IonList>
             <IonItem lines='none'>
-              <IonLabel>Start at*</IonLabel>
+              <IonLabel>Starts at</IonLabel>
               <IonDatetime
                 displayFormat='D MMM YYYY HH:mm'
                 min={formatISO(Date.now()).slice(0, -6)}
@@ -281,7 +275,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
               ></IonDatetime>
             </IonItem>
             <IonItem lines='none'>
-              <IonLabel>End at*</IonLabel>
+              <IonLabel>Ends at</IonLabel>
               <IonDatetime
                 displayFormat='D MMM YYYY HH:mm'
                 min={formatISO(Date.now()).slice(0, -6)}
@@ -313,7 +307,15 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
             </IonRow>
           )}
         </IonGrid>
-        <IonItemDivider style={{ marginBottom: "0.25rem" }} />
+        <div
+          style={{
+            width: "100%",
+            height: "0.5rem",
+            backgroundColor: "#E5E5E5",
+            marginTop: "0.5rem",
+            marginBottom: "0.5rem",
+          }}
+        />
         <IonGrid>
           <IonRow className='ion-padding-horizontal ion-align-items-center'>
             <IonCol size='10'>
@@ -384,19 +386,24 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
           okHandler={state.okHandler}
         />
       </IonContent>
-      <IonFooter>
-        <IonRow className='ion-justify-content-center ion-margin'>
-          <IonButton
-            shape='round'
-            color='secondary'
-            fill='solid'
-            onClick={handleSubmit}
+      <IonFooter translucent={true} className='ion-margin-top'>
+        <IonToolbar>
+          <IonRow
+            className='ion-justify-content-center'
+            style={{ margin: "0.5rem" }}
           >
-            <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
-              Let's geddittt
-            </IonText>
-          </IonButton>
-        </IonRow>
+            <IonButton
+              shape='round'
+              color='secondary'
+              fill='solid'
+              onClick={handleSubmit}
+            >
+              <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
+                Let's geddittt
+              </IonText>
+            </IonButton>
+          </IonRow>
+        </IonToolbar>
       </IonFooter>
     </IonPage>
   );

@@ -177,7 +177,7 @@ const WallOfShame: React.FC = () => {
                   </IonAvatar>
                   {s.type === "fail" ? (
                     <IonLabel>
-                      <h6>{s.name} has failed the challenge:</h6>
+                      <h6>{s.name} failed the challenge:</h6>
                       <h4 style={{ fontWeight: "bold" }}>{s.title}</h4>
                       <h6>
                         On {format(parseISO(s.time), "dd MMM yyyy, HH:mm:ss")}
@@ -185,7 +185,7 @@ const WallOfShame: React.FC = () => {
                     </IonLabel>
                   ) : (
                     <IonLabel>
-                      <h6>{s.name} has cheated in the challenge:</h6>
+                      <h6>{s.name} cheated in the challenge:</h6>
                       <h4 style={{ fontWeight: "bold" }}>{s.title}</h4>
                       <h6>
                         On {format(parseISO(s.time), "dd MMM yyyy, HH:mm:ss")}

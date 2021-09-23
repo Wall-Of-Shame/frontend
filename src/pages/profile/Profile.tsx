@@ -28,6 +28,10 @@ import {
   createOutline,
   settingsOutline,
   logOutOutline,
+  helpOutline,
+  helpCircleOutline,
+  informationCircle,
+  informationCircleOutline,
 } from "ionicons/icons";
 import { useHistory, useLocation } from "react-router";
 import { useAuth } from "../../contexts/AuthContext";
@@ -244,6 +248,21 @@ const Profile: React.FC = () => {
 
       <IonHeader className='ion-no-border'>
         <IonToolbar>
+          <IonButtons slot='start'>
+            <IonButton
+              style={{
+                marginTop: "1.5rem",
+                marginLeft: "1rem",
+              }}
+              color='dark'
+            >
+              <IonIcon
+                slot='start'
+                icon={helpOutline}
+                style={{ fontSize: "1.75rem" }}
+              />
+            </IonButton>
+          </IonButtons>
           <IonButtons slot='end'>
             <IonButton
               style={{
@@ -259,7 +278,7 @@ const Profile: React.FC = () => {
               <IonIcon
                 slot='end'
                 icon={ellipsisVertical}
-                style={{ fontSize: "24px" }}
+                style={{ fontSize: "1.5rem" }}
               />
             </IonButton>
           </IonButtons>
@@ -268,7 +287,10 @@ const Profile: React.FC = () => {
 
       <IonContent fullscreen>
         <IonGrid>
-          <IonRow className='ion-align-items-center'>
+          <IonRow
+            className='ion-align-items-center'
+            style={{ marginTop: "1rem" }}
+          >
             <IonCol size='4'>
               <IonRow className='ion-justify-content-center ion-no-padding'>
                 <IonAvatar id='profile-avatar'>

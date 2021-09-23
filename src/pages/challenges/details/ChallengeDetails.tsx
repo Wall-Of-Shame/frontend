@@ -11,7 +11,6 @@ import {
   IonHeader,
   IonIcon,
   IonItem,
-  IonItemDivider,
   IonLabel,
   IonList,
   IonPage,
@@ -1333,7 +1332,15 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
             </IonText>
           </IonRow>
         </IonGrid>
-        <IonItemDivider style={{ marginBottom: "0.25rem" }} />
+        <div
+          style={{
+            width: "100%",
+            height: "0.5rem",
+            backgroundColor: "#E5E5E5",
+            marginTop: "0.5rem",
+            marginBottom: "0.5rem",
+          }}
+        />
         {renderParticipants()}
         <IonFab vertical='bottom' horizontal='end' slot='fixed'>
           <IonFabButton color='senary' onClick={fetchData}>
