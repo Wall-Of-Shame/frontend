@@ -78,7 +78,7 @@ const AuthProvider: React.FunctionComponent = (props) => {
       const user = userCredential.user;
       await sendEmailVerification(user);
       const token = await user.getIdToken();
-      const messagingToken = await getToken(messaging).catch(_ => undefined);
+      const messagingToken = await getToken(messaging).catch((_) => undefined);
       AuthService.login(token, messagingToken);
       await AuthService.getUser();
     } catch (error) {
@@ -87,11 +87,12 @@ const AuthProvider: React.FunctionComponent = (props) => {
     }
   };
 
-  const continueWithGoogle = async (): Promise<void> => {
+  const continueWithGoogle = async (callback: () => void): Promise<void> => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
+      callback();
       const token = await result.user.getIdToken();
-      const messagingToken = await getToken(messaging).catch(_ => undefined);
+      const messagingToken = await getToken(messaging).catch((_) => undefined);
       await AuthService.login(token, messagingToken);
       await AuthService.getUser();
     } catch (error: any) {
@@ -107,11 +108,12 @@ const AuthProvider: React.FunctionComponent = (props) => {
     }
   };
 
-  const continueWithFacebook = async (): Promise<void> => {
+  const continueWithFacebook = async (callback: () => void): Promise<void> => {
     try {
       const result = await signInWithPopup(auth, facebookProvider);
+      callback();
       const token = await result.user.getIdToken();
-      const messagingToken = await getToken(messaging).catch(_ => undefined);
+      const messagingToken = await getToken(messaging).catch((_) => undefined);
       await AuthService.login(token, messagingToken);
       await AuthService.getUser();
     } catch (error: any) {
@@ -136,7 +138,7 @@ const AuthProvider: React.FunctionComponent = (props) => {
       );
       const user = userCredential.user;
       const token = await user.getIdToken();
-      const messagingToken = await getToken(messaging).catch(_ => undefined);
+      const messagingToken = await getToken(messaging).catch((_) => undefined);
       await AuthService.login(token, messagingToken);
       await AuthService.getUser().then(() => {
         reload();

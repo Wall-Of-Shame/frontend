@@ -247,7 +247,7 @@ const Challenges: React.FC = () => {
                         <IonCol size='1'>
                           <IonIcon
                             icon={chevronForward}
-                            style={{ fontSize: "24px" }}
+                            style={{ fontSize: "1.5rem" }}
                           />
                         </IonCol>
                       </IonRow>
@@ -259,9 +259,12 @@ const Challenges: React.FC = () => {
           );
         } else {
           return (
-            <div className='challenge-list-container ion-padding'>
+            <IonRow
+              className='ion-padding ion-justify-content-center'
+              style={{ marginTop: "1rem" }}
+            >
               No challenges yet
-            </div>
+            </IonRow>
           );
         }
       case "pending":
@@ -344,7 +347,7 @@ const Challenges: React.FC = () => {
                             <IonCol size='1'>
                               <IonIcon
                                 icon={chevronForward}
-                                style={{ fontSize: "24px" }}
+                                style={{ fontSize: "1.5rem" }}
                               />
                             </IonCol>
                           </IonRow>
@@ -450,9 +453,12 @@ const Challenges: React.FC = () => {
           );
         } else {
           return (
-            <div className='challenge-list-container ion-padding'>
+            <IonRow
+              className='ion-padding ion-justify-content-center'
+              style={{ marginTop: "1rem" }}
+            >
               No challenges yet
-            </div>
+            </IonRow>
           );
         }
       case "history":
@@ -537,7 +543,7 @@ const Challenges: React.FC = () => {
                         <IonCol size='1'>
                           <IonIcon
                             icon={chevronForward}
-                            style={{ fontSize: "24px" }}
+                            style={{ fontSize: "1.5rem" }}
                           />
                         </IonCol>
                       </IonRow>
@@ -549,9 +555,12 @@ const Challenges: React.FC = () => {
           );
         } else {
           return (
-            <div className='challenge-list-container ion-padding'>
+            <IonRow
+              className='ion-padding ion-justify-content-center'
+              style={{ marginTop: "1rem" }}
+            >
               No challenges yet
-            </div>
+            </IonRow>
           );
         }
     }

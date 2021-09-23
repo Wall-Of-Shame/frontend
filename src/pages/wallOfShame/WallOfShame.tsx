@@ -99,9 +99,9 @@ const WallOfShame: React.FC = () => {
   const fetchData = async (): Promise<void> => {
     try {
       const global = await getGlobalRankings();
-      // const friends = await getFriendsRankings();
+      const friends = await getFriendsRankings();
       setGlobalRankings(global);
-      // setFriendsRankings(friends);
+      setFriendsRankings(friends);
     } catch (error) {
       return Promise.reject(error);
     }
@@ -127,6 +127,13 @@ const WallOfShame: React.FC = () => {
   const renderWall = () => {
     switch (tab) {
       case "live":
+        if (shames.length <= 0) {
+          return (
+            <IonRow className='ion-padding ion-justify-content-center'>
+              {hasSynced ? "No records yet" : "Updating..."}
+            </IonRow>
+          );
+        }
         return (
           <IonList>
             {shames.map((s) => {
@@ -167,7 +174,6 @@ const WallOfShame: React.FC = () => {
             >
               <IonRefresherContent></IonRefresherContent>
             </IonRefresher>
-
             <IonList>
               <IonItem
                 className='ion-padding-horizontal'
@@ -192,37 +198,55 @@ const WallOfShame: React.FC = () => {
               </IonItem>
               {type === "Global" ? (
                 <>
-                  {globalRankings.map((r) => {
-                    return (
-                      <IonItem lines='none' key={r.userId}>
-                        <IonAvatar slot='start'>
-                          <img src={luke} alt='user1' />
-                        </IonAvatar>
-                        <IonLabel>
-                          <h4 style={{ fontWeight: "bold" }}>{r.name}</h4>
-                        </IonLabel>
-                        <IonIcon slot='end' icon={medal}></IonIcon>
-                        <IonLabel slot='end'>{r.failedChallengeCount}</IonLabel>
-                      </IonItem>
-                    );
-                  })}
+                  {globalRankings.length > 0 ? (
+                    <>
+                      {globalRankings.map((r) => {
+                        return (
+                          <IonItem lines='none' key={r.userId}>
+                            <IonAvatar slot='start'>
+                              <img src={luke} alt='user1' />
+                            </IonAvatar>
+                            <IonLabel>
+                              <h4 style={{ fontWeight: "bold" }}>{r.name}</h4>
+                            </IonLabel>
+                            <IonIcon slot='end' icon={medal}></IonIcon>
+                            <IonLabel slot='end'>
+                              {r.failedChallengeCount}
+                            </IonLabel>
+                          </IonItem>
+                        );
+                      })}
+                    </>
+                  ) : (
+                    <IonRow className='ion-padding ion-justify-content-center'>
+                      No records yet
+                    </IonRow>
+                  )}
                 </>
               ) : (
                 <>
-                  {friendsRankings.map((r) => {
-                    return (
-                      <IonItem lines='none' key={r.userId}>
-                        <IonAvatar slot='start'>
-                          <img src={luke} alt='user1' />
-                        </IonAvatar>
-                        <IonLabel>
-                          <h4 style={{ fontWeight: "bold" }}>Luke</h4>
-                        </IonLabel>
-                        <IonIcon slot='end' icon={medal}></IonIcon>
-                        <IonLabel slot='end'>45</IonLabel>
-                      </IonItem>
-                    );
-                  })}
+                  {friendsRankings.length > 0 ? (
+                    <>
+                      {friendsRankings.map((r) => {
+                        return (
+                          <IonItem lines='none' key={r.userId}>
+                            <IonAvatar slot='start'>
+                              <img src={luke} alt='user1' />
+                            </IonAvatar>
+                            <IonLabel>
+                              <h4 style={{ fontWeight: "bold" }}>Luke</h4>
+                            </IonLabel>
+                            <IonIcon slot='end' icon={medal}></IonIcon>
+                            <IonLabel slot='end'>45</IonLabel>
+                          </IonItem>
+                        );
+                      })}
+                    </>
+                  ) : (
+                    <IonRow className='ion-padding ion-justify-content-center'>
+                      No records yet
+                    </IonRow>
+                  )}
                 </>
               )}
             </IonList>

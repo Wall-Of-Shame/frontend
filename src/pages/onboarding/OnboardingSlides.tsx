@@ -160,13 +160,18 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
               color='quaternary'
               style={{ margin: "1rem" }}
               onClick={async () => {
-                continueWithGoogle()
+                continueWithGoogle(() => {
+                  setState({ isLoading: true });
+                })
                   .then(() => {
+                    setState({ isLoading: false });
                     window.location.reload();
                   })
                   .catch((error) => {
                     console.log(error);
                     setState({
+                      isLoading: false,
+                      hasConfirm: false,
                       showAlert: true,
                       alertHeader: "Ooooops",
                       alertMessage:
@@ -185,13 +190,18 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
               color='tertiary'
               style={{ margin: "1rem" }}
               onClick={async () => {
-                continueWithFacebook()
+                continueWithFacebook(() => {
+                  setState({ isLoading: true });
+                })
                   .then(() => {
+                    setState({ isLoading: false });
                     window.location.reload();
                   })
                   .catch((error) => {
                     console.log(error);
                     setState({
+                      isLoading: false,
+                      hasConfirm: false,
                       showAlert: true,
                       alertHeader: "Ooooops",
                       alertMessage:

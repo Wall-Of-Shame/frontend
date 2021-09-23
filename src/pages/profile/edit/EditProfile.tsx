@@ -19,7 +19,6 @@ import {
 import "./EditProfile.scss";
 import { useEffect, useReducer } from "react";
 import { checkmark, dice, arrowBackOutline } from "ionicons/icons";
-import yoda from "../../../assets/avatar-yoda.png";
 import {
   Avatar,
   AvatarAnimal,
