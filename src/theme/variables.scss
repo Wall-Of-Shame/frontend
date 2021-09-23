@@ -83,6 +83,14 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-light-shade: #e6e6e6;
   --ion-color-light-tint: #ffffff;
 
+  /** secondary shade **/
+  --ion-color-secondary-shade: #f0df9f;
+  --ion-color-secondary-shade-rgb: 230, 194, 54;
+  --ion-color-secondary-shade-contrast: #96917b;
+  --ion-color-secondary-shade-contrast-rgb: 0, 0, 0;
+  --ion-color-secondary-shade-shade: #f0df9f;
+  --ion-color-secondary-shade-tint: #f0df9f;
+
   /** light blue **/
   --ion-color-quaternary: #aff4f9;
   --ion-color-quaternary-rgb: 175, 244, 249;
@@ -109,6 +117,15 @@ http://ionicframework.com/docs/theming/ */
 
   --ion-tab-bar-color: #1a1a1a;
   --ion-tab-bar-color-selected: #ffd73c;
+}
+
+.ion-color-secondary-shade {
+  --ion-color-base: var(--ion-color-secondary-shade);
+  --ion-color-base-rgb: var(--ion-color-secondary-shade-rgb);
+  --ion-color-contrast: var(--ion-color-secondary-shade-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-secondary-shade-contrast-rgb);
+  --ion-color-shade: var(--ion-color-secondary-shade-shade);
+  --ion-color-tint: var(--ion-color-secondary-shade-tint);
 }
 
 .ion-color-quaternary {
@@ -207,6 +224,13 @@ http://ionicframework.com/docs/theming/ */
     --ion-color-light-contrast-rgb: 255, 255, 255;
     --ion-color-light-shade: #1e2023;
     --ion-color-light-tint: #383a3e;
+
+    --ion-color-secondary-shade: #8b7933;
+    --ion-color-secondary-shade-rgb: 180, 151, 42;
+    --ion-color-secondary-shade-contrast: #252525;
+    --ion-color-secondary-shade-contrast-rgb: 0, 0, 0;
+    --ion-color-secondary-shade-shade: #8b7933;
+    --ion-color-secondary-shade-tint: #8b7933;
 
     --ion-color-quaternary: #8cc3c7;
     --ion-color-quaternary-rgb: 140, 195, 199;

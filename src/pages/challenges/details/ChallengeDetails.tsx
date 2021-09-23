@@ -1049,12 +1049,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     if (user?.userId === challenge.owner.userId) {
       return (
         <IonRow className='ion-justify-content-center ion-margin'>
-          <IonButton
-            shape='round'
-            color='secondary'
-            disabled
-            style={{ opacity: 0.7 }}
-          >
+          <IonButton shape='round' color='secondary-shade'>
             <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
               Waiting for the challenge to start
             </IonText>
