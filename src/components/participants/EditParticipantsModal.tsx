@@ -15,7 +15,6 @@ import {
 } from "@ionic/react";
 import "./EditParticipantsModal.scss";
 import { useState } from "react";
-import luke from "../../assets/avatar-luke.png";
 import { useUser } from "../../contexts/UserContext";
 import { addOutline, removeOutline } from "ionicons/icons";
 import { UserMini } from "../../interfaces/models/Challenges";
@@ -44,7 +43,17 @@ const EditParticipantsModal: React.FC<EditParticipantsModalProps> = (props) => {
     try {
       const response = await searchUser(searchText);
       console.log(response);
-      setMatchedUsers(response);
+      setMatchedUsers(
+        response.map((u) => {
+          return {
+            name: u.name,
+            username: u.username,
+            avatar: u.avatar,
+            hasBeenVetoed: false,
+            userId: u.userId,
+          };
+        })
+      );
     } catch (error) {}
   };
 
