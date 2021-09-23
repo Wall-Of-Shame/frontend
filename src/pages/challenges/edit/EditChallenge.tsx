@@ -441,19 +441,24 @@ const EditChallenge: React.FC<EditChallengeProps> = (
           }}
         />
       </IonContent>
-      <IonFooter>
-        <IonRow className='ion-justify-content-center ion-margin'>
-          <IonButton
-            shape='round'
-            color='secondary'
-            fill='solid'
-            onClick={handleSubmit}
+      <IonFooter translucent={true}>
+        <IonToolbar>
+          <IonRow
+            className='ion-justify-content-center'
+            style={{ margin: "0.5rem" }}
           >
-            <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
-              Confirm changes
-            </IonText>
-          </IonButton>
-        </IonRow>
+            <IonButton
+              shape='round'
+              color='secondary'
+              fill='solid'
+              onClick={handleSubmit}
+            >
+              <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
+                Confirm changes
+              </IonText>
+            </IonButton>
+          </IonRow>
+        </IonToolbar>
       </IonFooter>
     </IonPage>
   );
