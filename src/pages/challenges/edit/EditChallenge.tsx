@@ -153,18 +153,18 @@ const EditChallenge: React.FC<EditChallengeProps> = (
 
   return (
     <IonPage>
-      <IonHeader className="ion-no-border">
+      <IonHeader className='ion-no-border'>
         <IonToolbar>
-          <IonButtons slot="start">
+          <IonButtons slot='start'>
             <IonButton
               style={{
                 marginTop: "1.5rem",
                 marginRight: "1rem",
               }}
-              color="dark"
+              color='dark'
               onClick={backAction}
             >
-              <IonIcon slot="end" icon={arrowBackOutline} size="large" />
+              <IonIcon slot='end' icon={arrowBackOutline} size='large' />
             </IonButton>
           </IonButtons>
         </IonToolbar>
@@ -172,14 +172,14 @@ const EditChallenge: React.FC<EditChallengeProps> = (
 
       <IonContent fullscreen>
         <IonGrid style={{ marginTop: "0.5rem" }}>
-          <IonRow className="ion-padding">
+          <IonRow className='ion-padding'>
             <IonText style={{ fontWeight: "bold", fontSize: "1.5rem" }}>
               Edit your challenge
             </IonText>
           </IonRow>
         </IonGrid>
         <IonGrid>
-          <IonRow className="ion-padding-bottom ion-padding-horizontal">
+          <IonRow className='ion-padding-bottom ion-padding-horizontal'>
             <IonText>
               Anyone who doesn't finish the challenge in time will be thrown to
               the wall
@@ -187,7 +187,7 @@ const EditChallenge: React.FC<EditChallengeProps> = (
           </IonRow>
         </IonGrid>
         <IonGrid>
-          <IonRow className="ion-padding-horizontal ion-padding-bottom">
+          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
             <IonText
               style={{ fontWeight: "bold" }}
               color={hasError && state.title.length <= 0 ? "danger" : "primary"}
@@ -195,7 +195,7 @@ const EditChallenge: React.FC<EditChallengeProps> = (
               What's the challenge called?
             </IonText>
           </IonRow>
-          <IonRow className="ion-padding-horizontal">
+          <IonRow className='ion-padding-horizontal'>
             <div
               style={{
                 border: "solid 1px #adadad",
@@ -206,7 +206,7 @@ const EditChallenge: React.FC<EditChallengeProps> = (
               <IonInput
                 value={state.title}
                 debounce={300}
-                placeholder="Enter title*"
+                placeholder='Enter title*'
                 style={{ marginLeft: "0.5rem", marginRight: "5rem" }}
                 onIonChange={(event) => {
                   setState({ title: event.detail.value ?? "" });
@@ -215,7 +215,7 @@ const EditChallenge: React.FC<EditChallengeProps> = (
             </div>
           </IonRow>
           <IonRow
-            className="ion-padding-horizontal ion-justify-content-end"
+            className='ion-padding-horizontal ion-justify-content-end'
             style={{ marginTop: "0.5rem" }}
           >
             <IonText style={{ fontSize: "14px", color: "#adadad" }}>
@@ -224,7 +224,7 @@ const EditChallenge: React.FC<EditChallengeProps> = (
           </IonRow>
         </IonGrid>
         <IonGrid>
-          <IonRow className="ion-padding-horizontal ion-padding-bottom">
+          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
             <IonText
               style={{ fontWeight: "bold" }}
               color={
@@ -234,7 +234,7 @@ const EditChallenge: React.FC<EditChallengeProps> = (
               What do they need to do?
             </IonText>
           </IonRow>
-          <IonRow className="ion-padding-horizontal ion-padding-bottom">
+          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
             <div
               style={{
                 border: "solid 1px #adadad",
@@ -246,7 +246,7 @@ const EditChallenge: React.FC<EditChallengeProps> = (
                 value={state.description}
                 debounce={300}
                 rows={4}
-                placeholder="Enter challenge description*"
+                placeholder='Enter challenge description*'
                 style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}
                 onIonChange={(event) => {
                   setState({ description: event.detail.value ?? "" });
@@ -256,7 +256,7 @@ const EditChallenge: React.FC<EditChallengeProps> = (
           </IonRow>
         </IonGrid>
         <IonGrid>
-          <IonRow className="ion-padding">
+          <IonRow className='ion-padding'>
             <IonText
               style={{ fontWeight: "bold" }}
               color={
@@ -269,10 +269,10 @@ const EditChallenge: React.FC<EditChallengeProps> = (
             </IonText>
           </IonRow>
           <IonList>
-            <IonItem lines="none">
+            <IonItem lines='none'>
               <IonLabel>Starts at</IonLabel>
               <IonDatetime
-                displayFormat="D MMM YYYY HH:mm"
+                displayFormat='D MMM YYYY HH:mm'
                 min={formatISO(Date.now()).slice(0, -6)}
                 max={formatISO(addYears(Date.now(), 10)).slice(0, -6)}
                 value={state.startAt}
@@ -280,10 +280,10 @@ const EditChallenge: React.FC<EditChallengeProps> = (
                 onIonChange={(e) => setState({ startAt: e.detail.value! })}
               ></IonDatetime>
             </IonItem>
-            <IonItem lines="none">
+            <IonItem lines='none'>
               <IonLabel>Ends at</IonLabel>
               <IonDatetime
-                displayFormat="D MMM YYYY HH:mm"
+                displayFormat='D MMM YYYY HH:mm'
                 min={formatISO(Date.now()).slice(0, -6)}
                 max={formatISO(addYears(Date.now(), 10)).slice(0, -6)}
                 value={state.endAt}
@@ -294,20 +294,20 @@ const EditChallenge: React.FC<EditChallengeProps> = (
           </IonList>
           {hasError && isAfter(parseISO(state.startAt), parseISO(state.endAt)) && (
             <IonRow
-              className="ion-padding-horizontal"
+              className='ion-padding-horizontal'
               style={{ marginTop: "0.5rem", marginBottom: "1rem" }}
             >
-              <IonText color="danger">
+              <IonText color='danger'>
                 The end time cannot be before start time
               </IonText>
             </IonRow>
           )}
           {hasError && isAfter(Date.now(), parseISO(state.startAt)) && (
             <IonRow
-              className="ion-padding-horizontal"
+              className='ion-padding-horizontal'
               style={{ marginTop: "0.5rem", marginBottom: "1rem" }}
             >
-              <IonText color="danger">
+              <IonText color='danger'>
                 The start time cannot be in the past
               </IonText>
             </IonRow>
@@ -324,20 +324,20 @@ const EditChallenge: React.FC<EditChallengeProps> = (
         />
         <IonGrid>
           <IonRow
-            className="ion-align-items-center"
+            className='ion-align-items-center'
             style={{
               marginBottom: "0.5rem",
               marginLeft: "0.5rem",
               marginRight: "0.5rem",
             }}
           >
-            <IonCol size="10">
+            <IonCol size='10'>
               <IonText style={{ fontWeight: "bold", fontSize: "1.25rem" }}>
                 Participants
               </IonText>
             </IonCol>
-            <IonCol size="2">
-              <IonRow className="ion-justify-content-end">
+            <IonCol size='2'>
+              <IonRow className='ion-justify-content-end'>
                 <IonIcon
                   icon={pencil}
                   style={{ fontSize: "1.5rem", padding: "0.25rem" }}
@@ -347,7 +347,7 @@ const EditChallenge: React.FC<EditChallengeProps> = (
             </IonCol>
           </IonRow>
           <IonRow
-            className="ion-align-items-center"
+            className='ion-align-items-center'
             style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}
           >
             <IonCol>
@@ -362,8 +362,8 @@ const EditChallenge: React.FC<EditChallengeProps> = (
             <IonList style={{ marginTop: "0.5rem", marginBottom: "0.5rem" }}>
               {challenge.participants.accepted.notCompleted.map((u) => {
                 return (
-                  <IonItem key={u.userId} lines="none">
-                    <IonAvatar slot="start">
+                  <IonItem key={u.userId} lines='none'>
+                    <IonAvatar slot='start'>
                       <AvatarImg avatar={u.avatar} />
                     </IonAvatar>
                     <IonLabel>
@@ -379,7 +379,7 @@ const EditChallenge: React.FC<EditChallengeProps> = (
           {challenge.participants.pending.length > 0 && (
             <>
               <IonRow
-                className="ion-align-items-center"
+                className='ion-align-items-center'
                 style={{
                   marginLeft: "0.5rem",
                   marginRight: "0.5rem",
@@ -399,8 +399,8 @@ const EditChallenge: React.FC<EditChallengeProps> = (
               <IonList style={{ marginTop: "0.5rem" }}>
                 {challenge.participants.pending.map((u) => {
                   return (
-                    <IonItem key={u.userId} lines="none">
-                      <IonAvatar slot="start">
+                    <IonItem key={u.userId} lines='none'>
+                      <IonAvatar slot='start'>
                         <AvatarImg avatar={u.avatar} />
                       </IonAvatar>
                       <IonLabel>{trimDisplayName(u.name)}</IonLabel>
@@ -427,7 +427,7 @@ const EditChallenge: React.FC<EditChallengeProps> = (
           setShowToast={setShowOfflineToast}
         />
       </IonContent>
-      <IonFooter translucent={true} className="ion-margin-top">
+      <IonFooter translucent={true} className='ion-margin-top'>
         <IonToolbar>
           <IonRow
             className="ion-justify-content-center"

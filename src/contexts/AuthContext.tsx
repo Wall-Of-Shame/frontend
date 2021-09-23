@@ -141,9 +141,7 @@ const AuthProvider: React.FunctionComponent = (props) => {
       const token = await user.getIdToken();
       const messagingToken = await getToken(messaging).catch((_) => undefined);
       await AuthService.login(token, messagingToken);
-      await AuthService.getUser().then(() => {
-        reload();
-      });
+      await AuthService.getUser();
     } catch (error) {
       console.log(error);
       return Promise.reject(error);

@@ -15,7 +15,6 @@
     "browser-image-compression": "^1.0.15",
     "date-fns": "^2.24.0",
     "firebase": "^9.0.2",
-    "framer-motion": "^4.1.17",
     "humps": "^2.0.1",
     "ionicons": "^5.4.0",
     "lodash.debounce": "^4.0.8",

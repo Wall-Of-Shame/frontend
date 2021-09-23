@@ -1,11 +1,30 @@
 .bg-active {
   background-image: url("../../assets/activeChallenge/running-background.gif");
-  background-size: 300px;
-  width: 300px;
-  height: 300px;
+  background-size: 90vw;
+  width: 90vw;
+  height: 90vw;
   display: flex;
   justify-content: center;
   align-items: flex-end;
   margin: auto;
   margin-bottom: 1rem;
+}
+
+.animal-in-wheel {
+  width: 30vw;
+  height: 30vw;
+  transform-origin: 50% -50%;
+  position: absolute;
+}
+
+@media only screen and (min-width: 500px) {
+  .bg-active {
+    background-size: 450px;
+    width: 450px;
+    height: 450px;
+  }
+  .animal-in-wheel {
+    width: 150px;
+    height: 150px;
+  }
 }
