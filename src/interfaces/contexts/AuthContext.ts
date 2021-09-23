@@ -10,5 +10,6 @@ export default interface AuthContextInterface {
   refreshFirebaseUser(): Promise<void>;
   getFirebaseUser(): User | null;
   resendVerificationEmail(): Promise<void>;
+  resetPassword(email: string): Promise<void>;
   logout(): Promise<void>;
 }

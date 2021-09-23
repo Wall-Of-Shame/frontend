@@ -7,6 +7,7 @@ import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
   User,
   FacebookAuthProvider,
   GoogleAuthProvider,
@@ -174,7 +175,13 @@ const AuthProvider: React.FunctionComponent = (props) => {
     }
   };
 
-  const sendForgotPasswordEmail = async (): Promise<void> => {};
+  const resetPassword = async (email: string): Promise<void> => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
 
   const logout = (): Promise<void> =>
     AuthService.logout()
@@ -194,6 +201,7 @@ const AuthProvider: React.FunctionComponent = (props) => {
         refreshFirebaseUser,
         getFirebaseUser,
         resendVerificationEmail,
+        resetPassword,
         logout,
       }}
       {...props}
