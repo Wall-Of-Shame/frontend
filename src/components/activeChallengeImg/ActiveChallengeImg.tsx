@@ -15,7 +15,7 @@ const ActiveChallengeImg: React.FunctionComponent<ActiveChallengeImgProps> = (
     notCompletedSliced.length == 1 ? 0 : (notCompletedSliced.length - 1) * 45;
 
   return (
-    <div className='bg'>
+    <div className='bg-active'>
       {notCompletedSliced.map((u, index) => {
         return (
           <div
