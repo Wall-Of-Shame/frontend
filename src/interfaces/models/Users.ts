@@ -19,6 +19,7 @@ export interface UserData {
   name?: string;
   completedChallengeCount?: number;
   failedChallengeCount?: number;
+  vetoedChallengeCount?: number;
   avatar: Avatar;
   settings: {
     deadlineReminder: boolean;

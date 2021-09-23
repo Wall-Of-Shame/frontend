@@ -21,8 +21,6 @@ import {
   IonToolbar,
   IonPopover,
 } from "@ionic/react";
-import yoda from "../../assets/avatar-yoda.png";
-import luke from "../../assets/avatar-luke.png";
 import { useEffect } from "react";
 import {
   chevronForward,
@@ -74,6 +72,20 @@ const Profile: React.FC = () => {
   }, [location.pathname]);
 
   const renderHistory = () => {
+    if (!pastChallenges || pastChallenges.length <= 0) {
+      return (
+        <IonGrid
+          style={{
+            display: "flex",
+            height: "35%",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <IonRow className='ion-padding'>No past challenges yet</IonRow>
+        </IonGrid>
+      );
+    }
     return (
       <>
         {pastChallenges?.map((c) => {
@@ -297,47 +309,71 @@ const Profile: React.FC = () => {
             <IonCol>
               <IonCard
                 className='profile-statistic ion-text-center'
-                color='senary'
+                color='quaternary'
               >
                 <IonCardContent>
-                  <IonRow className='ion-justify-content-center'>
+                  <IonRow className='ion-justify-content-center ion-align-items-center'>
                     <IonText
                       style={{
-                        fontSize: "1.2rem",
+                        fontSize: "1.5rem",
                         fontWeight: 600,
                       }}
                     >
                       {user?.completedChallengeCount ?? 0}
                     </IonText>
-                  </IonRow>
-                  <IonRow className='ion-justify-content-center'>
-                    <IonText style={{ fontSize: "1.1rem", fontWeight: 500 }}>
-                      Challenge{user?.completedChallengeCount !== 1 && "s"}{" "}
-                      Completed
+                    <IonText style={{ fontSize: "1rem", fontWeight: 400 }}>
+                      &nbsp;&nbsp;Challenge
+                      {user?.completedChallengeCount !== 1 && "s"} Completed
                     </IonText>
                   </IonRow>
                 </IonCardContent>
               </IonCard>
             </IonCol>
+          </IonRow>
+          <IonRow className='ion-align-items-center'>
             <IonCol>
               <IonCard
                 className='profile-statistic ion-text-center'
                 color='tertiary'
               >
                 <IonCardContent>
-                  <IonRow className='ion-justify-content-center'>
+                  <IonRow className='ion-justify-content-center ion-align-items-center'>
                     <IonText
                       style={{
-                        fontSize: "1.2rem",
+                        fontSize: "1.5rem",
                         fontWeight: 600,
                       }}
                     >
                       {user?.failedChallengeCount ?? 0}
                     </IonText>
+                    <IonText style={{ fontSize: "1rem", fontWeight: 400 }}>
+                      &nbsp;&nbsp;Shameful Failure
+                      {user?.failedChallengeCount !== 1 && "s"}
+                    </IonText>
                   </IonRow>
-                  <IonRow className='ion-justify-content-center'>
-                    <IonText style={{ fontSize: "1.1rem", fontWeight: 500 }}>
-                      Shameful Failure{user?.failedChallengeCount !== 1 && "s"}{" "}
+                </IonCardContent>
+              </IonCard>
+            </IonCol>
+          </IonRow>
+          <IonRow className='ion-align-items-center'>
+            <IonCol>
+              <IonCard
+                className='profile-statistic ion-text-center'
+                color='quinary'
+              >
+                <IonCardContent>
+                  <IonRow className='ion-justify-content-center ion-align-items-center'>
+                    <IonText
+                      style={{
+                        fontSize: "1.5rem",
+                        fontWeight: 600,
+                      }}
+                    >
+                      {user?.vetoedChallengeCount ?? 0}
+                    </IonText>
+                    <IonText style={{ fontSize: "1rem", fontWeight: 400 }}>
+                      &nbsp;&nbsp;Shameless Cheat
+                      {user?.vetoedChallengeCount !== 1 && "s"}
                     </IonText>
                   </IonRow>
                 </IonCardContent>
@@ -356,6 +392,7 @@ const Profile: React.FC = () => {
         >
           Challenge history
         </IonText>
+
         {renderHistory()}
       </IonContent>
     </IonPage>
