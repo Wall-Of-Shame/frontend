@@ -24,6 +24,7 @@ import LoadingSpinner from "../../../components/loadingSpinner";
 import Alert from "../../../components/alert";
 import { useChallenge } from "../../../contexts/ChallengeContext";
 import { VoteList } from "../../../interfaces/models/Votes";
+import AvatarImg from "../../../components/avatar";
 
 interface VoteModalProps {
   showModal: boolean;
@@ -186,7 +187,7 @@ const VoteModal: React.FC<VoteModalProps> = (props: VoteModalProps) => {
             className='edit-profile-avatar'
             style={{ marginBottom: "0.75rem" }}
           >
-            <img src={yoda} alt='avatar' />
+            <AvatarImg avatar={u.avatar} />
           </IonAvatar>
         </IonRow>
         <IonRow style={{ marginBottom: "0.75rem" }}>

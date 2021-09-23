@@ -45,6 +45,7 @@ import { trimDisplayName } from "../../../utils/ProfileUtils";
 import EditParticipantsModal from "../../../components/participants/EditParticipantsModal";
 import { useUser } from "../../../contexts/UserContext";
 import { hideTabs } from "../../../utils/TabsUtils";
+import AvatarImg from "../../../components/avatar";
 
 interface EditChallengeProps {
   challenge: ChallengeData;
@@ -389,7 +390,7 @@ const EditChallenge: React.FC<EditChallengeProps> = (
                 return (
                   <IonItem key={u.userId} lines='none'>
                     <IonAvatar slot='start'>
-                      <img src={luke} alt='user1' />
+                      <AvatarImg avatar={u.avatar} />
                     </IonAvatar>
                     <IonLabel>
                       {u.userId === user?.userId
@@ -424,7 +425,7 @@ const EditChallenge: React.FC<EditChallengeProps> = (
                 return (
                   <IonItem key={u.userId} lines='none'>
                     <IonAvatar slot='start'>
-                      <img src={luke} alt='user1' />
+                      <AvatarImg avatar={u.avatar} />
                     </IonAvatar>
                     <IonLabel>{trimDisplayName(u.name)}</IonLabel>
                   </IonItem>

@@ -45,6 +45,7 @@ import { useUser } from "../../../contexts/UserContext";
 import { hideTabs } from "../../../utils/TabsUtils";
 import LoadingSpinner from "../../../components/loadingSpinner";
 import Alert from "../../../components/alert";
+import AvatarImg from "../../../components/avatar";
 
 interface CreateChallengeProps {}
 
@@ -333,7 +334,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
           <IonList style={{ marginTop: "1rem" }}>
             <IonItem key={user?.userId ?? "owner"} lines='none'>
               <IonAvatar slot='start'>
-                <img src={luke} alt='user1' />
+                <AvatarImg avatar={user?.avatar ?? null} />
               </IonAvatar>
               <IonLabel>You</IonLabel>
             </IonItem>
@@ -341,7 +342,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
               return (
                 <IonItem key={u.userId} lines='none'>
                   <IonAvatar slot='start'>
-                    <img src={luke} alt='user1' />
+                    <AvatarImg avatar={u.avatar} />
                   </IonAvatar>
                   <IonLabel>
                     {u.userId === user?.userId

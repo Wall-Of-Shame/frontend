@@ -19,6 +19,7 @@ import { useState } from "react";
 import luke from "../../assets/avatar-luke.png";
 import { useUser } from "../../contexts/UserContext";
 import { addOutline, removeOutline } from "ionicons/icons";
+import AvatarImg from "../avatar";
 
 interface AddParticipantsModalProps {
   users: UserList[];
@@ -98,7 +99,7 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
               <IonRow className='ion-margin' key={u.userId}>
                 <IonCol className='ion-align-item-center' size='3'>
                   <IonAvatar className='user-avatar'>
-                    <img src={luke} alt='user1' />
+                    <AvatarImg avatar={u.avatar} />
                   </IonAvatar>
                 </IonCol>
                 <IonCol
@@ -183,7 +184,7 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
               <IonRow className='ion-margin' key={u.username}>
                 <IonCol className='ion-align-item-center' size='3'>
                   <IonAvatar className='user-avatar'>
-                    <img src={luke} alt='user1' />
+                    <AvatarImg avatar={u.avatar} />
                   </IonAvatar>
                 </IonCol>
                 <IonCol

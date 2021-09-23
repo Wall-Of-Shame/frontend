@@ -45,6 +45,7 @@ import { database } from "../../../firebase";
 import { ref, set } from "firebase/database";
 import { VoteData } from "../../../interfaces/models/Votes";
 import { RefresherEventDetail } from "@ionic/core";
+import AvatarImg from "../../../components/avatar";
 
 interface ChallengeDetailsProps {}
 
@@ -429,7 +430,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
                 return (
                   <IonItem key={u.userId} lines='none'>
                     <IonAvatar slot='start'>
-                      <img src={luke} alt='user1' />
+                      <AvatarImg avatar={u.avatar} />
                     </IonAvatar>
                     <IonLabel slot='start'>
                       {u.userId === user?.userId
@@ -494,7 +495,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
                 return (
                   <IonItem key={u.userId} lines='none'>
                     <IonAvatar slot='start'>
-                      <img src={luke} alt='user1' />
+                      <AvatarImg avatar={u.avatar} />
                     </IonAvatar>
                     <IonLabel>
                       {u.userId === user?.userId
@@ -547,7 +548,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
                 return (
                   <IonItem key={u.userId} lines='none'>
                     <IonAvatar slot='start'>
-                      <img src={luke} alt='user1' />
+                      <AvatarImg avatar={u.avatar} />
                     </IonAvatar>
                     <IonLabel slot='start'>
                       {u.userId === user?.userId
@@ -600,7 +601,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
                 return (
                   <IonItem key={u.userId} lines='none'>
                     <IonAvatar slot='start'>
-                      <img src={luke} alt='user1' />
+                      <AvatarImg avatar={u.avatar} />
                     </IonAvatar>
                     <IonLabel>
                       {u.userId === user?.userId
@@ -654,7 +655,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
               return (
                 <IonItem key={u.userId} lines='none'>
                   <IonAvatar slot='start'>
-                    <img src={luke} alt='user1' />
+                    <AvatarImg avatar={u.avatar} />
                   </IonAvatar>
                   <IonLabel>
                     {u.userId === user?.userId
@@ -691,7 +692,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
               return (
                 <IonItem key={u.userId} lines='none'>
                   <IonAvatar slot='start'>
-                    <img src={luke} alt='user1' />
+                    <AvatarImg avatar={u.avatar} />
                   </IonAvatar>
                   <IonLabel slot='start'>
                     {u.userId === user?.userId
