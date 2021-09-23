@@ -1,6 +1,6 @@
 {
   "name": "wall-of-shame",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "private": true,
   "dependencies": {
     "@capacitor/core": "3.2.2",
@@ -45,8 +45,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "prebuild": "npm run generate-build-version",
     "generate-build-version": "node generate-build-version",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
