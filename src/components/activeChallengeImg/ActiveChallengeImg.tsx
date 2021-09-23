@@ -20,8 +20,8 @@ const ActiveChallengeImg: React.FunctionComponent<ActiveChallengeImgProps> = (
         return (
           <div
             style={{
-              width: "100px",
-              height: "100px",
+              width: "30vw",
+              height: "30vw",
               transform: `rotate(${startingPosition - 45 * index}deg)`,
               transformOrigin: "50% -50%",
               zIndex: index,
