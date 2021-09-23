@@ -30,6 +30,7 @@ import LoadingSpinner from "../../../components/loadingSpinner";
 import Alert from "../../../components/alert";
 import { useHistory } from "react-router";
 import { hideTabs } from "../../../utils/TabsUtils";
+import AvatarImg from "../../../components/avatar";
 
 export interface EditProfileState {
   displayName: string;
@@ -51,6 +52,7 @@ const EditProfile: React.FC = () => {
 
   const animals = ["CAT", "DOG", "RABBIT"];
   const colors = ["PRIMARY", "SECONDARY", "TERTIARY"];
+  const background = ["#cbe8e0", "#c9b2e1", "#c2d5eb"];
 
   const [state, setState] = useReducer(
     (s: EditProfileState, a: Partial<EditProfileState>) => ({
@@ -83,12 +85,13 @@ const EditProfile: React.FC = () => {
     const randomColor = colors[
       Math.floor(Math.random() * colors.length)
     ] as AvatarColor;
-    const randomBackground = Math.floor(Math.random() * 16777215).toString(16);
+    const randomBackground =
+      background[Math.floor(Math.random() * background.length)];
     setState({
       avatar: {
         animal: randomAnimal,
         color: randomColor,
-        background: `#${randomBackground}`,
+        background: randomBackground,
       },
     });
   };
@@ -180,7 +183,7 @@ const EditProfile: React.FC = () => {
           style={{ marginTop: "3.5rem", marginBottom: "0.5rem" }}
         >
           <IonAvatar className='edit-profile-avatar ion-margin-bottom'>
-            <img src={yoda} alt='avatar' />
+            <AvatarImg avatar={state.avatar} />
           </IonAvatar>
         </IonRow>
         <IonRow className='ion-justify-content-center'>

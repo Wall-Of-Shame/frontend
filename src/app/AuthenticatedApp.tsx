@@ -28,7 +28,7 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "../theme/variables.scss";
 
-import { alarm, statsChart, person } from "ionicons/icons";
+import { personOutline } from "ionicons/icons";
 import Challenges from "../pages/challenges";
 import Profile from "../pages/profile";
 import WallOfShame from "../pages/wallOfShame";
@@ -36,6 +36,8 @@ import ChallengeDetails from "../pages/challenges/details";
 import CreateChallenge from "../pages/challenges/create";
 import EditProfile from "../pages/profile/edit";
 import Settings from "../pages/profile/settings";
+import challengeIcon from "../assets/icons/challenge-icon.svg";
+import shameIcon from "../assets/icons/shame-icon.svg";
 
 import "./App.scss";
 
@@ -74,13 +76,13 @@ const AuthenticatedApp: React.FC = () => {
           </IonRouterOutlet>
           <IonTabBar slot='bottom' className='tabs-nav'>
             <IonTabButton tab='challenges' href='/challenges'>
-              <IonIcon icon={alarm} />
+              <IonIcon src={challengeIcon} />
             </IonTabButton>
             <IonTabButton tab='wall-of-shame' href='/wall-of-shame'>
-              <IonIcon icon={statsChart} />
+              <IonIcon src={shameIcon} />
             </IonTabButton>
             <IonTabButton tab='profile' href='/profile'>
-              <IonIcon icon={person} />
+              <IonIcon icon={personOutline} />
             </IonTabButton>
           </IonTabBar>
         </IonTabs>

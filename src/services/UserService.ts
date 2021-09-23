@@ -40,5 +40,30 @@ const searchUser = async (searchText: string): Promise<UserList[]> => {
   }
 };
 
+const getFriendsRankings = async (): Promise<UserList[]> => {
+  try {
+    const response = await APIService.get(`users/?operation=wallRecents}`);
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+const getGlobalRankings = async (): Promise<UserList[]> => {
+  try {
+    const response = await APIService.get(`users/?operation=wallGlobal`);
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { updateProfile, searchUser };
+export default {
+  updateProfile,
+  searchUser,
+  getFriendsRankings,
+  getGlobalRankings,
+};

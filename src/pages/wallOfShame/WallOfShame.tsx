@@ -18,10 +18,7 @@ import {
 } from "@ionic/react";
 import { useEffect, useState } from "react";
 import "./WallOfShame.scss";
-import yoda from "../../assets/avatar-yoda.png";
-import rey from "../../assets/avatar-rey.png";
 import luke from "../../assets/avatar-luke.png";
-import finn from "../../assets/avatar-finn.png";
 import { hideTabs, showTabs } from "../../utils/TabsUtils";
 import { useLocation } from "react-router";
 import { medal } from "ionicons/icons";
@@ -36,9 +33,12 @@ import {
 import { Shame } from "../../interfaces/models/Challenges";
 import { differenceInSeconds, format, parseISO } from "date-fns";
 import { RefresherEventDetail } from "@ionic/core";
+import { UserList } from "../../interfaces/models/Users";
+import { useUser } from "../../contexts/UserContext";
 
 const WallOfShame: React.FC = () => {
   const location = useLocation();
+  const { getGlobalRankings, getFriendsRankings } = useUser();
 
   const [tab, setTab] = useState("live");
   const [shames, setShames] = useState<Shame[]>([]);
@@ -46,6 +46,8 @@ const WallOfShame: React.FC = () => {
   const [hasSynced, setHasSynced] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const [globalRankings, setGlobalRankings] = useState<UserList[]>([]);
+  const [friendsRankings, setFriendsRankings] = useState<UserList[]>([]);
   const types = ["Global", "Friends"];
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -77,6 +79,7 @@ const WallOfShame: React.FC = () => {
 
   const handleRefresh = async (event: CustomEvent<RefresherEventDetail>) => {
     try {
+      await fetchData();
       setTimeout(() => {
         event.detail.complete();
         setToastMessage("Refreshed successfully");
@@ -93,7 +96,21 @@ const WallOfShame: React.FC = () => {
     }
   };
 
-  useEffect(() => {}, []);
+  const fetchData = async (): Promise<void> => {
+    try {
+      const global = await getGlobalRankings();
+      // const friends = await getFriendsRankings();
+      setGlobalRankings(global);
+      // setFriendsRankings(friends);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (
@@ -157,10 +174,11 @@ const WallOfShame: React.FC = () => {
                 style={{ paddingBottom: "1rem" }}
                 lines='full'
               >
-                <IonLabel>Country</IonLabel>
+                <IonLabel>Viewing</IonLabel>
                 <IonSelect
                   ok-text='Proceed'
                   cancel-text='Cancel'
+                  value={type}
                   onIonChange={(e) => setType(e.detail.value)}
                 >
                   {types.map((t) => {
@@ -172,72 +190,41 @@ const WallOfShame: React.FC = () => {
                   })}
                 </IonSelect>
               </IonItem>
-              <IonItem lines='none'>
-                <IonAvatar slot='start'>
-                  <img src={luke} alt='user1' />
-                </IonAvatar>
-                <IonLabel>
-                  <h4 style={{ fontWeight: "bold" }}>Luke</h4>
-                </IonLabel>
-                <IonIcon slot='end' icon={medal}></IonIcon>
-                <IonLabel slot='end'>45</IonLabel>
-              </IonItem>
-              <IonItem lines='none'>
-                <IonAvatar slot='start'>
-                  <img src={yoda} alt='user2' />
-                </IonAvatar>
-                <IonLabel>
-                  <h4 style={{ fontWeight: "bold" }}>Yoda</h4>
-                </IonLabel>
-                <IonIcon slot='end' icon={medal}></IonIcon>
-                <IonLabel slot='end'>42</IonLabel>
-              </IonItem>
-              <IonItem lines='none'>
-                <IonAvatar slot='start'>
-                  <img src={rey} alt='user3' />
-                </IonAvatar>
-                <IonLabel>
-                  <h4 style={{ fontWeight: "bold" }}>Rey</h4>
-                </IonLabel>
-                <IonIcon slot='end' icon={medal}></IonIcon>
-                <IonLabel slot='end'>33</IonLabel>
-              </IonItem>
-              <IonItem lines='none'>
-                <IonAvatar slot='start'>
-                  <img src={finn} alt='user4' />
-                </IonAvatar>
-                <IonLabel>
-                  <h4 style={{ fontWeight: "bold" }}>Finn</h4>
-                </IonLabel>
-                <IonLabel slot='end'>25</IonLabel>
-              </IonItem>
-              <IonItem lines='none'>
-                <IonAvatar slot='start'>
-                  <img src={finn} alt='user4' />
-                </IonAvatar>
-                <IonLabel>
-                  <h4 style={{ fontWeight: "bold" }}>Finn</h4>
-                </IonLabel>
-                <IonLabel slot='end'>21</IonLabel>
-              </IonItem>
-              <IonItem lines='none'>
-                <IonAvatar slot='start'>
-                  <img src={finn} alt='user4' />
-                </IonAvatar>
-                <IonLabel>
-                  <h4 style={{ fontWeight: "bold" }}>Finn</h4>
-                </IonLabel>
-                <IonLabel slot='end'>15</IonLabel>
-              </IonItem>
-              <IonItem lines='none'>
-                <IonAvatar slot='start'>
-                  <img src={finn} alt='user4' />
-                </IonAvatar>
-                <IonLabel>
-                  <h4 style={{ fontWeight: "bold" }}>Finn</h4>
-                </IonLabel>
-                <IonLabel slot='end'>11</IonLabel>
-              </IonItem>
+              {type === "Global" ? (
+                <>
+                  {globalRankings.map((r) => {
+                    return (
+                      <IonItem lines='none' key={r.userId}>
+                        <IonAvatar slot='start'>
+                          <img src={luke} alt='user1' />
+                        </IonAvatar>
+                        <IonLabel>
+                          <h4 style={{ fontWeight: "bold" }}>{r.name}</h4>
+                        </IonLabel>
+                        <IonIcon slot='end' icon={medal}></IonIcon>
+                        <IonLabel slot='end'>{r.failedChallengeCount}</IonLabel>
+                      </IonItem>
+                    );
+                  })}
+                </>
+              ) : (
+                <>
+                  {friendsRankings.map((r) => {
+                    return (
+                      <IonItem lines='none' key={r.userId}>
+                        <IonAvatar slot='start'>
+                          <img src={luke} alt='user1' />
+                        </IonAvatar>
+                        <IonLabel>
+                          <h4 style={{ fontWeight: "bold" }}>Luke</h4>
+                        </IonLabel>
+                        <IonIcon slot='end' icon={medal}></IonIcon>
+                        <IonLabel slot='end'>45</IonLabel>
+                      </IonItem>
+                    );
+                  })}
+                </>
+              )}
             </IonList>
           </IonContent>
         );
