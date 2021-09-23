@@ -9,14 +9,16 @@ import {
   IonLabel,
   IonList,
   IonPage,
+  IonRefresher,
+  IonRefresherContent,
   IonRow,
+  IonSelect,
+  IonSelectOption,
+  IonToast,
 } from "@ionic/react";
 import { useEffect, useState } from "react";
 import "./WallOfShame.scss";
-import yoda from "../../assets/avatar-yoda.png";
-import rey from "../../assets/avatar-rey.png";
 import luke from "../../assets/avatar-luke.png";
-import finn from "../../assets/avatar-finn.png";
 import { hideTabs, showTabs } from "../../utils/TabsUtils";
 import { useLocation } from "react-router";
 import { medal } from "ionicons/icons";
@@ -30,14 +32,26 @@ import {
 } from "firebase/database";
 import { Shame } from "../../interfaces/models/Challenges";
 import { differenceInSeconds, format, parseISO } from "date-fns";
+import { RefresherEventDetail } from "@ionic/core";
+import { UserList } from "../../interfaces/models/Users";
+import { useUser } from "../../contexts/UserContext";
 
 const WallOfShame: React.FC = () => {
-  const [tab, setTab] = useState("live");
   const location = useLocation();
+  const { getGlobalRankings, getFriendsRankings } = useUser();
 
+  const [tab, setTab] = useState("live");
   const [shames, setShames] = useState<Shame[]>([]);
   const [lastUpdated, setLastUpdated] = useState(Date.now());
   const [hasSynced, setHasSynced] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [globalRankings, setGlobalRankings] = useState<UserList[]>([]);
+  const [friendsRankings, setFriendsRankings] = useState<UserList[]>([]);
+  const types = ["Global", "Friends"];
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [type, setType] = useState("Global");
 
   const topShamesRef = query(
     ref(database, "shames"),
@@ -63,6 +77,41 @@ const WallOfShame: React.FC = () => {
     }
   });
 
+  const handleRefresh = async (event: CustomEvent<RefresherEventDetail>) => {
+    try {
+      await fetchData();
+      setTimeout(() => {
+        event.detail.complete();
+        setToastMessage("Refreshed successfully");
+        setShowToast(true);
+      }, 2000);
+    } catch (error) {
+      setTimeout(() => {
+        event.detail.complete();
+        setToastMessage(
+          "Our server is taking a break, come back later please :)"
+        );
+        setShowToast(true);
+      }, 2000);
+    }
+  };
+
+  const fetchData = async (): Promise<void> => {
+    try {
+      const global = await getGlobalRankings();
+      const friends = await getFriendsRankings();
+      setGlobalRankings(global);
+      setFriendsRankings(friends);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     if (
       location.pathname === "/challenges" ||
@@ -78,6 +127,13 @@ const WallOfShame: React.FC = () => {
   const renderWall = () => {
     switch (tab) {
       case "live":
+        if (shames.length <= 0) {
+          return (
+            <IonRow className='ion-padding ion-justify-content-center'>
+              {hasSynced ? "No records yet" : "Updating..."}
+            </IonRow>
+          );
+        }
         return (
           <IonList>
             {shames.map((s) => {
@@ -86,13 +142,23 @@ const WallOfShame: React.FC = () => {
                   <IonAvatar slot='start'>
                     <img src={luke} alt='user1' />
                   </IonAvatar>
-                  <IonLabel>
-                    <h6>{s.name} has failed to:</h6>
-                    <h4 style={{ fontWeight: "bold" }}>{s.title}</h4>
-                    <h6>
-                      At {format(parseISO(s.time), "dd MMM yyyy, HH:mm:ss")}
-                    </h6>
-                  </IonLabel>
+                  {s.type === "fail" ? (
+                    <IonLabel>
+                      <h6>{s.name} has failed the challenge:</h6>
+                      <h4 style={{ fontWeight: "bold" }}>{s.title}</h4>
+                      <h6>
+                        At {format(parseISO(s.time), "dd MMM yyyy, HH:mm:ss")}
+                      </h6>
+                    </IonLabel>
+                  ) : (
+                    <IonLabel>
+                      <h6>{s.name} has cheated in the challenge:</h6>
+                      <h4 style={{ fontWeight: "bold" }}>{s.title}</h4>
+                      <h6>
+                        At {format(parseISO(s.time), "dd MMM yyyy, HH:mm:ss")}
+                      </h6>
+                    </IonLabel>
+                  )}
                 </IonItem>
               );
             })}
@@ -100,74 +166,93 @@ const WallOfShame: React.FC = () => {
         );
       case "shameful":
         return (
-          <IonList>
-            <IonItem lines='none'>
-              <IonAvatar slot='start'>
-                <img src={luke} alt='user1' />
-              </IonAvatar>
-              <IonLabel>
-                <h4 style={{ fontWeight: "bold" }}>Luke</h4>
-              </IonLabel>
-              <IonIcon slot='end' icon={medal}></IonIcon>
-              <IonLabel slot='end'>45</IonLabel>
-            </IonItem>
-            <IonItem lines='none'>
-              <IonAvatar slot='start'>
-                <img src={yoda} alt='user2' />
-              </IonAvatar>
-              <IonLabel>
-                <h4 style={{ fontWeight: "bold" }}>Yoda</h4>
-              </IonLabel>
-              <IonIcon slot='end' icon={medal}></IonIcon>
-              <IonLabel slot='end'>42</IonLabel>
-            </IonItem>
-            <IonItem lines='none'>
-              <IonAvatar slot='start'>
-                <img src={rey} alt='user3' />
-              </IonAvatar>
-              <IonLabel>
-                <h4 style={{ fontWeight: "bold" }}>Rey</h4>
-              </IonLabel>
-              <IonIcon slot='end' icon={medal}></IonIcon>
-              <IonLabel slot='end'>33</IonLabel>
-            </IonItem>
-            <IonItem lines='none'>
-              <IonAvatar slot='start'>
-                <img src={finn} alt='user4' />
-              </IonAvatar>
-              <IonLabel>
-                <h4 style={{ fontWeight: "bold" }}>Finn</h4>
-              </IonLabel>
-              <IonLabel slot='end'>25</IonLabel>
-            </IonItem>
-            <IonItem lines='none'>
-              <IonAvatar slot='start'>
-                <img src={finn} alt='user4' />
-              </IonAvatar>
-              <IonLabel>
-                <h4 style={{ fontWeight: "bold" }}>Finn</h4>
-              </IonLabel>
-              <IonLabel slot='end'>21</IonLabel>
-            </IonItem>
-            <IonItem lines='none'>
-              <IonAvatar slot='start'>
-                <img src={finn} alt='user4' />
-              </IonAvatar>
-              <IonLabel>
-                <h4 style={{ fontWeight: "bold" }}>Finn</h4>
-              </IonLabel>
-              <IonLabel slot='end'>15</IonLabel>
-            </IonItem>
-            <IonItem lines='none'>
-              <IonAvatar slot='start'>
-                <img src={finn} alt='user4' />
-              </IonAvatar>
-              <IonLabel>
-                <h4 style={{ fontWeight: "bold" }}>Finn</h4>
-              </IonLabel>
-              <IonLabel slot='end'>11</IonLabel>
-            </IonItem>
-          </IonList>
+          <IonContent>
+            <IonRefresher
+              slot='fixed'
+              onIonRefresh={handleRefresh}
+              style={{ zIndex: "1000" }}
+            >
+              <IonRefresherContent></IonRefresherContent>
+            </IonRefresher>
+            <IonList>
+              <IonItem
+                className='ion-padding-horizontal'
+                style={{ paddingBottom: "1rem" }}
+                lines='full'
+              >
+                <IonLabel>Viewing</IonLabel>
+                <IonSelect
+                  ok-text='Proceed'
+                  cancel-text='Cancel'
+                  value={type}
+                  onIonChange={(e) => setType(e.detail.value)}
+                >
+                  {types.map((t) => {
+                    return (
+                      <IonSelectOption value={t} key={t}>
+                        {t}
+                      </IonSelectOption>
+                    );
+                  })}
+                </IonSelect>
+              </IonItem>
+              {type === "Global" ? (
+                <>
+                  {globalRankings.length > 0 ? (
+                    <>
+                      {globalRankings.map((r) => {
+                        return (
+                          <IonItem lines='none' key={r.userId}>
+                            <IonAvatar slot='start'>
+                              <img src={luke} alt='user1' />
+                            </IonAvatar>
+                            <IonLabel>
+                              <h4 style={{ fontWeight: "bold" }}>{r.name}</h4>
+                            </IonLabel>
+                            <IonIcon slot='end' icon={medal}></IonIcon>
+                            <IonLabel slot='end'>
+                              {r.failedChallengeCount}
+                            </IonLabel>
+                          </IonItem>
+                        );
+                      })}
+                    </>
+                  ) : (
+                    <IonRow className='ion-padding ion-justify-content-center'>
+                      No records yet
+                    </IonRow>
+                  )}
+                </>
+              ) : (
+                <>
+                  {friendsRankings.length > 0 ? (
+                    <>
+                      {friendsRankings.map((r) => {
+                        return (
+                          <IonItem lines='none' key={r.userId}>
+                            <IonAvatar slot='start'>
+                              <img src={luke} alt='user1' />
+                            </IonAvatar>
+                            <IonLabel>
+                              <h4 style={{ fontWeight: "bold" }}>{r.name}</h4>
+                            </IonLabel>
+                            <IonIcon slot='end' icon={medal}></IonIcon>
+                            <IonLabel slot='end'>
+                              {r.failedChallengeCount}
+                            </IonLabel>
+                          </IonItem>
+                        );
+                      })}
+                    </>
+                  ) : (
+                    <IonRow className='ion-padding ion-justify-content-center'>
+                      No records yet
+                    </IonRow>
+                  )}
+                </>
+              )}
+            </IonList>
+          </IonContent>
         );
     }
   };
@@ -195,10 +280,11 @@ const WallOfShame: React.FC = () => {
           <IonRow>
             <IonCol size='6' style={{ paddingRight: "0px" }}>
               <IonButton
-                color='senary'
+                color={tab === "live" ? "tertiary" : "senary"}
                 expand='block'
                 style={{
-                  fontWeight: tab === "live" ? "bold" : "normal",
+                  fontWeight: tab === "live" ? "800" : "normal",
+                  textDecoration: tab === "live" ? "underline" : "none",
                 }}
                 onClick={() => setTab("live")}
               >
@@ -207,9 +293,12 @@ const WallOfShame: React.FC = () => {
             </IonCol>
             <IonCol size='6' style={{ paddingLeft: "0px" }}>
               <IonButton
-                color='tertiary'
+                color={tab !== "live" ? "tertiary" : "senary"}
                 expand='block'
-                style={{ fontWeight: tab !== "live" ? "bold" : "normal" }}
+                style={{
+                  fontWeight: tab !== "live" ? "800" : "normal",
+                  textDecoration: tab !== "live" ? "underline" : "none",
+                }}
                 onClick={() => setTab("shameful")}
               >
                 Shameful 100
@@ -217,7 +306,14 @@ const WallOfShame: React.FC = () => {
             </IonCol>
           </IonRow>
         </IonGrid>
+
         {renderWall()}
+        <IonToast
+          isOpen={showToast}
+          onDidDismiss={() => setShowToast(false)}
+          message={toastMessage}
+          duration={1500}
+        />
       </IonContent>
     </IonPage>
   );

@@ -87,6 +87,30 @@ const ProfileSetUpModal: React.FC<ProfileSetUpModalProps> = (
     }
   };
 
+  const handleAvatarUpdate = async () => {
+    setState({ isLoading: true });
+    try {
+      await updateProfile(
+        state.displayName,
+        state.username,
+        state.settings,
+        state.avatar
+      );
+      setState({ isLoading: false });
+      setShowModal(false);
+      setTimeout(() => {
+        window.location.reload();
+      }, 300);
+    } catch (error) {
+      setState({
+        isLoading: false,
+        showAlert: true,
+        alertHeader: "Ooooops",
+        alertMessage: "Our server is taking a break, come back later please :)",
+      });
+    }
+  };
+
   const renderPage = () => {
     switch (pageNumber) {
       case 0:
@@ -102,25 +126,7 @@ const ProfileSetUpModal: React.FC<ProfileSetUpModalProps> = (
           <AvatarRandomizer
             state={state}
             setState={setState}
-            completionCallback={() => {
-              setState({
-                displayName: "",
-                username: "",
-                settings: {
-                  deadlineReminder: true,
-                  invitations: true,
-                },
-                avatar: {
-                  animal: "CAT",
-                  color: "PRIMARY",
-                  background: "#cdcdcd",
-                },
-              });
-              setShowModal(false);
-              setTimeout(() => {
-                window.location.reload();
-              }, 300);
-            }}
+            completionCallback={handleAvatarUpdate}
             prevPage={() => {
               setAnimationDirection("right");
               setPageNumber(0);

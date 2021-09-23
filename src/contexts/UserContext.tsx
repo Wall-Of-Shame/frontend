@@ -37,9 +37,33 @@ const UserProvider: React.FunctionComponent = (props) => {
     }
   };
 
+  const getFriendsRankings = async (): Promise<UserList[]> => {
+    try {
+      const data = await UserService.getFriendsRankings();
+      return data;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
+
+  const getGlobalRankings = async (): Promise<UserList[]> => {
+    try {
+      const data = await UserService.getGlobalRankings();
+      return data;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
+
   return (
     <UserContext.Provider
-      value={{ user: data, updateProfile, searchUser }}
+      value={{
+        user: data,
+        updateProfile,
+        searchUser,
+        getFriendsRankings,
+        getGlobalRankings,
+      }}
       {...props}
     />
   );

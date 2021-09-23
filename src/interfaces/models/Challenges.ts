@@ -1,4 +1,4 @@
-import { UserList } from "./Users";
+import { AvatarAnimal, AvatarColor, UserList } from "./Users";
 
 export interface ChallengeId {
   challengeId: string;
@@ -74,6 +74,12 @@ type DeepPartialUserMini = Pick<UserMini, "userId"> &
 export interface Shame {
   name: string;
   title: string;
+  type: string;
   time: string;
   timestamp: number;
+  avatar: {
+    animal: AvatarAnimal;
+    color: AvatarColor;
+    background: string;
+  };
 }

@@ -3,6 +3,7 @@ import {
   ChallengeList,
   ChallengePost,
 } from "../models/Challenges";
+import { VoteList } from "../models/Votes";
 
 export default interface ChallengeContextInterface {
   getAllChallenges(): Promise<ChallengeList>;
@@ -13,5 +14,7 @@ export default interface ChallengeContextInterface {
   rejectChallenge(id: string): Promise<void>;
   completeChallenge(id: string): Promise<void>;
   releaseResults(id: string, vetoedParticipants: string[]): Promise<void>;
+  getVotes(challengeId: string): Promise<VoteList>;
+  voteForParticipant(challengeId: string, victimId: string): Promise<void>;
   uploadProof(id: string, data: any): Promise<string | null>;
 }

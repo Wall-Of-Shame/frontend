@@ -1,0 +1,15 @@
+.circle {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  float: left;
+  shape-outside: circle();
+}
+
+.circle img {
+  display: block;
+  margin: auto;
+  margin-top: 5%;
+  width: 90%;
+  height: 90%;
+}

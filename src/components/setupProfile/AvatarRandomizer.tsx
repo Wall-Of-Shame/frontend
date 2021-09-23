@@ -1,4 +1,5 @@
 import {
+  IonAvatar,
   IonButton,
   IonContent,
   IonFab,
@@ -8,11 +9,13 @@ import {
   IonText,
 } from "@ionic/react";
 import "./ProfileSetUpModal.scss";
+import "./AvatarRandomizer.scss";
 import Container from "../container";
 import "../../theme/transitions.scss";
 import { ProfileSetUpModalState } from "./ProfileSetUpModal";
 import { arrowBackOutline, dice } from "ionicons/icons";
 import { AvatarAnimal, AvatarColor } from "../../interfaces/models/Users";
+import AvatarImg from "../avatar";
 
 interface AvatarRandomizerProps {
   state: ProfileSetUpModalState;
@@ -27,6 +30,7 @@ const AvatarRandomizer: React.FC<AvatarRandomizerProps> = (
   const { state, setState, completionCallback, prevPage } = props;
   const animals = ["CAT", "DOG", "RABBIT"];
   const colors = ["PRIMARY", "SECONDARY", "TERTIARY"];
+  const background = ["#cbe8e0", "#c9b2e1", "#c2d5eb"];
 
   const handleRandomize = () => {
     const randomAnimal = animals[
@@ -35,12 +39,13 @@ const AvatarRandomizer: React.FC<AvatarRandomizerProps> = (
     const randomColor = colors[
       Math.floor(Math.random() * colors.length)
     ] as AvatarColor;
-    const randomBackground = Math.floor(Math.random() * 16777215).toString(16);
+    const randomBackground =
+      background[Math.floor(Math.random() * background.length)];
     setState({
       avatar: {
         animal: randomAnimal,
         color: randomColor,
-        background: `#${randomBackground}`,
+        background: randomBackground,
       },
     });
   };
@@ -72,17 +77,14 @@ const AvatarRandomizer: React.FC<AvatarRandomizerProps> = (
             self-discovery
           </IonText>
         </IonRow>
-        <IonGrid style={{ marginTop: "2rem", marginBottom: "2rem" }}>
-          <IonRow className='ion-justify-content-center'>
-            {state.avatar.animal}
-          </IonRow>
-          <IonRow className='ion-justify-content-center'>
-            {state.avatar.color}
-          </IonRow>
-          <IonRow className='ion-justify-content-center'>
-            {state.avatar.background}
-          </IonRow>
-        </IonGrid>
+        <IonRow
+          className='ion-justify-content-center'
+          style={{ marginTop: "3.5rem", marginBottom: "0.5rem" }}
+        >
+          <IonAvatar className='edit-profile-avatar ion-margin-bottom'>
+            <AvatarImg avatar={state.avatar} />
+          </IonAvatar>
+        </IonRow>
         <IonButton
           shape='round'
           color='medium'

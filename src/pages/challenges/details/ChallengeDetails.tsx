@@ -13,13 +13,15 @@ import {
   IonLabel,
   IonList,
   IonPage,
+  IonRefresher,
+  IonRefresherContent,
   IonRow,
   IonText,
+  IonToast,
   IonToolbar,
 } from "@ionic/react";
 import { useReducer, useState } from "react";
 import { arrowBackOutline, pencil } from "ionicons/icons";
-import luke from "../../../assets/avatar-luke.png";
 import { useEffect } from "react";
 import { Redirect, useHistory, useLocation } from "react-router";
 import { useChallenge } from "../../../contexts/ChallengeContext";
@@ -40,6 +42,9 @@ import ViewProofModal from "../proof/view";
 import { hideTabs } from "../../../utils/TabsUtils";
 import { database } from "../../../firebase";
 import { ref, set } from "firebase/database";
+import { VoteData } from "../../../interfaces/models/Votes";
+import { RefresherEventDetail } from "@ionic/core";
+import AvatarImg from "../../../components/avatar";
 
 interface ChallengeDetailsProps {}
 
@@ -57,6 +62,8 @@ interface ChallengeDetailsState {
   confirmHandler: () => void;
   cancelHandler: () => void;
   okHandler?: () => void;
+  showToast: boolean;
+  toastMessage: string;
 }
 
 const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
@@ -68,6 +75,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     acceptChallenge,
     rejectChallenge,
     completeChallenge,
+    getVotes,
     releaseResults,
   } = useChallenge();
 
@@ -95,13 +103,17 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
       confirmHandler: () => {},
       cancelHandler: () => {},
       okHandler: undefined,
+      showToast: false,
+      toastMessage: "",
     }
   );
 
   const fetchData = async () => {
+    setState({ isLoading: true });
     try {
       const locationState = location.state as ChallengeData;
       if (!locationState) {
+        setState({ isLoading: false });
         return;
       }
       const challenge = await getChallenge(locationState.challengeId);
@@ -109,12 +121,20 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
       if (challenge) {
         setChallenge(challenge);
       }
+      setState({ isLoading: false });
     } catch (error) {
       console.log(error);
+      setState({
+        isLoading: false,
+        hasConfirm: false,
+        showAlert: true,
+        alertHeader: "Ooooops",
+        alertMessage: "Our server is taking a break, come back later please :)",
+      });
     }
   };
 
-  const handlePublishToFirebase = async (
+  const handlePublishFailedUsersToFirebase = async (
     usersToShame: UserMini[]
   ): Promise<void> => {
     if (!challenge) {
@@ -128,6 +148,43 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           title: challenge.title,
           time: formatISO(Date.now()),
           timestamp: timestamp,
+          avatar: u.avatar,
+        })
+          .then(() => resolve())
+          .catch(() => reject());
+      });
+    });
+    return await Promise.all(promises)
+      .then(() => {
+        return;
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  };
+
+  const handlePublishCheatersToFirebase = async (
+    usersToShame: VoteData[]
+  ): Promise<void> => {
+    if (!challenge) {
+      return;
+    }
+    const promises = usersToShame.map((u) => {
+      const timestamp = new Date().getTime();
+      const victimData = challenge.participants.accepted.completed.find(
+        (p) => p.userId === u.victim.userId
+      );
+      if (!victimData) {
+        return Promise.resolve();
+      }
+      return new Promise<void>((resolve, reject) => {
+        set(ref(database, `shames/${timestamp}+${u.victim.userId}`), {
+          name: u.victim.name,
+          title: challenge.title,
+          type: "cheat",
+          time: formatISO(Date.now()),
+          timestamp: timestamp,
+          avatar: victimData.avatar,
         })
           .then(() => resolve())
           .catch(() => reject());
@@ -221,24 +278,36 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     }
   };
 
-  const handleConfirmResults = async () => {
+  const handleReleaseResults = async () => {
     if (challenge === null) {
       return;
     }
     setState({ isLoading: true });
     try {
-      await releaseResults(challenge.challengeId, []);
+      const votes = await getVotes(challenge.challengeId);
+      const cheaters: VoteData[] = votes.filter((v) => {
+        return (
+          v.accusers.length >=
+          challenge.participants.accepted.completed.concat(
+            challenge.participants.accepted.notCompleted
+          ).length /
+            2
+        );
+      });
+      const cheaterIds = cheaters.map((c) => c.victim.userId);
+      await releaseResults(challenge.challengeId, cheaterIds);
       const updatedChallenge = await getChallenge(challenge.challengeId);
       if (updatedChallenge) {
         setChallenge(updatedChallenge);
-        await handlePublishToFirebase(
+        await handlePublishFailedUsersToFirebase(
           updatedChallenge.participants.accepted.notCompleted
         );
       } else {
-        await handlePublishToFirebase(
+        await handlePublishFailedUsersToFirebase(
           challenge.participants.accepted.notCompleted
         );
       }
+      await handlePublishCheatersToFirebase(cheaters);
       setState({
         isLoading: false,
         showAlert: true,
@@ -255,6 +324,35 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
         alertHeader: "Ooooops",
         alertMessage: "Our server is taking a break, come back later please :)",
       });
+    }
+  };
+
+  const handleRefresh = async (event: CustomEvent<RefresherEventDetail>) => {
+    if (!challenge) {
+      event.detail.complete();
+      return;
+    }
+    try {
+      const updatedChallenge = await getChallenge(challenge.challengeId);
+      if (updatedChallenge) {
+        setChallenge(updatedChallenge);
+      }
+      setTimeout(() => {
+        event.detail.complete();
+        setState({
+          showToast: true,
+          toastMessage: "Refreshed successfully",
+        });
+      }, 2000);
+    } catch (error) {
+      setTimeout(() => {
+        event.detail.complete();
+        setState({
+          showToast: true,
+          toastMessage:
+            "Our server is taking a break, come back later please :)",
+        });
+      }, 2000);
     }
   };
 
@@ -331,7 +429,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
                 return (
                   <IonItem key={u.userId} lines='none'>
                     <IonAvatar slot='start'>
-                      <img src={luke} alt='user1' />
+                      <AvatarImg avatar={u.avatar} />
                     </IonAvatar>
                     <IonLabel slot='start'>
                       {u.userId === user?.userId
@@ -396,7 +494,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
                 return (
                   <IonItem key={u.userId} lines='none'>
                     <IonAvatar slot='start'>
-                      <img src={luke} alt='user1' />
+                      <AvatarImg avatar={u.avatar} />
                     </IonAvatar>
                     <IonLabel>
                       {u.userId === user?.userId
@@ -449,7 +547,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
                 return (
                   <IonItem key={u.userId} lines='none'>
                     <IonAvatar slot='start'>
-                      <img src={luke} alt='user1' />
+                      <AvatarImg avatar={u.avatar} />
                     </IonAvatar>
                     <IonLabel slot='start'>
                       {u.userId === user?.userId
@@ -502,7 +600,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
                 return (
                   <IonItem key={u.userId} lines='none'>
                     <IonAvatar slot='start'>
-                      <img src={luke} alt='user1' />
+                      <AvatarImg avatar={u.avatar} />
                     </IonAvatar>
                     <IonLabel>
                       {u.userId === user?.userId
@@ -556,7 +654,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
               return (
                 <IonItem key={u.userId} lines='none'>
                   <IonAvatar slot='start'>
-                    <img src={luke} alt='user1' />
+                    <AvatarImg avatar={u.avatar} />
                   </IonAvatar>
                   <IonLabel>
                     {u.userId === user?.userId
@@ -593,7 +691,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
               return (
                 <IonItem key={u.userId} lines='none'>
                   <IonAvatar slot='start'>
-                    <img src={luke} alt='user1' />
+                    <AvatarImg avatar={u.avatar} />
                   </IonAvatar>
                   <IonLabel slot='start'>
                     {u.userId === user?.userId
@@ -696,7 +794,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
                       alertHeader: "Are you sure?",
                       alertMessage:
                         "This will confirm the challenge and voting results and banish those who failed the challenge or cheated to the Wall of Shame :')",
-                      confirmHandler: handleConfirmResults,
+                      confirmHandler: handleReleaseResults,
                     });
                   }}
                 >
@@ -895,7 +993,27 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
                   );
                   if (updatedChallenge) {
                     setChallenge(updatedChallenge);
-                    if (
+                    if (isAfter(Date.now(), parseISO(updatedChallenge.endAt))) {
+                      setState({
+                        isLoading: false,
+                        showAlert: true,
+                        hasConfirm: false,
+                        alertHeader: "Notice",
+                        alertMessage:
+                          "This challenge has already ended, it cannot be edited anymore :)",
+                      });
+                    } else if (
+                      isAfter(Date.now(), parseISO(updatedChallenge.startAt!))
+                    ) {
+                      setState({
+                        isLoading: false,
+                        showAlert: true,
+                        hasConfirm: false,
+                        alertHeader: "Notice",
+                        alertMessage:
+                          "This challenge has already started, it cannot be edited anymore :)",
+                      });
+                    } else if (
                       updatedChallenge.participants.accepted.completed.concat(
                         updatedChallenge.participants.accepted.notCompleted
                       ).length > 1
@@ -922,6 +1040,9 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
       </IonHeader>
 
       <IonContent fullscreen>
+        <IonRefresher onIonRefresh={handleRefresh} style={{ zIndex: "1000" }}>
+          <IonRefresherContent></IonRefresherContent>
+        </IonRefresher>
         <IonGrid style={{ marginBottom: "0.5rem" }}>
           {renderHeader()}
           <IonRow className='ion-padding-horizontal ion-padding-bottom'>
@@ -1061,6 +1182,12 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           confirmHandler={state.confirmHandler}
           cancelHandler={state.cancelHandler}
           okHandler={state.okHandler}
+        />
+        <IonToast
+          isOpen={state.showToast}
+          onDidDismiss={() => setState({ showToast: false })}
+          message={state.toastMessage}
+          duration={1500}
         />
       </IonContent>
       <IonFooter>{renderFooter()}</IonFooter>

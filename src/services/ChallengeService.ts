@@ -3,6 +3,7 @@ import {
   ChallengeList,
   ChallengePost,
 } from "../interfaces/models/Challenges";
+import { VoteList } from "../interfaces/models/Votes";
 import APIService from "../services/APIService";
 
 const getChallenges = async (): Promise<ChallengeList> => {
@@ -79,6 +80,28 @@ const releaseResults = async (
   }
 };
 
+const getVotes = async (challengeId: string): Promise<VoteList> => {
+  try {
+    const response = await APIService.get(`challenges/${challengeId}/votes`);
+    return response.data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+const voteForParticipant = async (
+  challengeId: string,
+  victimId: string
+): Promise<void> => {
+  try {
+    await APIService.post(`challenges/${challengeId}/votes`, {
+      victimId,
+    });
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 const uploadProof = async (
   challengeId: string,
   data: string
@@ -103,5 +126,7 @@ export default {
   rejectChallenge,
   completeChallenge,
   releaseResults,
+  getVotes,
+  voteForParticipant,
   uploadProof,
 };

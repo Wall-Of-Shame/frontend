@@ -6,11 +6,13 @@ import {
   ChallengeList,
   ChallengePost,
 } from "../interfaces/models/Challenges";
+import { VoteList } from "../interfaces/models/Votes";
 import {
   setHistory,
   setOngoing,
   setPendingResponse,
   setPendingStart,
+  setVotes,
 } from "../reducers/ChallengeDux";
 import ChallengeService from "../services/ChallengeService";
 
@@ -126,6 +128,32 @@ const ChallengeProvider: React.FC = (props) => {
     }
   };
 
+  const getVotes = async (challengeId: string): Promise<VoteList> => {
+    try {
+      const data = await ChallengeService.getVotes(challengeId);
+      dispatch(
+        setVotes({
+          votes: data,
+          lastRetrieved: Date.now(),
+        })
+      );
+      return data;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
+
+  const voteForParticipant = async (
+    challengeId: string,
+    victimId: string
+  ): Promise<void> => {
+    try {
+      await ChallengeService.voteForParticipant(challengeId, victimId);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
+
   return (
     <ChallengeContext.Provider
       value={{
@@ -136,6 +164,8 @@ const ChallengeProvider: React.FC = (props) => {
         acceptChallenge,
         rejectChallenge,
         completeChallenge,
+        getVotes,
+        voteForParticipant,
         releaseResults,
         uploadProof,
       }}
