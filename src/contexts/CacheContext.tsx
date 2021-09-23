@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import packageJson from "../../package.json";
-import meta from "../../public/meta.json";
 
 import CacheContextInterface from "../interfaces/contexts/CacheContext";
 
