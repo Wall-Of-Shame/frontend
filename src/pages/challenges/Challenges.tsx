@@ -41,7 +41,6 @@ import Alert from "../../components/alert";
 import { format, formatDuration, intervalToDuration } from "date-fns";
 import parseISO from "date-fns/parseISO";
 import { RefresherEventDetail } from "@ionic/core";
-import Container from "../../components/container";
 
 interface ChallengesState {
   isLoading: boolean;

@@ -9,7 +9,12 @@ import {
   IonLabel,
   IonList,
   IonPage,
+  IonRefresher,
+  IonRefresherContent,
   IonRow,
+  IonSelect,
+  IonSelectOption,
+  IonToast,
 } from "@ionic/react";
 import { useEffect, useState } from "react";
 import "./WallOfShame.scss";
@@ -30,14 +35,21 @@ import {
 } from "firebase/database";
 import { Shame } from "../../interfaces/models/Challenges";
 import { differenceInSeconds, format, parseISO } from "date-fns";
+import { RefresherEventDetail } from "@ionic/core";
 
 const WallOfShame: React.FC = () => {
-  const [tab, setTab] = useState("live");
   const location = useLocation();
 
+  const [tab, setTab] = useState("live");
   const [shames, setShames] = useState<Shame[]>([]);
   const [lastUpdated, setLastUpdated] = useState(Date.now());
   const [hasSynced, setHasSynced] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const types = ["Global", "Friends"];
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [type, setType] = useState("Global");
 
   const topShamesRef = query(
     ref(database, "shames"),
@@ -62,6 +74,26 @@ const WallOfShame: React.FC = () => {
       }
     }
   });
+
+  const handleRefresh = async (event: CustomEvent<RefresherEventDetail>) => {
+    try {
+      setTimeout(() => {
+        event.detail.complete();
+        setToastMessage("Refreshed successfully");
+        setShowToast(true);
+      }, 2000);
+    } catch (error) {
+      setTimeout(() => {
+        event.detail.complete();
+        setToastMessage(
+          "Our server is taking a break, come back later please :)"
+        );
+        setShowToast(true);
+      }, 2000);
+    }
+  };
+
+  useEffect(() => {}, []);
 
   useEffect(() => {
     if (
@@ -110,74 +142,104 @@ const WallOfShame: React.FC = () => {
         );
       case "shameful":
         return (
-          <IonList>
-            <IonItem lines='none'>
-              <IonAvatar slot='start'>
-                <img src={luke} alt='user1' />
-              </IonAvatar>
-              <IonLabel>
-                <h4 style={{ fontWeight: "bold" }}>Luke</h4>
-              </IonLabel>
-              <IonIcon slot='end' icon={medal}></IonIcon>
-              <IonLabel slot='end'>45</IonLabel>
-            </IonItem>
-            <IonItem lines='none'>
-              <IonAvatar slot='start'>
-                <img src={yoda} alt='user2' />
-              </IonAvatar>
-              <IonLabel>
-                <h4 style={{ fontWeight: "bold" }}>Yoda</h4>
-              </IonLabel>
-              <IonIcon slot='end' icon={medal}></IonIcon>
-              <IonLabel slot='end'>42</IonLabel>
-            </IonItem>
-            <IonItem lines='none'>
-              <IonAvatar slot='start'>
-                <img src={rey} alt='user3' />
-              </IonAvatar>
-              <IonLabel>
-                <h4 style={{ fontWeight: "bold" }}>Rey</h4>
-              </IonLabel>
-              <IonIcon slot='end' icon={medal}></IonIcon>
-              <IonLabel slot='end'>33</IonLabel>
-            </IonItem>
-            <IonItem lines='none'>
-              <IonAvatar slot='start'>
-                <img src={finn} alt='user4' />
-              </IonAvatar>
-              <IonLabel>
-                <h4 style={{ fontWeight: "bold" }}>Finn</h4>
-              </IonLabel>
-              <IonLabel slot='end'>25</IonLabel>
-            </IonItem>
-            <IonItem lines='none'>
-              <IonAvatar slot='start'>
-                <img src={finn} alt='user4' />
-              </IonAvatar>
-              <IonLabel>
-                <h4 style={{ fontWeight: "bold" }}>Finn</h4>
-              </IonLabel>
-              <IonLabel slot='end'>21</IonLabel>
-            </IonItem>
-            <IonItem lines='none'>
-              <IonAvatar slot='start'>
-                <img src={finn} alt='user4' />
-              </IonAvatar>
-              <IonLabel>
-                <h4 style={{ fontWeight: "bold" }}>Finn</h4>
-              </IonLabel>
-              <IonLabel slot='end'>15</IonLabel>
-            </IonItem>
-            <IonItem lines='none'>
-              <IonAvatar slot='start'>
-                <img src={finn} alt='user4' />
-              </IonAvatar>
-              <IonLabel>
-                <h4 style={{ fontWeight: "bold" }}>Finn</h4>
-              </IonLabel>
-              <IonLabel slot='end'>11</IonLabel>
-            </IonItem>
-          </IonList>
+          <IonContent>
+            <IonRefresher
+              slot='fixed'
+              onIonRefresh={handleRefresh}
+              style={{ zIndex: "1000" }}
+            >
+              <IonRefresherContent></IonRefresherContent>
+            </IonRefresher>
+
+            <IonList>
+              <IonItem
+                className='ion-padding-horizontal'
+                style={{ paddingBottom: "1rem" }}
+                lines='full'
+              >
+                <IonLabel>Country</IonLabel>
+                <IonSelect
+                  ok-text='Proceed'
+                  cancel-text='Cancel'
+                  onIonChange={(e) => setType(e.detail.value)}
+                >
+                  {types.map((t) => {
+                    return (
+                      <IonSelectOption value={t} key={t}>
+                        {t}
+                      </IonSelectOption>
+                    );
+                  })}
+                </IonSelect>
+              </IonItem>
+              <IonItem lines='none'>
+                <IonAvatar slot='start'>
+                  <img src={luke} alt='user1' />
+                </IonAvatar>
+                <IonLabel>
+                  <h4 style={{ fontWeight: "bold" }}>Luke</h4>
+                </IonLabel>
+                <IonIcon slot='end' icon={medal}></IonIcon>
+                <IonLabel slot='end'>45</IonLabel>
+              </IonItem>
+              <IonItem lines='none'>
+                <IonAvatar slot='start'>
+                  <img src={yoda} alt='user2' />
+                </IonAvatar>
+                <IonLabel>
+                  <h4 style={{ fontWeight: "bold" }}>Yoda</h4>
+                </IonLabel>
+                <IonIcon slot='end' icon={medal}></IonIcon>
+                <IonLabel slot='end'>42</IonLabel>
+              </IonItem>
+              <IonItem lines='none'>
+                <IonAvatar slot='start'>
+                  <img src={rey} alt='user3' />
+                </IonAvatar>
+                <IonLabel>
+                  <h4 style={{ fontWeight: "bold" }}>Rey</h4>
+                </IonLabel>
+                <IonIcon slot='end' icon={medal}></IonIcon>
+                <IonLabel slot='end'>33</IonLabel>
+              </IonItem>
+              <IonItem lines='none'>
+                <IonAvatar slot='start'>
+                  <img src={finn} alt='user4' />
+                </IonAvatar>
+                <IonLabel>
+                  <h4 style={{ fontWeight: "bold" }}>Finn</h4>
+                </IonLabel>
+                <IonLabel slot='end'>25</IonLabel>
+              </IonItem>
+              <IonItem lines='none'>
+                <IonAvatar slot='start'>
+                  <img src={finn} alt='user4' />
+                </IonAvatar>
+                <IonLabel>
+                  <h4 style={{ fontWeight: "bold" }}>Finn</h4>
+                </IonLabel>
+                <IonLabel slot='end'>21</IonLabel>
+              </IonItem>
+              <IonItem lines='none'>
+                <IonAvatar slot='start'>
+                  <img src={finn} alt='user4' />
+                </IonAvatar>
+                <IonLabel>
+                  <h4 style={{ fontWeight: "bold" }}>Finn</h4>
+                </IonLabel>
+                <IonLabel slot='end'>15</IonLabel>
+              </IonItem>
+              <IonItem lines='none'>
+                <IonAvatar slot='start'>
+                  <img src={finn} alt='user4' />
+                </IonAvatar>
+                <IonLabel>
+                  <h4 style={{ fontWeight: "bold" }}>Finn</h4>
+                </IonLabel>
+                <IonLabel slot='end'>11</IonLabel>
+              </IonItem>
+            </IonList>
+          </IonContent>
         );
     }
   };
@@ -231,7 +293,14 @@ const WallOfShame: React.FC = () => {
             </IonCol>
           </IonRow>
         </IonGrid>
+
         {renderWall()}
+        <IonToast
+          isOpen={showToast}
+          onDidDismiss={() => setShowToast(false)}
+          message={toastMessage}
+          duration={1500}
+        />
       </IonContent>
     </IonPage>
   );
