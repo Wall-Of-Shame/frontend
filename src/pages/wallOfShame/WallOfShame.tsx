@@ -15,7 +15,7 @@ import {
   IonSelect,
   IonSelectOption,
 } from "@ionic/react";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import "./WallOfShame.scss";
 import luke from "../../assets/avatar-luke.png";
 import { hideTabs, showTabs } from "../../utils/TabsUtils";
@@ -36,6 +36,17 @@ import { useUser } from "../../contexts/UserContext";
 import LoadingSpinner from "../../components/loadingSpinner";
 import Alert from "../../components/alert";
 
+interface WallOfShameState {
+  isLoading: boolean;
+  showAlert: boolean;
+  alertHeader: string;
+  alertMessage: string;
+  hasConfirm: boolean;
+  confirmHandler: () => void;
+  cancelHandler: () => void;
+  okHandler?: () => void;
+}
+
 const WallOfShame: React.FC = () => {
   const location = useLocation();
   const { getGlobalRankings, getFriendsRankings } = useUser();
@@ -44,13 +55,29 @@ const WallOfShame: React.FC = () => {
   const [shames, setShames] = useState<Shame[]>([]);
   const [lastUpdated, setLastUpdated] = useState(Date.now());
   const [hasSynced, setHasSynced] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [globalRankings, setGlobalRankings] = useState<UserList[]>([]);
   const [friendsRankings, setFriendsRankings] = useState<UserList[]>([]);
   const types = ["Global", "Friends"];
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [type, setType] = useState("Global");
+
+  const [state, setState] = useReducer(
+    (s: WallOfShameState, a: Partial<WallOfShameState>) => ({
+      ...s,
+      ...a,
+    }),
+    {
+      isLoading: false,
+      showAlert: false,
+      alertHeader: "",
+      alertMessage: "",
+      hasConfirm: false,
+      confirmHandler: () => {},
+      cancelHandler: () => {},
+      okHandler: undefined,
+    }
+  );
 
   const topShamesRef = query(
     ref(database, "shames"),
@@ -77,15 +104,28 @@ const WallOfShame: React.FC = () => {
   });
 
   const fetchData = async (): Promise<void> => {
-    setIsLoading(true);
+    setState({ isLoading: true });
     try {
       const global = await getGlobalRankings();
       const friends = await getFriendsRankings();
       setGlobalRankings(global);
       setFriendsRankings(friends);
-      setIsLoading(false);
+      if (hasSynced) {
+        setTimeout(() => {
+          setState({ isLoading: false });
+        }, 1000);
+      } else {
+        setState({ isLoading: false });
+      }
     } catch (error) {
-      setIsLoading(false);
+      setState({
+        isLoading: false,
+        showAlert: true,
+        hasConfirm: false,
+        alertHeader: "Ooooops",
+        alertMessage:
+          "Could not retrieve the Wall of Shame at the moment, please come back later :)",
+      });
       return Promise.reject(error);
     }
   };
@@ -112,9 +152,16 @@ const WallOfShame: React.FC = () => {
       case "live":
         if (shames.length <= 0) {
           return (
-            <IonRow className='ion-padding ion-justify-content-center'>
-              {hasSynced ? "No records yet" : "Updating..."}
-            </IonRow>
+            <IonGrid
+              style={{
+                display: "flex",
+                height: "70%",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <IonRow className='ion-padding'>No records yet</IonRow>
+            </IonGrid>
           );
         }
         return (
@@ -193,9 +240,16 @@ const WallOfShame: React.FC = () => {
                     })}
                   </>
                 ) : (
-                  <IonRow className='ion-padding ion-justify-content-center'>
-                    No records yet
-                  </IonRow>
+                  <IonGrid
+                    style={{
+                      display: "flex",
+                      height: "70%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <IonRow className='ion-padding'>No records yet</IonRow>
+                  </IonGrid>
                 )}
               </>
             ) : (
@@ -220,9 +274,16 @@ const WallOfShame: React.FC = () => {
                     })}
                   </>
                 ) : (
-                  <IonRow className='ion-padding ion-justify-content-center'>
-                    No records yet
-                  </IonRow>
+                  <IonGrid
+                    style={{
+                      display: "flex",
+                      height: "70%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <IonRow className='ion-padding'>No records yet</IonRow>
+                  </IonGrid>
                 )}
               </>
             )}
@@ -287,9 +348,23 @@ const WallOfShame: React.FC = () => {
           </IonFabButton>
         </IonFab>
         <LoadingSpinner
-          loading={isLoading}
+          loading={state.isLoading}
           message={"Loading"}
           closeLoading={() => {}}
+        />
+        <Alert
+          showAlert={state.showAlert}
+          closeAlert={(): void => {
+            setState({
+              showAlert: false,
+            });
+          }}
+          alertHeader={state.alertHeader}
+          alertMessage={state.alertMessage}
+          hasConfirm={state.hasConfirm}
+          confirmHandler={state.confirmHandler}
+          cancelHandler={state.cancelHandler}
+          okHandler={state.okHandler}
         />
       </IonContent>
     </IonPage>

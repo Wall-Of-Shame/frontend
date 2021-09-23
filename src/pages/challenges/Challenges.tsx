@@ -50,8 +50,6 @@ interface ChallengesState {
   confirmHandler: () => void;
   cancelHandler: () => void;
   okHandler?: () => void;
-  showToast: boolean;
-  toastMessage: string;
 }
 
 const Challenges: React.FC = () => {
@@ -94,8 +92,6 @@ const Challenges: React.FC = () => {
       confirmHandler: () => {},
       cancelHandler: () => {},
       okHandler: undefined,
-      showToast: false,
-      toastMessage: "",
     }
   );
 
@@ -116,18 +112,23 @@ const Challenges: React.FC = () => {
     try {
       const allChallenges = await getAllChallenges();
       console.log(allChallenges);
-      setState({ isLoading: false });
+
       setOngoing(allChallenges.ongoing);
       setPendingStart(allChallenges.pendingStart);
       setPendingResponse(allChallenges.pendingResponse);
       setCompleted(allChallenges.history);
+      setTimeout(() => {
+        setState({ isLoading: false });
+      }, 500);
     } catch (error) {
-      setState({
-        isLoading: false,
-        alertHeader: "Something went wrong",
-        alertMessage: "Please reload and try again later.",
-        showAlert: true,
-      });
+      setTimeout(() => {
+        setState({
+          isLoading: false,
+          alertHeader: "Something went wrong",
+          alertMessage: "Please reload and try again later.",
+          showAlert: true,
+        });
+      }, 500);
     }
   };
 
