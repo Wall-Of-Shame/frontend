@@ -51,9 +51,12 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
       <IonSlide>
         <div className='slide'>
           <Container>
-            <img src={challenge} alt='challenge' />
-            <h1>Create a Challenge</h1>
-            <br />
+            <img
+              src={challenge}
+              alt='challenge'
+              style={{ marginBottom: "1rem" }}
+            />
+            <h1 style={{ marginBottom: "1.5rem" }}>Create a Challenge</h1>
             <p>
               Can’t seem to stop procrastinating?
               <br />
@@ -80,9 +83,13 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
 
       <IonSlide>
         <Container>
-          <img src={invite} alt='invite' />
-          <h1>Invite your friends</h1>
-          <br />
+          <img
+            src={invite}
+            alt='invite'
+            className='onboarding-image'
+            style={{ marginBottom: "1rem" }}
+          />
+          <h1 style={{ marginBottom: "1.5rem" }}>Invite your friends</h1>
           <p>Why suffer alone? Invite your friends to join the challenge!</p>
           <IonRow
             className='ion-justify-content-center'
@@ -105,8 +112,12 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
       <IonSlide>
         <div className='slide'>
           <Container>
-            <h2>To the WALL OF SHAME</h2>
-            <br />
+            <img
+              src={highground}
+              alt='highground'
+              style={{ marginBottom: "0rem" }}
+            />
+            <h2 style={{ marginBottom: "1.5rem" }}>To the WALL OF SHAME</h2>
             <p>
               Losers of the challenge get thrown to the wall, where their names
               will be for all to see!
@@ -132,27 +143,8 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
       <IonSlide>
         <div className='slide'>
           <Container>
-            <img src={highground} alt='highground' />
-            <IonRow class='ion-justify-content-center ion-padding-horizontal'>
-              <h1
-                style={{
-                  fontSize: "2.25rem",
-                  fontWeight: "bolder",
-                  marginTop: "0px",
-                }}
-              >
-                WALL OF SHAME
-              </h1>
-            </IonRow>
-            <IonRow class='ion-justify-content-center'>
-              Take the moral highground.
-            </IonRow>
-            <br />
-            {/*
-        <div style={{ height: "30%", overflow: "scroll" }} id={"rolling-list"}>
-          <Messages messages={messages} />
-        </div>
-        */}
+            <h1 id='wall-of-shame-header'>WALL OF SHAME</h1>
+            <p style={{ marginBottom: "1.5rem" }}>Take the moral highground.</p>
             <IonButton
               expand='block'
               fill='solid'
@@ -181,7 +173,9 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
               }}
             >
               <IonIcon src={logoGoogle} />
-              &nbsp;&nbsp;Continue with Google
+              <IonText id='login-options-button-text'>
+                &nbsp;&nbsp;Continue with Google
+              </IonText>
             </IonButton>
             <IonButton
               expand='block'
@@ -211,7 +205,9 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
               }}
             >
               <IonIcon src={logoFacebook} />
-              &nbsp;&nbsp;Continue with FaceBook
+              <IonText id='login-options-button-text'>
+                &nbsp;&nbsp;Continue with FaceBook
+              </IonText>
             </IonButton>
             <div style={{ margin: "1.5rem" }}>
               <h4 className='separator'>
@@ -226,10 +222,16 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
               style={{ margin: "1rem" }}
               onClick={() => setShowSignUpModal(true)}
             >
-              Create New Account
+              <IonText id='login-options-button-text'>
+                Create New Account
+              </IonText>
             </IonButton>
-            <IonRow class='ion-justify-content-center'>
-              <IonText class='ion-text-center' color='medium'>
+            <IonRow className='ion-justify-content-center'>
+              <IonText
+                className='ion-text-center'
+                color='medium'
+                id='login-options-button-text'
+              >
                 Have an account?&nbsp;
                 <Link
                   to={"#"}
