@@ -1,6 +1,6 @@
 {
   "name": "wall-of-shame",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "dependencies": {
     "@capacitor/core": "3.2.2",
@@ -69,7 +69,6 @@
   },
   "devDependencies": {
     "@capacitor/cli": "3.2.2",
-    "@types/react-transition-group": "^4.4.2",
     "@types/browser-image-compression": "^1.0.9",
     "@types/humps": "^2.0.1",
     "@types/jest": "^26.0.20",
@@ -79,6 +78,7 @@
     "@types/react-redux": "^7.1.18",
     "@types/react-router": "^5.1.11",
     "@types/react-router-dom": "^5.1.7",
+    "@types/react-transition-group": "^4.4.2",
     "sass": "^1.41.0"
   },
   "description": "An Ionic project"
