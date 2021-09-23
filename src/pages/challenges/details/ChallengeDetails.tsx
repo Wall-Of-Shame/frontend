@@ -46,6 +46,7 @@ import { ref, set } from "firebase/database";
 import { VoteData } from "../../../interfaces/models/Votes";
 import AvatarImg from "../../../components/avatar";
 import ActiveChallengeImg from "../../../components/activeChallengeImg";
+import PendingChallengeImg from "../../../components/pendingChallengeImg";
 
 interface ChallengeDetailsProps {}
 
@@ -372,10 +373,15 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           notCompleted={challenge.participants.accepted.notCompleted}
         />
       );
+    } else if (!isAfter(Date.now(), parseISO(challenge.startAt!))) {
+      // render waiting challenge
+      return (
+        <PendingChallengeImg
+          waitingToStart={challenge.participants.accepted.notCompleted}
+        />
+      );
     }
 
-    // render waiting challenge
-    // challenge.participants.accepted.notCompleted
     return <></>;
   };
 
