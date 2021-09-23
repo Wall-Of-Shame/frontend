@@ -10,29 +10,32 @@ const ActiveChallengeImg: React.FunctionComponent<ActiveChallengeImgProps> = (
   props: ActiveChallengeImgProps
 ) => {
   const { notCompleted } = props;
-  const notCompletedSliced = notCompleted.slice(0, 8);
+  const notCompletedSliced = notCompleted.slice(0, 6);
   const startingPosition =
-    notCompletedSliced.length === 1 ? 0 : (notCompletedSliced.length - 1) * 45;
+    notCompletedSliced.length === 1 ? 0 : (notCompletedSliced.length - 1) * 60;
 
   return (
     <div className='bg-active'>
-      {notCompletedSliced.map((u, index) => {
-        return (
-          <div
-            className='animal-in-wheel'
-            style={{
-              transform: `rotate(${startingPosition - 45 * index}deg)`,
-              zIndex: index,
-            }}
-            key={index}
-          >
-            <img
-              src={activeAnimalMap[u.avatar.animal][u.avatar.color]}
-              alt=''
-            ></img>
-          </div>
-        );
-      })}
+      {notCompletedSliced
+        .concat(notCompletedSliced)
+        .concat(notCompletedSliced)
+        .map((u, index) => {
+          return (
+            <div
+              className='animal-in-wheel'
+              style={{
+                transform: `rotate(${startingPosition - 60 * index}deg)`,
+                zIndex: index,
+              }}
+              key={index}
+            >
+              <img
+                src={activeAnimalMap[u.avatar.animal][u.avatar.color]}
+                alt=''
+              ></img>
+            </div>
+          );
+        })}
     </div>
   );
 };
