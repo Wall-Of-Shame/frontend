@@ -89,7 +89,7 @@ const Onboarding: React.FC = () => {
               }
             }}
           >
-            Skip
+            LOLLL
           </IonButton>
         </IonFab>
         <OnboardingSlides
