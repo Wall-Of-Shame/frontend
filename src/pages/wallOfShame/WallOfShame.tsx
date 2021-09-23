@@ -6,6 +6,7 @@ import {
   IonFab,
   IonFabButton,
   IonGrid,
+  IonHeader,
   IonIcon,
   IonItem,
   IonLabel,
@@ -14,10 +15,11 @@ import {
   IonRow,
   IonSelect,
   IonSelectOption,
+  IonTitle,
+  IonToolbar,
 } from "@ionic/react";
 import { useEffect, useReducer, useState } from "react";
 import "./WallOfShame.scss";
-import luke from "../../assets/avatar-luke.png";
 import { hideTabs, showTabs } from "../../utils/TabsUtils";
 import { useLocation } from "react-router";
 import { medal, refreshOutline } from "ionicons/icons";
@@ -35,6 +37,7 @@ import { UserList } from "../../interfaces/models/Users";
 import { useUser } from "../../contexts/UserContext";
 import LoadingSpinner from "../../components/loadingSpinner";
 import Alert from "../../components/alert";
+import AvatarImg from "../../components/avatar";
 
 interface WallOfShameState {
   isLoading: boolean;
@@ -160,7 +163,7 @@ const WallOfShame: React.FC = () => {
                 alignItems: "center",
               }}
             >
-              <IonRow className='ion-padding'>No records yet</IonRow>
+              <IonRow className="ion-padding">No records yet</IonRow>
             </IonGrid>
           );
         }
@@ -169,15 +172,15 @@ const WallOfShame: React.FC = () => {
             {shames.map((s) => {
               return (
                 <IonItem key={s.timestamp}>
-                  <IonAvatar slot='start'>
-                    <img src={luke} alt='user1' />
+                  <IonAvatar slot="start">
+                    <AvatarImg avatar={s.avatar} />
                   </IonAvatar>
                   {s.type === "fail" ? (
                     <IonLabel>
                       <h6>{s.name} has failed the challenge:</h6>
                       <h4 style={{ fontWeight: "bold" }}>{s.title}</h4>
                       <h6>
-                        At {format(parseISO(s.time), "dd MMM yyyy, HH:mm:ss")}
+                        On {format(parseISO(s.time), "dd MMM yyyy, HH:mm:ss")}
                       </h6>
                     </IonLabel>
                   ) : (
@@ -185,7 +188,7 @@ const WallOfShame: React.FC = () => {
                       <h6>{s.name} has cheated in the challenge:</h6>
                       <h4 style={{ fontWeight: "bold" }}>{s.title}</h4>
                       <h6>
-                        At {format(parseISO(s.time), "dd MMM yyyy, HH:mm:ss")}
+                        On {format(parseISO(s.time), "dd MMM yyyy, HH:mm:ss")}
                       </h6>
                     </IonLabel>
                   )}
@@ -198,14 +201,14 @@ const WallOfShame: React.FC = () => {
         return (
           <IonList>
             <IonItem
-              className='ion-padding-horizontal'
+              className="ion-padding-horizontal"
               style={{ paddingBottom: "1rem" }}
-              lines='full'
+              lines="full"
             >
               <IonLabel>Viewing</IonLabel>
               <IonSelect
-                ok-text='Proceed'
-                cancel-text='Cancel'
+                ok-text="Proceed"
+                cancel-text="Cancel"
                 value={type}
                 onIonChange={(e) => setType(e.detail.value)}
               >
@@ -224,15 +227,15 @@ const WallOfShame: React.FC = () => {
                   <>
                     {globalRankings.map((r) => {
                       return (
-                        <IonItem lines='none' key={r.userId}>
-                          <IonAvatar slot='start'>
-                            <img src={luke} alt='user1' />
+                        <IonItem lines="none" key={r.userId}>
+                          <IonAvatar slot="start">
+                            <AvatarImg avatar={r.avatar} />
                           </IonAvatar>
                           <IonLabel>
                             <h4 style={{ fontWeight: "bold" }}>{r.name}</h4>
                           </IonLabel>
-                          <IonIcon slot='end' icon={medal}></IonIcon>
-                          <IonLabel slot='end'>
+                          <IonIcon slot="end" icon={medal}></IonIcon>
+                          <IonLabel slot="end">
                             {r.failedChallengeCount}
                           </IonLabel>
                         </IonItem>
@@ -248,7 +251,7 @@ const WallOfShame: React.FC = () => {
                       alignItems: "center",
                     }}
                   >
-                    <IonRow className='ion-padding'>No records yet</IonRow>
+                    <IonRow className="ion-padding">No records yet</IonRow>
                   </IonGrid>
                 )}
               </>
@@ -258,15 +261,14 @@ const WallOfShame: React.FC = () => {
                   <>
                     {friendsRankings.map((r) => {
                       return (
-                        <IonItem lines='none' key={r.userId}>
-                          <IonAvatar slot='start'>
-                            <img src={luke} alt='user1' />
-                          </IonAvatar>
+                        <IonItem lines="none" key={r.userId}>
+                          <IonAvatar slot="start">
+                            <AvatarImg avatar={r.avatar} />                          </IonAvatar>
                           <IonLabel>
                             <h4 style={{ fontWeight: "bold" }}>{r.name}</h4>
                           </IonLabel>
-                          <IonIcon slot='end' icon={medal}></IonIcon>
-                          <IonLabel slot='end'>
+                          <IonIcon slot="end" icon={medal}></IonIcon>
+                          <IonLabel slot="end">
                             {r.failedChallengeCount}
                           </IonLabel>
                         </IonItem>
@@ -282,7 +284,7 @@ const WallOfShame: React.FC = () => {
                       alignItems: "center",
                     }}
                   >
-                    <IonRow className='ion-padding'>No records yet</IonRow>
+                    <IonRow className="ion-padding">No records yet</IonRow>
                   </IonGrid>
                 )}
               </>
@@ -294,29 +296,40 @@ const WallOfShame: React.FC = () => {
 
   return (
     <IonPage>
+      <IonHeader className="ion-no-border">
+        <IonToolbar>
+          <IonTitle>Wall of Shame</IonTitle>
+        </IonToolbar>
+      </IonHeader>
       <IonContent fullscreen>
-        <div style={{ marginTop: "2.5rem" }}>
-          <IonRow class='ion-justify-content-center ion-no-padding'>
-            <h1 style={{ fontSize: "1.25rem", marginBottom: "0px" }}>THE</h1>
-          </IonRow>
-          <IonRow class='ion-justify-content-center ion-no-padding'>
-            <h1
-              style={{
-                fontSize: "2.25rem",
-                fontWeight: "bolder",
-                marginTop: "0px",
-              }}
-            >
-              WALL OF SHAME
-            </h1>
-          </IonRow>
-        </div>
+        <IonHeader collapse="condense" className="ion-no-border">
+          <IonToolbar>
+            <div style={{ marginTop: "1rem" }}>
+              <IonRow class="ion-justify-content-center ion-no-padding">
+                <h1 style={{ fontSize: "1.25rem", marginBottom: "0px" }}>
+                  THE
+                </h1>
+              </IonRow>
+              <IonRow class="ion-justify-content-center ion-no-padding">
+                <h1
+                  style={{
+                    fontSize: "2.25rem",
+                    fontWeight: "bolder",
+                    marginTop: "0px",
+                  }}
+                >
+                  WALL OF SHAME
+                </h1>
+              </IonRow>
+            </div>
+          </IonToolbar>
+        </IonHeader>
         <IonGrid>
           <IonRow>
-            <IonCol size='6' style={{ paddingRight: "0px" }}>
+            <IonCol size="6" style={{ paddingRight: "0px" }}>
               <IonButton
                 color={tab === "live" ? "tertiary" : "senary"}
-                expand='block'
+                expand="block"
                 style={{
                   fontWeight: tab === "live" ? "800" : "normal",
                   textDecoration: tab === "live" ? "underline" : "none",
@@ -326,10 +339,10 @@ const WallOfShame: React.FC = () => {
                 Live
               </IonButton>
             </IonCol>
-            <IonCol size='6' style={{ paddingLeft: "0px" }}>
+            <IonCol size="6" style={{ paddingLeft: "0px" }}>
               <IonButton
                 color={tab !== "live" ? "tertiary" : "senary"}
-                expand='block'
+                expand="block"
                 style={{
                   fontWeight: tab !== "live" ? "800" : "normal",
                   textDecoration: tab !== "live" ? "underline" : "none",
@@ -342,8 +355,8 @@ const WallOfShame: React.FC = () => {
           </IonRow>
         </IonGrid>
         {renderWall()}
-        <IonFab vertical='bottom' horizontal='end' slot='fixed'>
-          <IonFabButton color='senary' onClick={fetchData}>
+        <IonFab vertical="bottom" horizontal="end" slot="fixed">
+          <IonFabButton color="senary" onClick={fetchData}>
             <IonIcon icon={refreshOutline} />
           </IonFabButton>
         </IonFab>

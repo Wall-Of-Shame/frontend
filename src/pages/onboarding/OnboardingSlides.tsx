@@ -144,7 +144,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
         <div className='slide'>
           <Container>
             <h1 id='wall-of-shame-header'>WALL OF SHAME</h1>
-            <p style={{ marginBottom: "1.5rem" }}>Take the moral highground.</p>
+            <p style={{ marginBottom: "4rem" }}>Take the moral highground.</p>
             <IonButton
               expand='block'
               fill='solid'
