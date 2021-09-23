@@ -1,9 +1,3 @@
-ion-slides {
-  height: 60%;
-  overflow-y: scroll;
-  display: block;
-}
-
 .swiper-slide,
 .swiper-pagination {
   bottom: 20px !important;
@@ -11,6 +5,11 @@ ion-slides {
 
 .swiper-slide {
   display: block;
+}
+
+.slide {
+  overflow: auto;
+  height: 100vh;
 }
 
 .container {
@@ -41,4 +40,39 @@ p {
 
 p b {
   color: var(--ion-text-color, #000000);
+}
+
+@media only screen {
+  .swiper-slide img {
+    max-height: 30vh !important;
+    max-width: 30vh !important;
+  }
+}
+
+@media only screen and (max-height: 640px) {
+  #login-options-button-text {
+    font-size: 0.9rem;
+  }
+}
+
+@media only screen and (min-height: 640px) {
+  #login-options-button-text {
+    font-size: 1rem;
+  }
+}
+
+@media only screen and (max-width: 360px) {
+  #wall-of-shame-header {
+    font-size: 1.75rem;
+    font-weight: bolder;
+    margin-bottom: 0.5rem;
+  }
+}
+
+@media only screen and (min-width: 360px) {
+  #wall-of-shame-header {
+    font-size: 2.25rem;
+    font-weight: bolder;
+    margin-bottom: 0.5rem;
+  }
 }
