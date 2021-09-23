@@ -328,10 +328,10 @@ const WallOfShame: React.FC = () => {
           <IonRow>
             <IonCol size="6" style={{ paddingRight: "0px" }}>
               <IonButton
-                color={tab === "live" ? "tertiary" : "senary"}
-                expand="block"
+                color={tab === "live" ? "quaternary" : "tertiary"}
+                expand='block'
                 style={{
-                  fontWeight: tab === "live" ? "800" : "normal",
+                  fontWeight: tab === "live" ? "900" : "normal",
                   textDecoration: tab === "live" ? "underline" : "none",
                 }}
                 onClick={() => setTab("live")}
@@ -341,10 +341,10 @@ const WallOfShame: React.FC = () => {
             </IonCol>
             <IonCol size="6" style={{ paddingLeft: "0px" }}>
               <IonButton
-                color={tab !== "live" ? "tertiary" : "senary"}
-                expand="block"
+                color={tab !== "live" ? "quaternary" : "tertiary"}
+                expand='block'
                 style={{
-                  fontWeight: tab !== "live" ? "800" : "normal",
+                  fontWeight: tab !== "live" ? "900" : "normal",
                   textDecoration: tab !== "live" ? "underline" : "none",
                 }}
                 onClick={() => setTab("shameful")}
