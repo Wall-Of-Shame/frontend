@@ -1,4 +1,5 @@
 import {
+  IonAvatar,
   IonButton,
   IonContent,
   IonFab,
@@ -8,6 +9,7 @@ import {
   IonText,
 } from "@ionic/react";
 import "./ProfileSetUpModal.scss";
+import "./AvatarRandomizer.scss";
 import Container from "../container";
 import "../../theme/transitions.scss";
 import { ProfileSetUpModalState } from "./ProfileSetUpModal";
@@ -75,9 +77,14 @@ const AvatarRandomizer: React.FC<AvatarRandomizerProps> = (
             self-discovery
           </IonText>
         </IonRow>
-        <IonGrid style={{ marginTop: "2rem", marginBottom: "2rem" }}>
-          <AvatarImg avatar={state.avatar} />
-        </IonGrid>
+        <IonRow
+          className='ion-justify-content-center'
+          style={{ marginTop: "3.5rem", marginBottom: "0.5rem" }}
+        >
+          <IonAvatar className='edit-profile-avatar ion-margin-bottom'>
+            <AvatarImg avatar={state.avatar} />
+          </IonAvatar>
+        </IonRow>
         <IonButton
           shape='round'
           color='medium'
