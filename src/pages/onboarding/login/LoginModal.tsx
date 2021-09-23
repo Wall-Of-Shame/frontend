@@ -66,13 +66,49 @@ const LoginModal: React.FC<LoginModalProps> = (props: LoginModalProps) => {
     }
   );
 
+  const { getFirebaseUser, refreshFirebaseUser, resendVerificationEmail } =
+    useAuth();
+
+  const handleContinue = async () => {
+    setState({ isLoading: true });
+    refreshFirebaseUser().then(() => {
+      setState({ isLoading: false });
+      const user = getFirebaseUser();
+      if (user?.emailVerified) {
+        window.location.reload();
+      } else {
+        setState({
+          isLoading: false,
+          showAlert: true,
+          alertHeader: "Ooooops",
+          alertMessage:
+            "Seems like your email is still not verified 😅, maybe check your inbox again?",
+        });
+      }
+    });
+  };
+
+  const handleResendEmail = async () => {
+    setState({ isLoading: true });
+    resendVerificationEmail().then(() => {
+      setState({ isLoading: false });
+    });
+  };
+
   const handleLogin = async () => {
     // API call to login and refresh app
     setState({ isLoading: true });
     login(state.email, state.password)
       .then(() => {
         setState({ isLoading: false });
-        window.location.reload();
+        const user = getFirebaseUser();
+        console.log(user);
+        if (user?.emailVerified) {
+          window.location.reload();
+        } else {
+          setAnimationDirection("left");
+          setPageNumber(2);
+        }
       })
       .catch((error) => {
         setState({
@@ -325,6 +361,95 @@ const LoginModal: React.FC<LoginModalProps> = (props: LoginModalProps) => {
             />
           </IonContent>
         );
+      case 2:
+        return (
+          <IonContent fullscreen>
+            <IonFab
+              horizontal='start'
+              vertical='top'
+              style={{ marginTop: "1rem", marginLeft: "0.5rem" }}
+            >
+              <IonIcon
+                icon={arrowBackOutline}
+                size='large'
+                onClick={() => {
+                  setAnimationDirection("right");
+                  setPageNumber(0);
+                }}
+              />
+            </IonFab>
+            <Container>
+              <IonRow slot='start' style={{ marginBottom: "2rem" }}>
+                <IonText
+                  style={{
+                    fontSize: "32px",
+                    fontWeight: "bold",
+                    marginLeft: "1rem",
+                    marginRight: "1rem",
+                  }}
+                >
+                  Welcome back!
+                </IonText>
+              </IonRow>
+              <IonRow
+                slot='start'
+                style={{ textAlign: "left", marginBottom: "1rem" }}
+              >
+                <IonText
+                  style={{
+                    fontSize: "18px",
+                    marginLeft: "1rem",
+                    marginRight: "1rem",
+                  }}
+                >
+                  We noticed that you have yet to verify your email @{" "}
+                  <IonText style={{ fontWeight: "bold" }}>
+                    {state.email}
+                  </IonText>
+                </IonText>
+              </IonRow>
+              <IonRow slot='start' style={{ textAlign: "left" }}>
+                <IonText
+                  style={{
+                    fontSize: "18px",
+                    marginLeft: "1rem",
+                    marginRight: "1rem",
+                  }}
+                >
+                  Click on the link in the verification email to complete your
+                  registration
+                </IonText>
+              </IonRow>
+              <IonButton
+                fill='solid'
+                shape='round'
+                color='secondary'
+                className='ion-padding-horizontal'
+                style={{ marginTop: "2rem" }}
+                onClick={handleContinue}
+              >
+                <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
+                  Continue
+                </IonText>
+              </IonButton>
+              <IonRow
+                class='ion-justify-content-center'
+                style={{ marginTop: "1rem" }}
+              >
+                <IonText class='ion-text-center' color='medium'>
+                  Did not receive the email?&nbsp;
+                  <Link
+                    to={"#"}
+                    style={{ textDecoration: "none" }}
+                    onClick={handleResendEmail}
+                  >
+                    <IonText style={{ fontWeight: "bold" }}>Resend</IonText>
+                  </Link>
+                </IonText>
+              </IonRow>
+            </Container>
+          </IonContent>
+        );
     }
   };
 
@@ -341,6 +466,25 @@ const LoginModal: React.FC<LoginModalProps> = (props: LoginModalProps) => {
           </div>
         </CSSTransition>
       </TransitionGroup>
+      <LoadingSpinner
+        loading={state.isLoading}
+        message={"Loading"}
+        closeLoading={() => {}}
+      />
+      <Alert
+        showAlert={state.showAlert}
+        closeAlert={(): void => {
+          setState({
+            showAlert: false,
+          });
+        }}
+        alertHeader={state.alertHeader}
+        alertMessage={state.alertMessage}
+        hasConfirm={state.hasConfirm}
+        confirmHandler={state.confirmHandler}
+        cancelHandler={state.cancelHandler}
+        okHandler={state.okHandler}
+      />
     </IonModal>
   );
 };
