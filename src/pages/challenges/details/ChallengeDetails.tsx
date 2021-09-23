@@ -928,7 +928,10 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     }
     if (challenge.hasReleasedResult) {
       return (
-        <IonRow className="ion-margin ion-justify-content-center">
+        <IonRow
+          className='ion-justify-content-center'
+          style={{ margin: "0.5rem" }}
+        >
           <IonButton
             shape="round"
             color="secondary"
@@ -947,8 +950,11 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
       return (
         <>
           {user?.userId === challenge.owner.userId ? (
-            <IonRow className="ion-margin ion-justify-content-around">
-              <IonCol size="6">
+            <IonRow
+              className='ion-justify-content-around'
+              style={{ margin: "0.5rem" }}
+            >
+              <IonCol size='6'>
                 <IonButton
                   shape="round"
                   color="secondary"
@@ -981,7 +987,10 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
               </IonCol>
             </IonRow>
           ) : (
-            <IonRow className="ion-margin ion-justify-content-center">
+            <IonRow
+              className='ion-justify-content-center'
+              style={{ margin: "0.5rem" }}
+            >
               <IonButton
                 shape="round"
                 color="secondary"
@@ -1008,7 +1017,10 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
       );
       const evidenceLink = viewingUser?.evidenceLink ?? "";
       return (
-        <IonRow className="ion-justify-content-around ion-margin">
+        <IonRow
+          className='ion-justify-content-around'
+          style={{ margin: "0.5rem" }}
+        >
           <IonButton
             shape="round"
             color="secondary"
@@ -1030,7 +1042,10 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
 
     if (isAfter(Date.now(), parseISO(challenge.startAt!))) {
       return (
-        <IonRow className="ion-justify-content-around ion-margin">
+        <IonRow
+          className='ion-justify-content-around'
+          style={{ margin: "0.5rem" }}
+        >
           <IonButton
             shape="round"
             color="secondary"
@@ -1048,14 +1063,12 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
 
     if (user?.userId === challenge.owner.userId) {
       return (
-        <IonRow className="ion-justify-content-center ion-margin">
-          <IonButton
-            shape="round"
-            color="secondary"
-            disabled
-            style={{ opacity: 0.7 }}
-          >
-            <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
+        <IonRow
+          className='ion-justify-content-center'
+          style={{ margin: "0.5rem" }}
+        >
+          <IonButton shape='round' color='secondary-shade'>
+            <IonText style={{ marginLeft: "1.5rem", marginRight: "1.5rem" }}>
               Waiting for the challenge to start
             </IonText>
           </IonButton>
@@ -1069,7 +1082,10 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
       ) !== -1
     ) {
       return (
-        <IonRow className="ion-justify-content-around ion-margin">
+        <IonRow
+          className='ion-justify-content-around'
+          style={{ margin: "0.5rem" }}
+        >
           <IonCol>
             <IonButton
               shape="round"
@@ -1116,8 +1132,11 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     }
 
     return (
-      <IonRow className="ion-justify-content-center ion-margin">
-        <IonButton shape="round" color="secondary" disabled>
+      <IonRow
+        className='ion-justify-content-center'
+        style={{ margin: "0.5rem" }}
+      >
+        <IonButton shape='round' color='secondary' disabled>
           <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
             Waiting for the challenge to start
           </IonText>
@@ -1384,7 +1403,9 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           duration={1500}
         />
       </IonContent>
-      <IonFooter>{renderFooter()}</IonFooter>
+      <IonFooter translucent={true}>
+        <IonToolbar>{renderFooter()}</IonToolbar>
+      </IonFooter>
     </IonPage>
   );
 };
