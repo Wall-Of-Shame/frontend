@@ -32,6 +32,7 @@ import { trimDisplayName } from "../../../utils/ProfileUtils";
 import LoadingSpinner from "../../../components/loadingSpinner";
 import Alert from "../../../components/alert";
 import isAfter from "date-fns/isAfter";
+import isBefore from "date-fns/isBefore";
 import { intervalToDuration } from "date-fns/esm";
 import useInterval from "../../../hooks/useInterval";
 import UploadProofModal from "../proof/upload";
@@ -42,6 +43,7 @@ import { database } from "../../../firebase";
 import { ref, set } from "firebase/database";
 import { VoteData } from "../../../interfaces/models/Votes";
 import AvatarImg from "../../../components/avatar";
+import ActiveChallengeImg from "../../../components/activeChallengeImg";
 
 interface ChallengeDetailsProps {}
 
@@ -353,6 +355,27 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
     hideTabs();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [didFinish]);
+
+  const renderImage = () => {
+    if (challenge === null) {
+      return <Redirect to={"challenges"} />;
+    }
+    if (
+      isAfter(Date.now(), parseISO(challenge.startAt!)) &&
+      isBefore(Date.now(), parseISO(challenge.endAt!))
+    ) {
+      // render active challenge
+      return (
+        <ActiveChallengeImg
+          notCompleted={challenge.participants.accepted.notCompleted}
+        />
+      );
+    }
+
+    // render waiting challenge
+    // challenge.participants.accepted.notCompleted
+    return <></>;
+  };
 
   const renderParticipants = () => {
     if (challenge === null) {
@@ -1209,40 +1232,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
             </IonText>
           </IonRow>
         </IonGrid>
-        <IonGrid style={{ marginBottom: "0.5rem" }}>
-          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
-            <IonText style={{ fontWeight: "bold" }}>
-              What do we need to do?
-            </IonText>
-          </IonRow>
-          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
-            <IonText>{challenge.description}</IonText>
-          </IonRow>
-        </IonGrid>
-        <IonGrid style={{ marginBottom: "0.5rem" }}>
-          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
-            <IonText style={{ fontWeight: "bold" }}>
-              This challenge starts at
-            </IonText>
-          </IonRow>
-          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
-            <IonText>
-              {format(parseISO(challenge.startAt!), "EEEE, dd MMM yyyy, HH:mm")}
-            </IonText>
-          </IonRow>
-        </IonGrid>
-        <IonGrid style={{ marginBottom: "0.5rem" }}>
-          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
-            <IonText style={{ fontWeight: "bold" }}>
-              Complete the challenge and upload your proof by
-            </IonText>
-          </IonRow>
-          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
-            <IonText>
-              {format(parseISO(challenge.endAt), "EEEE, dd MMM yyyy, HH:mm")}
-            </IonText>
-          </IonRow>
-        </IonGrid>
+        {renderImage()}
         {isAfter(Date.now(), parseISO(challenge.startAt!)) && (
           <IonGrid style={{ marginBottom: "0.5rem" }}>
             <IonRow className='ion-padding-horizontal'>
@@ -1291,6 +1281,40 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
             </IonRow>
           </IonGrid>
         )}
+        <IonGrid style={{ marginBottom: "0.5rem" }}>
+          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
+            <IonText style={{ fontWeight: "bold" }}>
+              What do we need to do?
+            </IonText>
+          </IonRow>
+          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
+            <IonText>{challenge.description}</IonText>
+          </IonRow>
+        </IonGrid>
+        <IonGrid style={{ marginBottom: "0.5rem" }}>
+          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
+            <IonText style={{ fontWeight: "bold" }}>
+              This challenge starts at
+            </IonText>
+          </IonRow>
+          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
+            <IonText>
+              {format(parseISO(challenge.startAt!), "EEEE, dd MMM yyyy, HH:mm")}
+            </IonText>
+          </IonRow>
+        </IonGrid>
+        <IonGrid style={{ marginBottom: "0.5rem" }}>
+          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
+            <IonText style={{ fontWeight: "bold" }}>
+              Complete the challenge and upload your proof by
+            </IonText>
+          </IonRow>
+          <IonRow className='ion-padding-horizontal ion-padding-bottom'>
+            <IonText>
+              {format(parseISO(challenge.endAt), "EEEE, dd MMM yyyy, HH:mm")}
+            </IonText>
+          </IonRow>
+        </IonGrid>
         <IonItemDivider style={{ marginBottom: "0.25rem" }} />
         {renderParticipants()}
         <UploadProofModal
