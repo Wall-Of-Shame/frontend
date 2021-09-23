@@ -767,7 +767,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
                   {challenge.participants.accepted.notCompleted.length !== 1
                     ? "s are "
                     : " is "}
-                  are still trying their best
+                  still trying their best
                 </IonText>
               </IonCol>
             </IonRow>
