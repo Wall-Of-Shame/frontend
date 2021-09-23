@@ -234,10 +234,12 @@ const WallOfShame: React.FC = () => {
                               <img src={luke} alt='user1' />
                             </IonAvatar>
                             <IonLabel>
-                              <h4 style={{ fontWeight: "bold" }}>Luke</h4>
+                              <h4 style={{ fontWeight: "bold" }}>{r.name}</h4>
                             </IonLabel>
                             <IonIcon slot='end' icon={medal}></IonIcon>
-                            <IonLabel slot='end'>45</IonLabel>
+                            <IonLabel slot='end'>
+                              {r.failedChallengeCount}
+                            </IonLabel>
                           </IonItem>
                         );
                       })}

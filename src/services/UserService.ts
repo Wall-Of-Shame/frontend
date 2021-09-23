@@ -42,7 +42,7 @@ const searchUser = async (searchText: string): Promise<UserList[]> => {
 
 const getFriendsRankings = async (): Promise<UserList[]> => {
   try {
-    const response = await APIService.get(`users/?operation=wallRecents}`);
+    const response = await APIService.get(`users/?operation=wallRecents`);
     console.log(response);
     return response.data;
   } catch (error) {
