@@ -44,7 +44,7 @@ import { hideTabs } from "../../../utils/TabsUtils";
 import LoadingSpinner from "../../../components/loadingSpinner";
 import Alert from "../../../components/alert";
 import AvatarImg from "../../../components/avatar";
-import OfflineToast from "../../../components/offlineToast"
+import OfflineToast from "../../../components/offlineToast";
 
 interface CreateChallengeProps {}
 
@@ -102,10 +102,10 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
       !(
         state.title.length > 0 &&
         state.description.length > 0 &&
-        isAfter(parseISO(state.endAt), Date.now())
+        isAfter(parseISO(state.endAt), Date.now()) &&
+        isAfter(parseISO(state.endAt), parseISO(state.startAt))
       )
     ) {
-      
       setHasError(true);
       return;
     }
@@ -290,16 +290,17 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
               ></IonDatetime>
             </IonItem>
           </IonList>
-          {hasError && isAfter(parseISO(state.startAt), parseISO(state.endAt)) && (
-            <IonRow
-              className='ion-padding-horizontal'
-              style={{ marginTop: "0.5rem", marginBottom: "1rem" }}
-            >
-              <IonText color='danger'>
-                The end time cannot be before start time
-              </IonText>
-            </IonRow>
-          )}
+          {hasError &&
+            !isAfter(parseISO(state.endAt), parseISO(state.startAt)) && (
+              <IonRow
+                className='ion-padding-horizontal'
+                style={{ marginTop: "0.5rem", marginBottom: "1rem" }}
+              >
+                <IonText color='danger'>
+                  The end time cannot be before start time
+                </IonText>
+              </IonRow>
+            )}
           {hasError && isAfter(Date.now(), parseISO(state.startAt)) && (
             <IonRow
               className='ion-padding-horizontal'
@@ -370,8 +371,8 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
             setShowModal(false);
           }}
         />
-        <OfflineToast 
-          message="Sorry, we need the internets to create a challenge :("
+        <OfflineToast
+          message='Sorry, we need the internets to create a challenge :('
           showToast={showOfflineToast}
           setShowToast={setShowOfflineToast}
         />

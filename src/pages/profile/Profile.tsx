@@ -29,9 +29,6 @@ import {
   settingsOutline,
   logOutOutline,
   helpOutline,
-  helpCircleOutline,
-  informationCircle,
-  informationCircleOutline,
 } from "ionicons/icons";
 import { useHistory, useLocation } from "react-router";
 import { useAuth } from "../../contexts/AuthContext";

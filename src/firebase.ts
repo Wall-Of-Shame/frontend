@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { getAuth } from "@firebase/auth";
-import { getMessaging, getToken } from "@firebase/messaging";
+import { getMessaging } from "@firebase/messaging";
 import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
 import { getAnalytics } from "firebase/analytics";
