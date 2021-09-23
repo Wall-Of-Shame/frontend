@@ -18,4 +18,12 @@ $font-family-base: "Poppins";
     border-radius: 3px;
     height: 6px;
   }
+
+  .ion-selectable ion-icon {
+    color: #ffffff;
+  }
+
+  .tab-selected ion-icon {
+    color: #ccac30;
+  }
 }
