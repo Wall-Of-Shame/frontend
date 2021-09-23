@@ -10,7 +10,7 @@ const ActiveChallengeImg: React.FunctionComponent<ActiveChallengeImgProps> = (
   props: ActiveChallengeImgProps
 ) => {
   const { notCompleted } = props;
-  const notCompletedSliced = notCompleted.slice(0, 6);
+  const notCompletedSliced = notCompleted.slice(0, 8);
   const startingPosition =
     notCompletedSliced.length === 1 ? 0 : (notCompletedSliced.length - 1) * 45;
 
