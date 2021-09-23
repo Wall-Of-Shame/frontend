@@ -1,11 +1,14 @@
 import {
   IonContent,
-  IonFab,
   IonIcon,
   IonModal,
   IonRow,
   IonText,
   IonButton,
+  IonButtons,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
 } from "@ionic/react";
 import { arrowBackOutline } from "ionicons/icons";
 import Container from "../../../../components/container";
@@ -165,18 +168,6 @@ const UploadProofModal: React.FC<UploadProofModalProps> = (
     }
     return (
       <Container>
-        <IonRow slot='start'>
-          <IonText
-            style={{
-              fontSize: "32px",
-              fontWeight: "bold",
-              marginLeft: "1rem",
-              marginBottom: "1rem",
-            }}
-          >
-            My proof
-          </IonText>
-        </IonRow>
         {state.uploadMode ? (
           <>
             <ImageUploader
@@ -200,7 +191,6 @@ const UploadProofModal: React.FC<UploadProofModalProps> = (
               shape='round'
               color='secondary'
               className='ion-padding-horizontal'
-              style={{ marginTop: "2rem" }}
               disabled={file === null}
               onClick={handleSubmit}
             >
@@ -212,7 +202,11 @@ const UploadProofModal: React.FC<UploadProofModalProps> = (
         ) : (
           <>
             <IonRow className='ion-justify-content-center ion-margin-top'>
-              <img src={state.evidenceLink} alt='Proof' />
+              <img
+                src={state.evidenceLink}
+                alt='Proof'
+                className='uploaded-proof'
+              />
             </IonRow>
             {!isAfter(Date.now(), parseISO(challenge.endAt)) ? (
               <IonButton
@@ -248,26 +242,21 @@ const UploadProofModal: React.FC<UploadProofModalProps> = (
       onDidDismiss={() => setShowModal(false)}
       backdropDismiss={false}
     >
+      <IonHeader translucent className='ion-no-border'>
+        <IonToolbar style={{ marginTop: "1.25rem" }}>
+          <IonTitle>My proof</IonTitle>
+          <IonButtons slot='start'>
+            <IonButton
+              onClick={() => setShowModal(false)}
+              style={{ marginLeft: "1rem" }}
+            >
+              <IonIcon icon={arrowBackOutline} size='large' />
+            </IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
       <IonContent fullscreen>
-        <IonFab
-          horizontal='start'
-          vertical='top'
-          style={{ marginTop: "1rem", marginLeft: "1rem" }}
-        >
-          <IonIcon
-            icon={arrowBackOutline}
-            size='large'
-            onClick={() => {
-              setState({
-                uploadMode:
-                  userData?.evidenceLink === undefined ||
-                  userData?.evidenceLink === "",
-              });
-              setShowModal(false);
-            }}
-          />
-        </IonFab>
-        {renderProof()}
+        <IonRow style={{ marginTop: "0.75rem" }}>{renderProof()}</IonRow>
         <LoadingSpinner
           loading={state.isLoading}
           message={"Loading"}

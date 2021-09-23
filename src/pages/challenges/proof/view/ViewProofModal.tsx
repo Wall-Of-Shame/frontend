@@ -1,10 +1,13 @@
 import {
+  IonButton,
+  IonButtons,
   IonContent,
-  IonFab,
+  IonHeader,
   IonIcon,
   IonModal,
   IonRow,
-  IonText,
+  IonTitle,
+  IonToolbar,
 } from "@ionic/react";
 import { arrowBackOutline } from "ionicons/icons";
 import Container from "../../../../components/container";
@@ -28,35 +31,27 @@ const ViewProofModal: React.FC<ViewProofModalProps> = (
       onDidDismiss={() => setShowModal(false)}
       backdropDismiss={false}
     >
-      <IonContent fullscreen>
-        <IonFab
-          horizontal='start'
-          vertical='top'
-          style={{ marginTop: "1rem", marginLeft: "1rem" }}
-        >
-          <IonIcon
-            icon={arrowBackOutline}
-            size='large'
-            onClick={() => {
-              setShowModal(false);
-            }}
-          />
-        </IonFab>
-        <Container>
-          <IonRow slot='start'>
-            <IonText
-              style={{
-                fontSize: "32px",
-                fontWeight: "bold",
-                marginLeft: "1rem",
-                marginBottom: "1rem",
-              }}
+      <IonHeader translucent className='ion-no-border'>
+        <IonToolbar style={{ marginTop: "1.25rem" }}>
+          <IonTitle>{`${userData?.name}'s proof`}</IonTitle>
+          <IonButtons slot='start'>
+            <IonButton
+              onClick={() => setShowModal(false)}
+              style={{ marginLeft: "1rem" }}
             >
-              {`${userData?.name}'s proof`}
-            </IonText>
-          </IonRow>
+              <IonIcon icon={arrowBackOutline} size='large' />
+            </IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent fullscreen>
+        <Container>
           <IonRow className='ion-justify-content-center ion-margin-top'>
-            <img src={userData?.evidenceLink} alt='Proof' />
+            <img
+              src={userData?.evidenceLink}
+              alt='Proof'
+              className='uploaded-proof'
+            />
           </IonRow>
         </Container>
       </IonContent>
