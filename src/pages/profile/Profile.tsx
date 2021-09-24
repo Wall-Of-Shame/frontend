@@ -85,7 +85,7 @@ const Profile: React.FC = () => {
             alignItems: "center",
           }}
         >
-          <IonRow className='ion-padding'>No past challenges yet</IonRow>
+          <IonRow className="ion-padding">No past challenges yet</IonRow>
         </IonGrid>
       );
     }
@@ -97,20 +97,17 @@ const Profile: React.FC = () => {
           ).length;
           return (
             <IonCard
-              mode='ios'
+              mode="ios"
               button
               key={c.challengeId}
               onClick={() => {
                 history.push(`challenges/${c.challengeId}/details`, c);
               }}
             >
-              <IonGrid className='ion-no-padding'>
-                <IonRow className='ion-align-items-center'>
-                  <IonCol size='11'>
-                    <IonCardHeader
-                      className='ion-no-padding ion-padding-top ion-padding-horizontal'
-                      style={{ paddingBottom: "0.75rem" }}
-                    >
+              <IonGrid className="ion-no-padding">
+                <IonRow className="ion-align-items-center">
+                  <IonCol size="11">
+                    <IonCardHeader style={{ paddingBottom: "0.75rem" }}>
                       <IonCardTitle style={{ fontSize: "1.2rem" }}>
                         {c.title}
                       </IonCardTitle>
@@ -130,7 +127,7 @@ const Profile: React.FC = () => {
                           )}`}
                         </IonText>
                       </IonRow>
-                      <IonRow>
+                      <IonRow style={{ marginTop: "0.5rem" }}>
                         <IonText style={{ fontSize: "0.8rem" }}>
                           {acceptedCount} participant
                           {acceptedCount === 1 ? "" : "s"}
@@ -138,14 +135,14 @@ const Profile: React.FC = () => {
                       </IonRow>
                       <IonRow
                         style={{ paddingTop: "0.5rem" }}
-                        className='ion-align-items-center'
+                        className="ion-align-items-center"
                       >
                         {c.participants.accepted.completed
                           .concat(c.participants.accepted.notCompleted)
                           .map((p) => {
                             return (
                               <IonAvatar
-                                className='avatar'
+                                className="avatar"
                                 key={p.userId}
                                 style={{ marginRight: "0.25rem" }}
                               >
@@ -156,7 +153,7 @@ const Profile: React.FC = () => {
                         {c.participants.pending.map((p) => {
                           return (
                             <IonAvatar
-                              className='avatar'
+                              className="avatar"
                               key={p.userId}
                               style={{ marginRight: "0.25rem" }}
                             >
@@ -167,7 +164,7 @@ const Profile: React.FC = () => {
                       </IonRow>
                     </IonCardContent>
                   </IonCol>
-                  <IonCol size='1'>
+                  <IonCol size="1">
                     <IonIcon
                       icon={chevronForward}
                       style={{ fontSize: "24px" }}
@@ -185,7 +182,7 @@ const Profile: React.FC = () => {
   return (
     <IonPage>
       <IonPopover
-        cssClass='popover'
+        cssClass="popover"
         event={popoverState.event}
         isOpen={popoverState.showPopover}
         onDidDismiss={() =>
@@ -196,7 +193,7 @@ const Profile: React.FC = () => {
           <IonItem
             button
             detail={false}
-            lines='none'
+            lines="none"
             style={{ marginTop: "0.5rem" }}
             onClick={() => {
               setShowPopover({ showPopover: false, event: undefined });
@@ -204,7 +201,7 @@ const Profile: React.FC = () => {
             }}
           >
             <IonIcon
-              slot='start'
+              slot="start"
               icon={createOutline}
               style={{ fontSize: "1.5rem" }}
             />
@@ -213,14 +210,14 @@ const Profile: React.FC = () => {
           <IonItem
             button
             detail={false}
-            lines='none'
+            lines="none"
             onClick={() => {
               setShowPopover({ showPopover: false, event: undefined });
               history.push("/profile/settings");
             }}
           >
             <IonIcon
-              slot='start'
+              slot="start"
               icon={settingsOutline}
               style={{ fontSize: "1.5rem" }}
             />
@@ -229,14 +226,14 @@ const Profile: React.FC = () => {
           <IonItem
             button
             detail={false}
-            lines='none'
+            lines="none"
             onClick={() => {
               setShowPopover({ showPopover: false, event: undefined });
               setShowHelpModal(true);
             }}
           >
             <IonIcon
-              slot='start'
+              slot="start"
               icon={helpCircleOutline}
               style={{ fontSize: "1.5rem" }}
             />
@@ -245,7 +242,7 @@ const Profile: React.FC = () => {
           <IonItem
             button
             detail={false}
-            lines='none'
+            lines="none"
             onClick={() => {
               setShowPopover({ showPopover: false, event: undefined });
               logout();
@@ -253,7 +250,7 @@ const Profile: React.FC = () => {
             style={{ marginBottom: "0.5rem" }}
           >
             <IonIcon
-              slot='start'
+              slot="start"
               icon={logOutOutline}
               style={{ fontSize: "1.5rem" }}
             />
@@ -262,22 +259,22 @@ const Profile: React.FC = () => {
         </IonList>
       </IonPopover>
 
-      <IonHeader className='ion-no-border'>
+      <IonHeader className="ion-no-border">
         <IonToolbar>
-          <IonButtons slot='end'>
+          <IonButtons slot="end">
             <IonButton
               style={{
                 marginTop: "1.5rem",
                 marginRight: "1rem",
               }}
-              color='dark'
+              color="dark"
               onClick={(e: any) => {
                 e.persist();
                 setShowPopover({ showPopover: true, event: e });
               }}
             >
               <IonIcon
-                slot='end'
+                slot="end"
                 icon={ellipsisVertical}
                 style={{ fontSize: "1.5rem" }}
               />
@@ -289,17 +286,17 @@ const Profile: React.FC = () => {
       <IonContent fullscreen>
         <IonGrid>
           <IonRow
-            className='ion-align-items-center'
+            className="ion-align-items-center"
             style={{ marginTop: "1rem" }}
           >
-            <IonCol size='4'>
-              <IonRow className='ion-justify-content-center ion-no-padding'>
-                <IonAvatar id='profile-avatar'>
+            <IonCol size="4">
+              <IonRow className="ion-justify-content-center ion-no-padding">
+                <IonAvatar id="profile-avatar">
                   <AvatarImg avatar={user?.avatar ?? null} />
                 </IonAvatar>
               </IonRow>
             </IonCol>
-            <IonCol size='8'>
+            <IonCol size="8">
               <IonRow>
                 <IonText
                   style={{
@@ -328,15 +325,15 @@ const Profile: React.FC = () => {
         </IonGrid>
 
         <IonGrid style={{ paddingBottom: "2rem" }}>
-          <IonRow className='ion-align-items-center'>
+          <IonRow className="ion-align-items-center">
             <IonCol>
               <IonCard
-                mode='ios'
-                className='profile-statistic ion-text-center'
-                color='quaternary'
+                mode="ios"
+                className="profile-statistic ion-text-center"
+                color="quaternary"
               >
                 <IonCardContent>
-                  <IonRow className='ion-justify-content-center ion-align-items-center'>
+                  <IonRow className="ion-justify-content-center ion-align-items-center">
                     <IonText
                       style={{
                         fontSize: "1.5rem",
@@ -354,15 +351,15 @@ const Profile: React.FC = () => {
               </IonCard>
             </IonCol>
           </IonRow>
-          <IonRow className='ion-align-items-center'>
+          <IonRow className="ion-align-items-center">
             <IonCol>
               <IonCard
-                mode='ios'
-                className='profile-statistic ion-text-center'
-                color='tertiary'
+                mode="ios"
+                className="profile-statistic ion-text-center"
+                color="tertiary"
               >
                 <IonCardContent>
-                  <IonRow className='ion-justify-content-center ion-align-items-center'>
+                  <IonRow className="ion-justify-content-center ion-align-items-center">
                     <IonText
                       style={{
                         fontSize: "1.5rem",
@@ -380,15 +377,15 @@ const Profile: React.FC = () => {
               </IonCard>
             </IonCol>
           </IonRow>
-          <IonRow className='ion-align-items-center'>
+          <IonRow className="ion-align-items-center">
             <IonCol>
               <IonCard
-                mode='ios'
-                className='profile-statistic ion-text-center'
-                color='quinary'
+                mode="ios"
+                className="profile-statistic ion-text-center"
+                color="quinary"
               >
                 <IonCardContent>
-                  <IonRow className='ion-justify-content-center ion-align-items-center'>
+                  <IonRow className="ion-justify-content-center ion-align-items-center">
                     <IonText
                       style={{
                         fontSize: "1.5rem",
