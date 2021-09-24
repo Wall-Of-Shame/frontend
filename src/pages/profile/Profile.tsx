@@ -150,17 +150,6 @@ const Profile: React.FC = () => {
                               </IonAvatar>
                             );
                           })}
-                        {c.participants.pending.map((p) => {
-                          return (
-                            <IonAvatar
-                              className="avatar"
-                              key={p.userId}
-                              style={{ marginRight: "0.25rem" }}
-                            >
-                              <AvatarImg avatar={p.avatar} />
-                            </IonAvatar>
-                          );
-                        })}
                       </IonRow>
                     </IonCardContent>
                   </IonCol>
