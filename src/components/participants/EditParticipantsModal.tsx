@@ -145,6 +145,7 @@ const EditParticipantsModal: React.FC<EditParticipantsModalProps> = (props) => {
                   size='3'
                 >
                   <IonButton
+                    mode='ios'
                     shape='round'
                     color={
                       invitedUsers.indexOf(u) !== -1 ? "quinary" : "quaternary"
@@ -207,6 +208,7 @@ const EditParticipantsModal: React.FC<EditParticipantsModalProps> = (props) => {
                   size='3'
                 >
                   <IonButton
+                    mode='ios'
                     shape='round'
                     color='tertiary'
                     fill='solid'
@@ -225,6 +227,7 @@ const EditParticipantsModal: React.FC<EditParticipantsModalProps> = (props) => {
         <IonToolbar>
           <IonRow className='ion-justify-content-around'>
             <IonButton
+              mode='ios'
               color='danger'
               shape='round'
               onClick={() => setShowModal(false)}
@@ -241,6 +244,7 @@ const EditParticipantsModal: React.FC<EditParticipantsModalProps> = (props) => {
               </IonText>
             </IonButton>
             <IonButton
+              mode='ios'
               color='secondary'
               shape='round'
               onClick={() => completionCallback(invitedUsers)}

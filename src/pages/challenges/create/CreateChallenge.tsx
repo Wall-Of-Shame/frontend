@@ -403,6 +403,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
             style={{ margin: "0.5rem" }}
           >
             <IonButton
+              mode='ios'
               shape='round'
               color='secondary'
               fill='solid'

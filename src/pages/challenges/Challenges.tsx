@@ -39,6 +39,7 @@ import Alert from "../../components/alert";
 import { format, formatDuration, intervalToDuration } from "date-fns";
 import parseISO from "date-fns/parseISO";
 import AvatarImg from "../../components/avatar";
+import { isPlatform } from "@ionic/core";
 
 interface ChallengesState {
   isLoading: boolean;
@@ -143,6 +144,7 @@ const Challenges: React.FC = () => {
                 ).length;
                 return (
                   <IonCard
+                    mode='ios'
                     button
                     key={c.challengeId}
                     onClick={() => {
@@ -259,6 +261,7 @@ const Challenges: React.FC = () => {
                       ).length;
                     return (
                       <IonCard
+                        mode='ios'
                         button
                         key={c.challengeId}
                         onClick={() => {
@@ -346,6 +349,7 @@ const Challenges: React.FC = () => {
                       ).length;
                     return (
                       <IonCard
+                        mode='ios'
                         button
                         key={c.challengeId}
                         onClick={() => {
@@ -448,6 +452,7 @@ const Challenges: React.FC = () => {
                 ).length;
                 return (
                   <IonCard
+                    mode='ios'
                     button
                     key={c.challengeId}
                     onClick={() => {
@@ -565,6 +570,19 @@ const Challenges: React.FC = () => {
       <IonHeader className='ion-no-border'>
         <IonToolbar>
           <IonTitle>Challenges</IonTitle>
+          {!isPlatform("ios") && (
+            <IonButtons slot='end'>
+              <IonButton
+                style={{
+                  marginRight: "1rem",
+                }}
+                color='dark'
+                routerLink='challenges/create'
+              >
+                <IonIcon slot='end' icon={addOutline} />
+              </IonButton>
+            </IonButtons>
+          )}
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -608,7 +626,7 @@ const Challenges: React.FC = () => {
 
         {renderChallenges()}
         <IonFab vertical='bottom' horizontal='end' slot='fixed'>
-          <IonFabButton color='senary' onClick={fetchData}>
+          <IonFabButton color='senary' onClick={fetchData} mode='ios'>
             <IonIcon icon={refreshOutline} />
           </IonFabButton>
         </IonFab>

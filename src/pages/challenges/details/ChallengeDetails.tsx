@@ -450,6 +450,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
 
                     {u.evidenceLink !== undefined && u.evidenceLink !== "" && (
                       <IonButton
+                        mode='ios'
                         slot='end'
                         shape='round'
                         color='tertiary'
@@ -502,6 +503,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
 
                     {u.evidenceLink !== undefined && u.evidenceLink !== "" && (
                       <IonButton
+                        mode='ios'
                         slot='end'
                         shape='round'
                         color='tertiary'
@@ -626,6 +628,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
 
                     {u.evidenceLink !== undefined && u.evidenceLink !== "" && (
                       <IonButton
+                        mode='ios'
                         slot='end'
                         shape='round'
                         color='tertiary'
@@ -744,6 +747,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
                     </IonLabel>
                     {u.evidenceLink !== undefined && u.evidenceLink !== "" && (
                       <IonButton
+                        mode='ios'
                         slot='end'
                         shape='round'
                         color='tertiary'
@@ -943,6 +947,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           style={{ margin: "0.5rem" }}
         >
           <IonButton
+            mode='ios'
             shape='round'
             color='secondary'
             expand='block'
@@ -964,37 +969,43 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
               className='ion-justify-content-around'
               style={{ margin: "0.5rem" }}
             >
-              <IonCol size='6'>
-                <IonButton
-                  shape='round'
-                  color='secondary'
-                  expand='block'
-                  fill='solid'
-                  onClick={() => setState({ showVoteModal: true })}
+              <IonButton
+                mode='ios'
+                shape='round'
+                color='secondary'
+                expand='block'
+                fill='solid'
+                onClick={() => setState({ showVoteModal: true })}
+              >
+                <IonText
+                  style={{ marginLeft: "1.5rem", marginRight: "1.5rem" }}
                 >
-                  <IonText>Vote out cheaters</IonText>
-                </IonButton>
-              </IonCol>
-              <IonCol size='6'>
-                <IonButton
-                  shape='round'
-                  color='senary'
-                  expand='block'
-                  fill='solid'
-                  onClick={() => {
-                    setState({
-                      showAlert: true,
-                      hasConfirm: true,
-                      alertHeader: "Are you sure?",
-                      alertMessage:
-                        "This will confirm the challenge and voting results and banish those who failed the challenge or cheated to the Wall of Shame :')",
-                      confirmHandler: handleReleaseResults,
-                    });
-                  }}
+                  Vote out cheaters
+                </IonText>
+              </IonButton>
+              <IonButton
+                mode='ios'
+                shape='round'
+                color='senary'
+                expand='block'
+                fill='solid'
+                onClick={() => {
+                  setState({
+                    showAlert: true,
+                    hasConfirm: true,
+                    alertHeader: "Are you sure?",
+                    alertMessage:
+                      "This will confirm the challenge and voting results and banish those who failed the challenge or cheated to the Wall of Shame :')",
+                    confirmHandler: handleReleaseResults,
+                  });
+                }}
+              >
+                <IonText
+                  style={{ marginLeft: "1.5rem", marginRight: "1.5rem" }}
                 >
-                  <IonText>Release Results</IonText>
-                </IonButton>
-              </IonCol>
+                  Release Results
+                </IonText>
+              </IonButton>
             </IonRow>
           ) : (
             <IonRow
@@ -1002,6 +1013,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
               style={{ margin: "0.5rem" }}
             >
               <IonButton
+                mode='ios'
                 shape='round'
                 color='secondary'
                 expand='block'
@@ -1032,6 +1044,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           style={{ margin: "0.5rem" }}
         >
           <IonButton
+            mode='ios'
             shape='round'
             color='secondary'
             expand='block'
@@ -1057,6 +1070,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           style={{ margin: "0.5rem" }}
         >
           <IonButton
+            mode='ios'
             shape='round'
             color='secondary'
             expand='block'
@@ -1077,7 +1091,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           className='ion-justify-content-center'
           style={{ margin: "0.5rem" }}
         >
-          <IonButton shape='round' color='secondary-shade'>
+          <IonButton shape='round' color='secondary-shade' mode='ios'>
             <IonText style={{ marginLeft: "1.5rem", marginRight: "1.5rem" }}>
               Waiting for the challenge to start
             </IonText>
@@ -1098,6 +1112,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
         >
           <IonCol>
             <IonButton
+              mode='ios'
               shape='round'
               color='danger'
               expand='block'
@@ -1118,6 +1133,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
           </IonCol>
           <IonCol>
             <IonButton
+              mode='ios'
               shape='round'
               color='secondary'
               fill='solid'
@@ -1146,7 +1162,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
         className='ion-justify-content-center'
         style={{ margin: "0.5rem" }}
       >
-        <IonButton shape='round' color='secondary' disabled>
+        <IonButton shape='round' color='secondary' disabled mode='ios'>
           <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>
             Waiting for the challenge to start
           </IonText>
@@ -1354,7 +1370,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
         />
         {renderParticipants()}
         <IonFab vertical='bottom' horizontal='end' slot='fixed'>
-          <IonFabButton color='senary' onClick={fetchData}>
+          <IonFabButton color='senary' onClick={fetchData} mode='ios'>
             <IonIcon icon={refreshOutline} />
           </IonFabButton>
         </IonFab>

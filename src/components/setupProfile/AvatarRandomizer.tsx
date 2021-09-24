@@ -3,7 +3,6 @@ import {
   IonButton,
   IonContent,
   IonFab,
-  IonGrid,
   IonIcon,
   IonRow,
   IonText,
@@ -86,6 +85,7 @@ const AvatarRandomizer: React.FC<AvatarRandomizerProps> = (
           </IonAvatar>
         </IonRow>
         <IonButton
+          mode='ios'
           shape='round'
           color='medium'
           fill='outline'
@@ -95,6 +95,7 @@ const AvatarRandomizer: React.FC<AvatarRandomizerProps> = (
           <IonText color='dark'>Gimme another one</IonText>
         </IonButton>
         <IonButton
+          mode='ios'
           fill='solid'
           shape='round'
           color='secondary'

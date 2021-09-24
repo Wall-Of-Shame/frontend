@@ -95,6 +95,7 @@ const Profile: React.FC = () => {
           ).length;
           return (
             <IonCard
+              mode='ios'
               button
               key={c.challengeId}
               onClick={() => {
@@ -328,6 +329,7 @@ const Profile: React.FC = () => {
           <IonRow className='ion-align-items-center'>
             <IonCol>
               <IonCard
+                mode='ios'
                 className='profile-statistic ion-text-center'
                 color='quaternary'
               >
@@ -353,6 +355,7 @@ const Profile: React.FC = () => {
           <IonRow className='ion-align-items-center'>
             <IonCol>
               <IonCard
+                mode='ios'
                 className='profile-statistic ion-text-center'
                 color='tertiary'
               >
@@ -378,6 +381,7 @@ const Profile: React.FC = () => {
           <IonRow className='ion-align-items-center'>
             <IonCol>
               <IonCard
+                mode='ios'
                 className='profile-statistic ion-text-center'
                 color='quinary'
               >

@@ -183,6 +183,7 @@ const VoteModal: React.FC<VoteModalProps> = (props: VoteModalProps) => {
         {!hasReleasedResults && (
           <IonRow>
             <IonButton
+              mode='ios'
               shape='round'
               color='secondary'
               fill='solid'
@@ -225,7 +226,7 @@ const VoteModal: React.FC<VoteModalProps> = (props: VoteModalProps) => {
         </IonFab>
         <IonContent>
           <IonFab vertical='bottom' horizontal='end' slot='fixed'>
-            <IonFabButton color='senary' onClick={fetchData}>
+            <IonFabButton color='senary' onClick={fetchData} mode='ios'>
               <IonIcon icon={refreshOutline} />
             </IonFabButton>
           </IonFab>
