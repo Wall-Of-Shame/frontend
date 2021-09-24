@@ -42,6 +42,7 @@ import { ChallengeData } from "../../interfaces/models/Challenges";
 import parseISO from "date-fns/esm/fp/parseISO/index.js";
 import { format } from "date-fns";
 import AvatarImg from "../../components/avatar";
+import HelpModal from "./help";
 
 const Profile: React.FC = () => {
   const { logout } = useAuth();
@@ -52,6 +53,7 @@ const Profile: React.FC = () => {
     showPopover: false,
     event: undefined,
   });
+  const [showHelpModal, setShowHelpModal] = useState(false);
 
   const selectChallenges = (state: RootState): ChallengeDux => state.challenges;
 
@@ -230,7 +232,7 @@ const Profile: React.FC = () => {
             lines='none'
             onClick={() => {
               setShowPopover({ showPopover: false, event: undefined });
-              // Show help modal
+              setShowHelpModal(true);
             }}
           >
             <IonIcon
@@ -405,7 +407,6 @@ const Profile: React.FC = () => {
             </IonCol>
           </IonRow>
         </IonGrid>
-
         <IonText
           style={{
             fontSize: "1rem",
@@ -416,8 +417,11 @@ const Profile: React.FC = () => {
         >
           Challenge history
         </IonText>
-
         {renderHistory()}
+        <HelpModal
+          showModal={showHelpModal}
+          setShowModal={(showModal) => setShowHelpModal(showModal)}
+        />
       </IonContent>
     </IonPage>
   );

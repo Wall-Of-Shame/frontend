@@ -89,6 +89,7 @@ const EditParticipantsModal: React.FC<EditParticipantsModalProps> = (props) => {
         <IonRow style={{ margin: "0.5rem" }} className='ion-align-items-center'>
           <IonIcon
             icon={searchOutline}
+            color='dark'
             style={{
               marginRight: "0.5rem",
               marginLeft: "0.5rem",
@@ -96,6 +97,7 @@ const EditParticipantsModal: React.FC<EditParticipantsModalProps> = (props) => {
             }}
           />
           <IonInput
+            color='dark'
             value={searchText}
             placeholder='Search for a name or username'
             onIonChange={(e) => {

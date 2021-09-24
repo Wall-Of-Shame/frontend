@@ -31,6 +31,7 @@ const EmailVerification: React.FC<EmailVerificationProps> = (
     refreshFirebaseUser().then(() => {
       setState({ isLoading: false });
       const user = getFirebaseUser();
+      console.log(user);
       if (user?.emailVerified) {
         nextPage();
       } else {
@@ -102,7 +103,6 @@ const EmailVerification: React.FC<EmailVerificationProps> = (
           </IonText>
         </IonRow>
         <IonButton
-          mode='ios'
           fill='solid'
           shape='round'
           color='secondary'
