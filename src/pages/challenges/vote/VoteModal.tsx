@@ -25,6 +25,7 @@ import Alert from "../../../components/alert";
 import { useChallenge } from "../../../contexts/ChallengeContext";
 import { VoteList } from "../../../interfaces/models/Votes";
 import AvatarImg from "../../../components/avatar";
+import ViewProofModal from "../proof/view";
 
 interface VoteModalProps {
   showModal: boolean;
@@ -47,6 +48,8 @@ interface VoteModalState {
   okText?: string;
   showToast: boolean;
   toastMessage: string;
+  showProofModal: boolean;
+  userData: UserMini | undefined;
 }
 
 const VoteModal: React.FC<VoteModalProps> = (props: VoteModalProps) => {
@@ -78,6 +81,8 @@ const VoteModal: React.FC<VoteModalProps> = (props: VoteModalProps) => {
       okText: undefined,
       showToast: false,
       toastMessage: "",
+      showProofModal: false,
+      userData: undefined,
     }
   );
 
@@ -124,11 +129,9 @@ const VoteModal: React.FC<VoteModalProps> = (props: VoteModalProps) => {
     setState({ isLoading: true });
     try {
       const votes = await getVotes(challengeId);
-      console.log(votes);
       setVotes(votes);
       setState({ isLoading: false });
     } catch (error) {
-      console.log(error);
       setState({
         isLoading: false,
         showAlert: true,
@@ -166,10 +169,10 @@ const VoteModal: React.FC<VoteModalProps> = (props: VoteModalProps) => {
             <AvatarImg avatar={u.avatar} />
           </IonAvatar>
         </IonRow>
-        <IonRow style={{ marginBottom: "0.75rem" }}>
+        <IonRow style={{ marginBottom: "0.25rem" }}>
           <IonText style={{ fontWeight: "bold" }}>{u.name}</IonText>
         </IonRow>
-        <IonRow style={{ marginBottom: "0.75rem" }}>
+        <IonRow style={{ marginBottom: "0.25rem" }}>
           <IonText style={{ fonrtSize: "0.75rem" }}>@{u.username}</IonText>
         </IonRow>
         <IonRow style={{ marginBottom: "0.75rem" }}>
@@ -183,8 +186,31 @@ const VoteModal: React.FC<VoteModalProps> = (props: VoteModalProps) => {
               : "0 votes"}
           </IonText>
         </IonRow>
-        {!hasReleasedResults && (
-          <IonRow>
+        <IonRow>
+          {!hasReleasedResults &&
+            u.evidenceLink !== undefined &&
+            u.evidenceLink !== "" && (
+              <IonButton
+                mode='ios'
+                shape='round'
+                color='tertiary'
+                fill='solid'
+                style={{ height: "2.5rem", width: "4.5rem" }}
+                onClick={() => {
+                  setState({ userData: u, showProofModal: true });
+                }}
+              >
+                <IonText
+                  style={{
+                    fontSize: 15,
+                    fontWeight: 600,
+                  }}
+                >
+                  Proof
+                </IonText>
+              </IonButton>
+            )}
+          {!hasReleasedResults && (
             <IonButton
               mode='ios'
               shape='round'
@@ -203,8 +229,8 @@ const VoteModal: React.FC<VoteModalProps> = (props: VoteModalProps) => {
                 {hasVoted ? "Voted" : "Vote"}
               </IonText>
             </IonButton>
-          </IonRow>
-        )}
+          )}
+        </IonRow>
       </IonCol>
     );
   };
@@ -274,6 +300,11 @@ const VoteModal: React.FC<VoteModalProps> = (props: VoteModalProps) => {
           )}
           <div style={{ margin: "1rem" }} />
         </IonContent>
+        <ViewProofModal
+          userData={state.userData}
+          showModal={state.showProofModal}
+          setShowModal={(showModal) => setState({ showProofModal: showModal })}
+        />
         <LoadingSpinner
           loading={state.isLoading}
           message={"Loading"}

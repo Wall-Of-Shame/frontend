@@ -20,8 +20,7 @@ const updateProfile = async (
     avatar,
   };
   try {
-    const response = await APIService.patch("self", data);
-    console.log(response);
+    await APIService.patch("self", data);
     return await AuthService.getUser();
   } catch (error) {
     return Promise.reject(error);
@@ -33,7 +32,6 @@ const searchUser = async (searchText: string): Promise<UserList[]> => {
     const response = await APIService.get(
       `users/?operation=search&query=${searchText}`
     );
-    console.log(response);
     return response.data;
   } catch (error) {
     return Promise.reject(error);
@@ -43,7 +41,6 @@ const searchUser = async (searchText: string): Promise<UserList[]> => {
 const getFriendsRankings = async (): Promise<UserList[]> => {
   try {
     const response = await APIService.get(`users/?operation=wallRecents`);
-    console.log(response);
     return response.data;
   } catch (error) {
     return Promise.reject(error);
@@ -53,7 +50,6 @@ const getFriendsRankings = async (): Promise<UserList[]> => {
 const getGlobalRankings = async (): Promise<UserList[]> => {
   try {
     const response = await APIService.get(`users/?operation=wallGlobal`);
-    console.log(response);
     return response.data;
   } catch (error) {
     return Promise.reject(error);

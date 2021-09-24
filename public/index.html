@@ -7,6 +7,7 @@
     <base href="/" />
 
     <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#ffffff" />
     <meta
       name="viewport"
       content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
@@ -30,9 +31,24 @@
       rel="apple-touch-icon"
       href="%PUBLIC_URL%/assets/icon/icon-192x192.png"
     />
+
+    <style>
+      ._initial_screen {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100vw;
+        height: 100vh;
+        margin: 0 !important;
+      }
+    </style>
   </head>
 
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="_initial_screen">
+        <img src="%PUBLIC_URL%/assets/splash.png" />
+      </div>
+    </div>
   </body>
 </html>

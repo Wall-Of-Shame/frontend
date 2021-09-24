@@ -111,8 +111,6 @@ const Challenges: React.FC = () => {
     setState({ isLoading: true });
     try {
       const allChallenges = await getAllChallenges();
-      console.log(allChallenges);
-
       setOngoing(allChallenges.ongoing);
       setPendingStart(allChallenges.pendingStart);
       setPendingResponse(allChallenges.pendingResponse);
@@ -121,11 +119,13 @@ const Challenges: React.FC = () => {
         setState({ isLoading: false });
       }, 500);
     } catch (error) {
+      console.log(error);
       setTimeout(() => {
         setState({
           isLoading: false,
-          alertHeader: "Something went wrong",
-          alertMessage: "Please reload and try again later.",
+          alertHeader: "Ooooops",
+          alertMessage:
+            "Our server is taking a break, come back later please :)",
           showAlert: true,
         });
       }, 500);

@@ -83,7 +83,6 @@ const AuthProvider: React.FunctionComponent = (props) => {
       AuthService.login(token, messagingToken);
       await AuthService.getUser();
     } catch (error) {
-      console.log(error);
       return Promise.reject(error);
     }
   };
@@ -96,15 +95,7 @@ const AuthProvider: React.FunctionComponent = (props) => {
       const messagingToken = await getToken(messaging).catch((_) => undefined);
       await AuthService.login(token, messagingToken);
       await AuthService.getUser();
-    } catch (error: any) {
-      console.log(error);
-      // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // The email of the user's account used.
-      const email = error.email;
-      // The AuthCredential type that was used.
-      const credential = GoogleAuthProvider.credentialFromError(error);
+    } catch (error) {
       return Promise.reject(error);
     }
   };
@@ -117,15 +108,7 @@ const AuthProvider: React.FunctionComponent = (props) => {
       const messagingToken = await getToken(messaging).catch((_) => undefined);
       await AuthService.login(token, messagingToken);
       await AuthService.getUser();
-    } catch (error: any) {
-      console.log(error);
-      // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // The email of the user's account used.
-      const email = error.email;
-      // The AuthCredential type that was used.
-      const credential = GoogleAuthProvider.credentialFromError(error);
+    } catch (error) {
       return Promise.reject(error);
     }
   };
@@ -143,7 +126,6 @@ const AuthProvider: React.FunctionComponent = (props) => {
       await AuthService.login(token, messagingToken);
       await AuthService.getUser();
     } catch (error) {
-      console.log(error);
       return Promise.reject(error);
     }
   };
@@ -169,7 +151,7 @@ const AuthProvider: React.FunctionComponent = (props) => {
       }
       sendEmailVerification(user!);
     } catch (error) {
-      console.log(error);
+      Promise.reject(new Error("Something went wrong"));
     }
   };
 
