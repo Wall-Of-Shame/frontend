@@ -103,6 +103,7 @@ const EmailVerification: React.FC<EmailVerificationProps> = (
           </IonText>
         </IonRow>
         <IonButton
+          mode='ios'
           fill='solid'
           shape='round'
           color='secondary'

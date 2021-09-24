@@ -135,6 +135,7 @@ const PersonalDetails: React.FC<PersonalDetailsProps> = (
           </IonItem>
         </IonList>
         <IonButton
+          mode='ios'
           fill='solid'
           color='secondary'
           shape='round'

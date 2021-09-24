@@ -4,7 +4,6 @@ import {
   IonHeader,
   IonToolbar,
   IonContent,
-  IonSearchbar,
   IonFooter,
   IonRow,
   IonText,
@@ -12,12 +11,13 @@ import {
   IonAvatar,
   IonGrid,
   IonIcon,
+  IonInput,
 } from "@ionic/react";
 import "./AddParticipantsModal.scss";
 import { UserList } from "../../interfaces/models/Users";
 import { useCallback, useState } from "react";
 import { useUser } from "../../contexts/UserContext";
-import { addOutline, removeOutline } from "ionicons/icons";
+import { addOutline, removeOutline, searchOutline } from "ionicons/icons";
 import AvatarImg from "../avatar";
 import lodash from "lodash";
 
@@ -77,20 +77,24 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
       cssClass='modal-container'
     >
       <IonHeader translucent>
-        <IonToolbar className='modal-search'>
-          <IonSearchbar
-            key='modal-search'
+        <IonRow style={{ margin: "0.5rem" }} className='ion-align-items-center'>
+          <IonIcon
+            icon={searchOutline}
+            style={{
+              marginRight: "0.5rem",
+              marginLeft: "0.5rem",
+              fontSize: "1.25rem",
+            }}
+          />
+          <IonInput
             value={searchText}
+            placeholder='Search for a name or username'
             onIonChange={(e) => {
               setSearchText(e.detail.value ?? "");
               debouncedSearch(e.detail.value ?? "");
             }}
-            placeholder='Search for a name or username'
-            showCancelButton='never'
-            className='ion-margin-top'
-            color='white'
-          ></IonSearchbar>
-        </IonToolbar>
+          />
+        </IonRow>
       </IonHeader>
       <IonContent fullscreen>
         <IonGrid className='ion-margin-top'>
@@ -133,6 +137,7 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
                     size='3'
                   >
                     <IonButton
+                      mode='ios'
                       shape='round'
                       color='tertiary'
                       disabled
@@ -152,6 +157,7 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
                     size='3'
                   >
                     <IonButton
+                      mode='ios'
                       shape='round'
                       color={
                         invitedUsers.indexOf(u) !== -1
@@ -217,6 +223,7 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
                   size='3'
                 >
                   <IonButton
+                    mode='ios'
                     shape='round'
                     color='tertiary'
                     fill='solid'
@@ -233,8 +240,12 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
       </IonContent>
       <IonFooter>
         <IonToolbar>
-          <IonRow className='ion-justify-content-around'>
+          <IonRow
+            className='ion-justify-content-around'
+            style={{ marginTop: "0.5rem", marginBottom: "0.5rem" }}
+          >
             <IonButton
+              mode='ios'
               color='danger'
               shape='round'
               onClick={() => setShowModal(false)}
@@ -251,6 +262,7 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
               </IonText>
             </IonButton>
             <IonButton
+              mode='ios'
               color='secondary'
               shape='round'
               onClick={() => completionCallback(invitedUsers)}

@@ -78,6 +78,7 @@ const ProfileSetUp: React.FC<ProfileSetUpProps> = (
           <IonText>Your username will allow others to find you easily</IonText>
         </IonRow>
         <IonButton
+          mode='ios'
           fill='solid'
           shape='round'
           color='secondary'

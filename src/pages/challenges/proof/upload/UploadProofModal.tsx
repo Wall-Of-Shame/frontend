@@ -187,6 +187,7 @@ const UploadProofModal: React.FC<UploadProofModalProps> = (
               maxFileSize={Infinity}
             />
             <IonButton
+              mode='ios'
               fill='solid'
               shape='round'
               color='secondary'
@@ -210,6 +211,7 @@ const UploadProofModal: React.FC<UploadProofModalProps> = (
             </IonRow>
             {!isAfter(Date.now(), parseISO(challenge.endAt)) ? (
               <IonButton
+                mode='ios'
                 fill='solid'
                 shape='round'
                 color='secondary'

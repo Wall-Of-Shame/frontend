@@ -187,6 +187,7 @@ const EditProfile: React.FC = () => {
         </IonRow>
         <IonRow className='ion-justify-content-center'>
           <IonButton
+            mode='ios'
             shape='round'
             color='medium'
             fill='outline'

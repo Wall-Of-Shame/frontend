@@ -422,7 +422,7 @@ const EditChallenge: React.FC<EditChallengeProps> = (
           }}
         />
         <OfflineToast
-          message="Sorry, we need the internets to edit a challenge :("
+          message='Sorry, we need the internets to edit a challenge :('
           showToast={showOfflineToast}
           setShowToast={setShowOfflineToast}
         />
@@ -430,13 +430,14 @@ const EditChallenge: React.FC<EditChallengeProps> = (
       <IonFooter translucent={true} className='ion-margin-top'>
         <IonToolbar>
           <IonRow
-            className="ion-justify-content-center"
+            className='ion-justify-content-center'
             style={{ margin: "0.5rem" }}
           >
             <IonButton
-              shape="round"
-              color="secondary"
-              fill="solid"
+              mode='ios'
+              shape='round'
+              color='secondary'
+              fill='solid'
               onClick={handleSubmit}
             >
               <IonText style={{ marginLeft: "2rem", marginRight: "2rem" }}>

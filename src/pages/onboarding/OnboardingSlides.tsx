@@ -67,6 +67,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
               style={{ marginTop: "2rem" }}
             >
               <IonButton
+                mode='ios'
                 color='secondary'
                 shape='round'
                 fill='solid'
@@ -96,6 +97,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
             style={{ marginTop: "2rem" }}
           >
             <IonButton
+              mode='ios'
               color='secondary'
               shape='round'
               fill='solid'
@@ -127,6 +129,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
               style={{ marginTop: "2rem" }}
             >
               <IonButton
+                mode='ios'
                 color='secondary'
                 shape='round'
                 fill='solid'
@@ -146,6 +149,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
             <h1 id='wall-of-shame-header'>WALL OF SHAME</h1>
             <p style={{ marginBottom: "4rem" }}>Take the moral highground.</p>
             <IonButton
+              mode='ios'
               expand='block'
               fill='solid'
               shape='round'
@@ -178,6 +182,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
               </IonText>
             </IonButton>
             <IonButton
+              mode='ios'
               expand='block'
               fill='solid'
               shape='round'
@@ -206,7 +211,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
             >
               <IonIcon src={logoFacebook} />
               <IonText id='login-options-button-text'>
-                &nbsp;&nbsp;Continue with FaceBook
+                &nbsp;&nbsp;Continue with Facebook
               </IonText>
             </IonButton>
             <div style={{ margin: "1.5rem" }}>
@@ -215,6 +220,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
               </h4>
             </div>
             <IonButton
+              mode='ios'
               expand='block'
               fill='solid'
               color='quinary'
