@@ -8,7 +8,7 @@ import dogPrimary from "./dog-primary.png";
 import dogSecondary from "./dog-secondary.png";
 import dogTertiary from "./dog-tertiary.png";
 
-import bg from "./bus-bg.png";
+import bg from "./bus-bg.gif";
 
 export const waitingAnimalMap = {
   RABBIT: {
