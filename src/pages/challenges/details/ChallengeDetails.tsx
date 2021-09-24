@@ -46,6 +46,7 @@ import { VoteData } from "../../../interfaces/models/Votes";
 import AvatarImg from "../../../components/avatar";
 import ActiveChallengeImg from "../../../components/activeChallengeImg";
 import PendingChallengeImg from "../../../components/pendingChallengeImg";
+import highground from "../../../assets/onboarding/highground.png";
 import OfflineToast from "../../../components/offlineToast";
 
 interface ChallengeDetailsProps {}
@@ -386,7 +387,11 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
       );
     }
 
-    return <></>;
+    return (
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <img className='completed-challenge-img' src={highground}></img>
+      </div>
+    );
   };
 
   const renderParticipants = () => {
