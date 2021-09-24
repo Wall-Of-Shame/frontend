@@ -247,7 +247,7 @@ const LoginModal: React.FC<LoginModalProps> = (props: LoginModalProps) => {
                 <IonText
                   style={{ marginLeft: "1.5rem", marginRight: "1.5rem" }}
                 >
-                  Let's Go
+                  Let's go
                 </IonText>
               </IonButton>
             </Container>
