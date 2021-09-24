@@ -22,7 +22,7 @@ import {
 import { useReducer, useState } from "react";
 import { arrowBackOutline, pencil, refreshOutline } from "ionicons/icons";
 import { useEffect } from "react";
-import { Redirect, useHistory, useLocation } from "react-router";
+import { Redirect, useLocation } from "react-router";
 import { useChallenge } from "../../../contexts/ChallengeContext";
 import { ChallengeData, UserMini } from "../../../interfaces/models/Challenges";
 import "./ChallengeDetails.scss";
@@ -69,7 +69,6 @@ interface ChallengeDetailsState {
 }
 
 const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
-  const history = useHistory();
   const location = useLocation();
   const { user } = useUser()!;
   const {
@@ -1185,7 +1184,7 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
               }}
               color='dark'
               onClick={() => {
-                history.goBack();
+                window.history.back();
               }}
             >
               <IonIcon slot='end' icon={arrowBackOutline} size='large' />
