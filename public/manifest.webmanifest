@@ -6,6 +6,7 @@
   "start_url": "/",
   "name": "Wall of Shame",
   "short_name": "Wall of Shame",
+  "description": "Take the moral highground",
   "icons": [
     {
       "src": "assets/icon/favicon.png",
