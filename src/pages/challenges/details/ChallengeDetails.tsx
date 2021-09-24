@@ -389,7 +389,11 @@ const ChallengeDetails: React.FC<ChallengeDetailsProps> = () => {
 
     return (
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <img className='completed-challenge-img' src={highground}></img>
+        <img
+          className='completed-challenge-img'
+          src={highground}
+          alt='Challenge Completed!'
+        ></img>
       </div>
     );
   };
