@@ -22,7 +22,7 @@ import { useEffect, useReducer, useState } from "react";
 import "./WallOfShame.scss";
 import { hideTabs, showTabs } from "../../utils/TabsUtils";
 import { useLocation } from "react-router";
-import { medal, refreshOutline } from "ionicons/icons";
+import { refreshOutline, trophy } from "ionicons/icons";
 import { database } from "../../firebase";
 import {
   ref,
@@ -62,6 +62,7 @@ const WallOfShame: React.FC = () => {
   const [globalRankings, setGlobalRankings] = useState<UserList[]>([]);
   const [friendsRankings, setFriendsRankings] = useState<UserList[]>([]);
   const types = ["Global", "Friends"];
+  const trophyColors = ["#ffd73c", "#bcbcbc", "#be7b2d"];
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [type, setType] = useState("Global");
@@ -226,7 +227,7 @@ const WallOfShame: React.FC = () => {
               <>
                 {globalRankings.length > 0 ? (
                   <>
-                    {globalRankings.map((r) => {
+                    {globalRankings.map((r, index) => {
                       return (
                         <IonItem lines='none' key={r.userId}>
                           <IonAvatar slot='start'>
@@ -235,10 +236,27 @@ const WallOfShame: React.FC = () => {
                           <IonLabel>
                             <h4 style={{ fontWeight: "bold" }}>{r.name}</h4>
                           </IonLabel>
-                          <IonIcon slot='end' icon={medal}></IonIcon>
                           <IonLabel slot='end'>
                             {r.failedChallengeCount}
                           </IonLabel>
+                          {index < 3 ? (
+                            <IonIcon
+                              slot='end'
+                              icon={trophy}
+                              style={{
+                                color: trophyColors[index],
+                              }}
+                            ></IonIcon>
+                          ) : (
+                            <IonIcon
+                              slot='end'
+                              icon={trophy}
+                              color='light'
+                              style={{
+                                opacity: 0,
+                              }}
+                            ></IonIcon>
+                          )}
                         </IonItem>
                       );
                     })}
@@ -260,7 +278,7 @@ const WallOfShame: React.FC = () => {
               <>
                 {friendsRankings.length > 0 ? (
                   <>
-                    {friendsRankings.map((r) => {
+                    {friendsRankings.map((r, index) => {
                       return (
                         <IonItem lines='none' key={r.userId}>
                           <IonAvatar slot='start'>
@@ -269,10 +287,27 @@ const WallOfShame: React.FC = () => {
                           <IonLabel>
                             <h4 style={{ fontWeight: "bold" }}>{r.name}</h4>
                           </IonLabel>
-                          <IonIcon slot='end' icon={medal}></IonIcon>
                           <IonLabel slot='end'>
                             {r.failedChallengeCount}
                           </IonLabel>
+                          {index < 3 ? (
+                            <IonIcon
+                              slot='end'
+                              icon={trophy}
+                              style={{
+                                color: trophyColors[index],
+                              }}
+                            ></IonIcon>
+                          ) : (
+                            <IonIcon
+                              slot='end'
+                              icon={trophy}
+                              color='light'
+                              style={{
+                                opacity: 0,
+                              }}
+                            ></IonIcon>
+                          )}
                         </IonItem>
                       );
                     })}
