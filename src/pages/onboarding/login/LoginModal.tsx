@@ -235,6 +235,7 @@ const LoginModal: React.FC<LoginModalProps> = (props: LoginModalProps) => {
                 </IonText>
               </IonRow>
               <IonButton
+                mode='ios'
                 fill='solid'
                 shape='round'
                 color='secondary'
@@ -325,6 +326,7 @@ const LoginModal: React.FC<LoginModalProps> = (props: LoginModalProps) => {
                 </IonItem>
               </IonList>
               <IonButton
+                mode='ios'
                 fill='solid'
                 shape='round'
                 color='secondary'
@@ -421,6 +423,7 @@ const LoginModal: React.FC<LoginModalProps> = (props: LoginModalProps) => {
                 </IonText>
               </IonRow>
               <IonButton
+                mode='ios'
                 fill='solid'
                 shape='round'
                 color='secondary'

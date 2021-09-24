@@ -1,16 +1,19 @@
 import {
   IonAvatar,
   IonButton,
+  IonButtons,
   IonCol,
   IonContent,
   IonFab,
   IonFabButton,
   IonGrid,
+  IonHeader,
   IonIcon,
   IonModal,
   IonRow,
   IonText,
   IonToast,
+  IonToolbar,
 } from "@ionic/react";
 import "./VoteModal.scss";
 import { arrowBackOutline, refreshOutline } from "ionicons/icons";
@@ -212,25 +215,26 @@ const VoteModal: React.FC<VoteModalProps> = (props: VoteModalProps) => {
       onDidDismiss={() => setShowModal(false)}
       backdropDismiss={false}
     >
+      <IonHeader translucent className='ion-no-border'>
+        <IonToolbar style={{ marginTop: "1.25rem" }}>
+          <IonButtons slot='start'>
+            <IonButton
+              onClick={() => setShowModal(false)}
+              style={{ marginLeft: "1rem" }}
+            >
+              <IonIcon icon={arrowBackOutline} size='large' />
+            </IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
       <IonContent fullscreen>
-        <IonFab
-          horizontal='start'
-          vertical='top'
-          style={{ marginTop: "1rem", marginLeft: "1rem" }}
-        >
-          <IonIcon
-            icon={arrowBackOutline}
-            size='large'
-            onClick={() => setShowModal(false)}
-          />
-        </IonFab>
         <IonContent>
           <IonFab vertical='bottom' horizontal='end' slot='fixed'>
             <IonFabButton color='senary' onClick={fetchData} mode='ios'>
               <IonIcon icon={refreshOutline} />
             </IonFabButton>
           </IonFab>
-          <IonGrid style={{ marginTop: "3.5rem" }}>
+          <IonGrid>
             <IonRow className='ion-padding'>
               <IonText style={{ fontWeight: "bold", fontSize: "1.5rem" }}>
                 {hasReleasedResults
@@ -246,13 +250,29 @@ const VoteModal: React.FC<VoteModalProps> = (props: VoteModalProps) => {
             </IonRow>
           </IonGrid>
 
-          <IonGrid>
-            <IonRow className='ion-padding-bottom'>
-              {participantsCompleted.map((p) => {
-                return userCard(p);
-              })}
-            </IonRow>
-          </IonGrid>
+          {participantsCompleted.length > 0 ? (
+            <IonGrid>
+              <IonRow className='ion-padding-bottom'>
+                {participantsCompleted.map((p) => {
+                  return userCard(p);
+                })}
+              </IonRow>
+            </IonGrid>
+          ) : (
+            <IonGrid
+              style={{
+                display: "flex",
+                height: "50%",
+                alignItems: "center",
+              }}
+              className='ion-justify-content-center'
+            >
+              <IonRow className='ion-justify-content-center ion-margin ion-text-center'>
+                No participant has completed the challenge :')
+              </IonRow>
+            </IonGrid>
+          )}
+          <div style={{ margin: "1rem" }} />
         </IonContent>
         <LoadingSpinner
           loading={state.isLoading}
