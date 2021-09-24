@@ -575,6 +575,7 @@ const Challenges: React.FC = () => {
               <IonButton
                 style={{
                   marginRight: "1rem",
+                  marginBottom: "0.75rem",
                 }}
                 color='dark'
                 routerLink='challenges/create'
