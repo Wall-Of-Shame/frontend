@@ -4,7 +4,6 @@ import {
   IonHeader,
   IonToolbar,
   IonContent,
-  IonSearchbar,
   IonFooter,
   IonRow,
   IonText,
@@ -12,11 +11,12 @@ import {
   IonAvatar,
   IonGrid,
   IonIcon,
+  IonInput,
 } from "@ionic/react";
 import "./EditParticipantsModal.scss";
 import { useCallback, useState } from "react";
 import { useUser } from "../../contexts/UserContext";
-import { addOutline, removeOutline } from "ionicons/icons";
+import { addOutline, removeOutline, searchOutline } from "ionicons/icons";
 import { UserMini } from "../../interfaces/models/Challenges";
 import AvatarImg from "../avatar";
 import lodash from "lodash";
@@ -88,22 +88,25 @@ const EditParticipantsModal: React.FC<EditParticipantsModalProps> = (props) => {
       backdropDismiss={false}
       cssClass='modal-container'
     >
-      <IonHeader translucent>
-        <IonToolbar className='modal-search'>
-          <IonSearchbar
-            key='modal-search'
+      <IonHeader>
+        <IonRow style={{ margin: "0.5rem" }} className='ion-align-items-center'>
+          <IonIcon
+            icon={searchOutline}
+            style={{
+              marginRight: "0.5rem",
+              marginLeft: "0.5rem",
+              fontSize: "1.25rem",
+            }}
+          />
+          <IonInput
             value={searchText}
+            placeholder='Search for a name or username'
             onIonChange={(e) => {
               setSearchText(e.detail.value ?? "");
               debouncedSearch(e.detail.value ?? "");
             }}
-            debounce={0}
-            placeholder='Search for a name or username'
-            showCancelButton='never'
-            className='ion-margin-top'
-            color='white'
-          ></IonSearchbar>
-        </IonToolbar>
+          />
+        </IonRow>
       </IonHeader>
       <IonContent fullscreen>
         <IonGrid className='ion-margin-top'>
@@ -225,7 +228,10 @@ const EditParticipantsModal: React.FC<EditParticipantsModalProps> = (props) => {
       </IonContent>
       <IonFooter>
         <IonToolbar>
-          <IonRow className='ion-justify-content-around'>
+          <IonRow
+            className='ion-justify-content-around'
+            style={{ marginTop: "0.5rem", marginBottom: "0.5rem" }}
+          >
             <IonButton
               mode='ios'
               color='danger'
