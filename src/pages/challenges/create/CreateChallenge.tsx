@@ -362,9 +362,9 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
               </IonRow>
             </IonCol>
           </IonRow>
-          <IonRow className="ion-padding-horizontal ion-align-items-center">
-            <IonText>
-              Invite your friends to join this challenge!
+          <IonRow className="ion-padding ion-align-items-center">
+            <IonText style={{ marginLeft: "0.25rem" }}>
+              Invite your friends to join the challenge!
             </IonText>
           </IonRow>
           <IonList style={{ marginTop: "1rem" }}>
