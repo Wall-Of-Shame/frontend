@@ -242,7 +242,7 @@ const LoginModal: React.FC<LoginModalProps> = (props: LoginModalProps) => {
                 className='ion-padding-horizontal'
                 style={{ marginTop: "2rem" }}
                 onClick={handleLogin}
-                disabled={state.email === "" || state.password === ""}
+                disabled={!isValidEmail(state.email) || state.password === ""}
               >
                 <IonText
                   style={{ marginLeft: "1.5rem", marginRight: "1.5rem" }}
@@ -333,7 +333,7 @@ const LoginModal: React.FC<LoginModalProps> = (props: LoginModalProps) => {
                 className='ion-padding-horizontal'
                 style={{ marginTop: "2rem" }}
                 onClick={handleResetPassword}
-                disabled={state.email === ""}
+                disabled={!isValidEmail(state.email)}
               >
                 <IonText
                   style={{ marginLeft: "1.5rem", marginRight: "1.5rem" }}

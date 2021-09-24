@@ -19,7 +19,7 @@ import {
   IonTextarea,
   IonToolbar,
 } from "@ionic/react";
-import { arrowBackOutline, pencil, personAdd } from "ionicons/icons";
+import { arrowBackOutline, personAdd } from "ionicons/icons";
 import { useState, useReducer, useEffect } from "react";
 import {
   addYears,
