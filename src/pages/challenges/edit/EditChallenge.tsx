@@ -119,7 +119,6 @@ const EditChallenge: React.FC<EditChallengeProps> = (
       isAfter(startAtTime, endAtTime) ||
       isAfter(Date.now(), startAtTime)
     ) {
-      console.log("object");
       setHasError(true);
       return;
     }

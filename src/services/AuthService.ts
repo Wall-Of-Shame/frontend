@@ -23,7 +23,6 @@ const login = async (
     await TokenUtils.storeToken(response);
     store.dispatch(setUser(response.data.user));
   } catch (error: any) {
-    console.log(error);
     return Promise.reject(error);
   }
 };

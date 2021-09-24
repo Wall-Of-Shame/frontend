@@ -51,7 +51,6 @@ const EditParticipantsModal: React.FC<EditParticipantsModalProps> = (props) => {
     }
     try {
       const response = await searchUser(searchText);
-      console.log(response);
       setMatchedUsers(
         response.map((u) => {
           return {
@@ -67,12 +66,10 @@ const EditParticipantsModal: React.FC<EditParticipantsModalProps> = (props) => {
   };
 
   const handleInvite = (user: UserMini) => {
-    console.log(user);
     const index = invitedUsers.indexOf(user);
     if (index !== -1) {
       var newInvitedUsers = invitedUsers.slice(0);
       newInvitedUsers = invitedUsers.filter((u) => u.userId !== user.userId);
-      console.log(newInvitedUsers);
       setInvitedUsers(newInvitedUsers);
     } else {
       const newInvitedUsers = invitedUsers.slice(0);

@@ -55,12 +55,10 @@ const AddParticipantsModal: React.FC<AddParticipantsModalProps> = (props) => {
   };
 
   const handleInvite = (user: UserList) => {
-    console.log(user);
     const index = invitedUsers.indexOf(user);
     if (index !== -1) {
       var newInvitedUsers = invitedUsers.slice(0);
       newInvitedUsers = invitedUsers.filter((u) => u.userId !== user.userId);
-      console.log(newInvitedUsers);
       setInvitedUsers(newInvitedUsers);
     } else {
       const newInvitedUsers = invitedUsers.slice(0);
