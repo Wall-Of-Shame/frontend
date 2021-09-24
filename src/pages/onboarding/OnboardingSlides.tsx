@@ -211,7 +211,7 @@ const OnboardingSlides: React.FC<OnboardingSlidesProps> = ({
             >
               <IonIcon src={logoFacebook} />
               <IonText id='login-options-button-text'>
-                &nbsp;&nbsp;Continue with FaceBook
+                &nbsp;&nbsp;Continue with Facebook
               </IonText>
             </IonButton>
             <div style={{ margin: "1.5rem" }}>
