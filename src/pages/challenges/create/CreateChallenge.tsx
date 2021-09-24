@@ -19,7 +19,7 @@ import {
   IonTextarea,
   IonToolbar,
 } from "@ionic/react";
-import { arrowBackOutline, pencil } from "ionicons/icons";
+import { arrowBackOutline, pencil, personAdd } from "ionicons/icons";
 import { useState, useReducer, useEffect } from "react";
 import {
   addHours,
@@ -332,7 +332,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
             <IonCol size='2'>
               <IonRow className='ion-justify-content-end'>
                 <IonIcon
-                  icon={pencil}
+                  icon={personAdd}
                   style={{ fontSize: "1.5rem", padding: "0.25rem" }}
                   onClick={() => setShowModal(true)}
                 />
