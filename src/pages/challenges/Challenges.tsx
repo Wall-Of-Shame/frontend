@@ -36,7 +36,7 @@ import { RootState } from "../../reducers/RootReducer";
 import { ChallengeDux } from "../../reducers/ChallengeDux";
 import LoadingSpinner from "../../components/loadingSpinner";
 import Alert from "../../components/alert";
-import { format, formatDuration, intervalToDuration } from "date-fns";
+import { format } from "date-fns";
 import parseISO from "date-fns/parseISO";
 import AvatarImg from "../../components/avatar";
 import { isPlatform } from "@ionic/core";
@@ -168,11 +168,9 @@ const Challenges: React.FC = () => {
                                   marginBottom: "0.25rem",
                                 }}
                               >
-                                {`Ends in: ${formatDuration(
-                                  intervalToDuration({
-                                    start: Date.now(),
-                                    end: parseISO(c.endAt),
-                                  })
+                                {`Ends at: ${format(
+                                  parseISO(c.endAt),
+                                  "dd MMM yyyy, HH:mm"
                                 )}`}
                               </IonText>
                             </IonRow>
