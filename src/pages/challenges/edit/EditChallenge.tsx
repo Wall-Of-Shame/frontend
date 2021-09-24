@@ -269,7 +269,18 @@ const EditChallenge: React.FC<EditChallengeProps> = (
           </IonRow>
           <IonList>
             <IonItem lines='none'>
-              <IonLabel>Starts at</IonLabel>
+              <IonLabel
+                color={
+                  !(
+                    isAfter(parseISO(state.startAt), Date.now()) &&
+                    isAfter(parseISO(state.endAt), parseISO(state.startAt))
+                  )
+                    ? "danger"
+                    : "primary"
+                }
+              >
+                Starts at
+              </IonLabel>
               <IonDatetime
                 displayFormat='D MMM YYYY HH:mm'
                 min={formatISO(Date.now()).slice(0, -6)}
@@ -280,7 +291,18 @@ const EditChallenge: React.FC<EditChallengeProps> = (
               ></IonDatetime>
             </IonItem>
             <IonItem lines='none'>
-              <IonLabel>Ends at</IonLabel>
+              <IonLabel
+                color={
+                  !(
+                    isAfter(parseISO(state.endAt), Date.now()) &&
+                    isAfter(parseISO(state.endAt), parseISO(state.startAt))
+                  )
+                    ? "danger"
+                    : "primary"
+                }
+              >
+                Ends at
+              </IonLabel>
               <IonDatetime
                 displayFormat='D MMM YYYY HH:mm'
                 min={formatISO(Date.now()).slice(0, -6)}

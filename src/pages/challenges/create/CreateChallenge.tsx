@@ -102,6 +102,7 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
       !(
         state.title.length > 0 &&
         state.description.length > 0 &&
+        isAfter(parseISO(state.startAt), Date.now()) &&
         isAfter(parseISO(state.endAt), Date.now()) &&
         isAfter(parseISO(state.endAt), parseISO(state.startAt))
       )
@@ -267,8 +268,19 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
             </IonText>
           </IonRow>
           <IonList>
-            <IonItem lines="none">
-              <IonLabel>Starts at</IonLabel>
+            <IonItem lines='none'>
+              <IonLabel
+                color={
+                  !(
+                    isAfter(parseISO(state.startAt), Date.now()) &&
+                    isAfter(parseISO(state.endAt), parseISO(state.startAt))
+                  )
+                    ? "danger"
+                    : "primary"
+                }
+              >
+                Starts at
+              </IonLabel>
               <IonDatetime
                 displayFormat="D MMM YYYY HH:mm"
                 min={formatISO(Date.now()).slice(0, -6)}
@@ -278,8 +290,19 @@ const CreateChallenge: React.FC<CreateChallengeProps> = (
                 onIonChange={(e) => setState({ startAt: e.detail.value! })}
               ></IonDatetime>
             </IonItem>
-            <IonItem lines="none">
-              <IonLabel>Ends at</IonLabel>
+            <IonItem lines='none'>
+              <IonLabel
+                color={
+                  !(
+                    isAfter(parseISO(state.endAt), Date.now()) &&
+                    isAfter(parseISO(state.endAt), parseISO(state.startAt))
+                  )
+                    ? "danger"
+                    : "primary"
+                }
+              >
+                Ends at
+              </IonLabel>
               <IonDatetime
                 displayFormat="D MMM YYYY HH:mm"
                 min={formatISO(Date.now()).slice(0, -6)}
