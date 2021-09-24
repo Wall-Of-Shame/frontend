@@ -1,6 +1,6 @@
 {
   "name": "wall-of-shame",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "private": true,
   "dependencies": {
     "@capacitor/core": "3.2.2",
